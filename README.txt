@@ -1,0 +1,1 @@
+This is Survival game by Veremchuk, Kolesnikov and Shabalinsky
