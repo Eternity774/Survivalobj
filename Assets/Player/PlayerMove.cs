@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMove : MonoBehaviour {
-    float speedx = 1f;
+    float speedx = 3f;
     float speedz = 0.1f;
     Animator animator;
     CharacterController controller;
