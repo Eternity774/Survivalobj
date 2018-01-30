@@ -3,7 +3,11 @@
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
+<<<<<<< HEAD
 [Uu]nityPackageManager
+=======
+[Uu]nityPackageManager/
+>>>>>>> 3140ff5cc796270a429ae208b8d0df0db871edfc
 Assets/AssetStoreTools*
 
 # Visual Studio 2015 cache directory

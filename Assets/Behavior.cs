@@ -36,8 +36,8 @@ public class Behavior : MonoBehaviour {
         }
         if(state==State.run)//если убегаем
         {
-           transform.Translate(Vector3.forward * 0.08f);//движемся все время вперед
-          //  nav.SetDestination(Vector3.forward * 0.02f);
+            Vector3 forwardPosition = transform.TransformPoint(Vector3.forward);//переводим в глобальные координаты направление вперед
+            nav.SetDestination(forwardPosition);        //назначаем агенту новое направление    
         }
        
 	}
@@ -52,12 +52,13 @@ public class Behavior : MonoBehaviour {
             transform.LookAt(other.transform);//разворачиваем сначала к игроку
             //а затем на 180, чтобы развернуть в другую сторону
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y - 180f, transform.rotation.eulerAngles.z);
-            nav.speed = 0;//выключаем скорость навмеша (будем двигать без его помощи)
+            nav.speed = 2;//выключаем скорость навмеша (будем двигать без его помощи)
             
         }
     }
     private void OnTriggerExit(Collider other)//когда игрок далеко
     {
+        
         if (other.tag == "Player")
         {
             Debug.Log("Rabbit out of trigger");
@@ -67,6 +68,7 @@ public class Behavior : MonoBehaviour {
             state = State.wait;//ставим в ожидание
             StartCoroutine(Wait());//запускаем корутину ожидания
         }
+        
     }
 
     IEnumerator Wait()//корутина ожидания
