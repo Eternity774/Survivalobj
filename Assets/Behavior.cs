@@ -52,7 +52,7 @@ public class Behavior : MonoBehaviour {
             transform.LookAt(other.transform);//разворачиваем сначала к игроку
             //а затем на 180, чтобы развернуть в другую сторону
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y - 180f, transform.rotation.eulerAngles.z);
-            nav.speed = 2;//выключаем скорость навмеша (будем двигать без его помощи)
+            nav.speed = 10;//выключаем скорость навмеша (будем двигать без его помощи)
             
         }
     }
