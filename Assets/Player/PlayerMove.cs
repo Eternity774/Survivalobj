@@ -30,15 +30,24 @@ public class PlayerMove : MonoBehaviour {
         if (z != 0)
         {
             Vector3 dir;
-            //if (Input.GetKey(KeyCode.W)) dir = transform.TransformDirection(new Vector3(0f, 0f, z * speedmove));
-            // else dir = transform.TransformDirection(new Vector3(0f, 0f, z * speedmove / 2));
+            if (Input.GetKey(KeyCode.W))
+            {
+                dir = transform.TransformDirection(new Vector3(0f, 0f, z * speedz));
+                animator.SetBool("Walk", true);//включаем анимацию ходьбы
+            }
+            else
+            {
+                dir = transform.TransformDirection(new Vector3(0f, 0f, z * speedz / 2));
+                animator.SetBool("WalkBack", true);//включаем анимацию ходьбы
+            }
             dir = transform.TransformDirection(new Vector3(0f, -3f, z * speedz));//высчитываем смещение вперед
             controller.Move(dir);//двигаем контроллер
-            animator.SetBool("Walk", true);//включаем анимацию ходьбы
+            
         }
         else//если не нажата клавиша ходьбы
         {
            animator.SetBool("Walk", false);//выключаем ходьбу
+           animator.SetBool("WalkBack", false);//выключаем ходьбу
         }
         if(Input.GetKeyDown(KeyCode.LeftShift))
         {

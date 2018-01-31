@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class Behavior : MonoBehaviour {
-       
+    GameObject Creator;   
+
     NavMeshAgent nav;//агент, который перемещает ai в указанную точку
     Animator anim;//аниматор, для переключения анимаций
     GameObject enemy;//храним, кто преследует кролика
@@ -21,9 +22,10 @@ public class Behavior : MonoBehaviour {
     public State state;//переменная для состояния
     
     void Start () {
+        Creator = GameObject.Find("MainController");
         nav = GetComponent<NavMeshAgent>();//берем компоненты с того же объекта где и скрипт
         anim = GetComponent<Animator>();
-        priority = Creator.Priority(gameObject);//определяем приоритет ai по тэгу через создателя
+        priority = Creator.GetComponent<Creator>().Priority(gameObject);//определяем приоритет ai по тэгу через создателя
         state = State.wait;//ставим в начале в состояние ожидания           
         StartCoroutine(Wait());//запускаем корутину(процесс) ожидания в 10 сек
         
@@ -75,6 +77,7 @@ public class Behavior : MonoBehaviour {
         enemy = null;
         state = State.dead;
         priority = 3;
+        Creator.GetComponent<Creator>().SomebodyDead(gameObject);
     }
        
 	
