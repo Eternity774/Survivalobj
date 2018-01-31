@@ -32,9 +32,11 @@ public class Behavior : MonoBehaviour {
 
     void Update()
     {
-       
+        if (state != State.dead)
+        {
+
             //Debug.Log(nav.remainingDistance);
-            if (state == State.walk && nav.remainingDistance < 1 )//если объект дошел до нужной точки и находится в состоянии ходьбы
+            if (state == State.walk && nav.remainingDistance < 1)//если объект дошел до нужной точки и находится в состоянии ходьбы
             {
                 state = State.wait;//переключаем в состояние ожидания
                 anim.SetBool("Walk", false);//выключаем анимацию ходьбы
@@ -53,7 +55,7 @@ public class Behavior : MonoBehaviour {
                     if (distance > 30)
                     {
                         enemy.GetComponent<PlayerMove>().associated = null;
-                        enemy = null;                        
+                        enemy = null;
                         anim.SetBool("Run", false);//выключаем бег
                         anim.SetBool("Walk", false);
                         nav.speed = 0;//выключаем перемещание
@@ -62,6 +64,7 @@ public class Behavior : MonoBehaviour {
                     }
                 }
             }
+        }
         
     }
         public void die()
@@ -77,20 +80,23 @@ public class Behavior : MonoBehaviour {
 	
     private void OnTriggerEnter(Collider other)//для обработки взаимодействий (рядом игрок)
     {
-        if (other.tag == "Player")//проверяем, что увидели именно игрока (зашли в его триггер)
+        if (state != State.dead)
         {
-            Debug.Log("Rabbit in trigger");
-            enemy = other.gameObject;
-            enemy.GetComponent<PlayerMove>().associated = gameObject;
-            StopAllCoroutines();//останавливаем корутины (т.к. есть возможность входа в триггер во время ожидания)
-            anim.SetBool("Run", true);//переключаем анимацию в бег
-            anim.SetBool("Walk", false);//выключаем ходьбу
-            state = State.run;//указываем состояние бега
-            transform.LookAt(other.transform);//разворачиваем сначала к игроку
-            //а затем на 180, чтобы развернуть в другую сторону
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y - 180f, transform.rotation.eulerAngles.z);
-            nav.speed = Random.Range(5,8);//включаем высокую скорость
-            
+            if (other.tag == "Player")//проверяем, что увидели именно игрока (зашли в его триггер)
+            {
+                Debug.Log("Rabbit in trigger");
+                enemy = other.gameObject;
+                enemy.GetComponent<PlayerMove>().associated = gameObject;
+                StopAllCoroutines();//останавливаем корутины (т.к. есть возможность входа в триггер во время ожидания)
+                anim.SetBool("Run", true);//переключаем анимацию в бег
+                anim.SetBool("Walk", false);//выключаем ходьбу
+                state = State.run;//указываем состояние бега
+                transform.LookAt(other.transform);//разворачиваем сначала к игроку
+                                                  //а затем на 180, чтобы развернуть в другую сторону
+                transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y - 180f, transform.rotation.eulerAngles.z);
+                nav.speed = Random.Range(5, 8);//включаем высокую скорость
+
+            }
         }
     }
    
