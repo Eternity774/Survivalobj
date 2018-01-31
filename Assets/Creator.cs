@@ -13,4 +13,9 @@ public class Creator : MonoBehaviour {
 	void Update () {
 		
 	}
+    public static int Priority(GameObject ai)//функция для определения приоритета каждого ai
+    {
+        if (ai.tag == "Rabit") return 1;
+        else return 0;
+    }
 }

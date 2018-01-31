@@ -7,9 +7,10 @@ public class PlayerMove : MonoBehaviour {
     float speedz = 0.1f;//скорость ходьбы
     Animator animator;//анимаотор
     CharacterController controller;//контроллер для ходьбы
-    
-	// Use this for initialization
-	void Start () {
+    public GameObject associated;
+    public int priority = 6;
+    // Use this for initialization
+    void Start () {
         animator = GetComponentInChildren<Animator>();
         controller = GetComponent<CharacterController>();
 	}
@@ -50,11 +51,14 @@ public class PlayerMove : MonoBehaviour {
             animator.SetBool("Run", false);
         }
         
-       if(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) animator.SetBool("Attack", false); //проверяем какое сейчас состояние в аниматоре
-        
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            animator.SetBool("Attack", true);            
+            animator.SetTrigger("Attack");  
+            if(associated!=null)
+            {
+                if (Vector3.Distance(transform.position, associated.transform.position) < 2) associated.GetComponent<Behavior>().die();
+
+            }          
         }
     }
 }
