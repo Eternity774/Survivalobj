@@ -219,8 +219,8 @@ Transform:
   m_LocalPosition: {x: 0.70758915, y: 2.4416552, z: -2.4007337}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 2087679665}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!81 &317147942
 AudioListener:
@@ -283,8 +283,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040c3745d9ddacd43832e235498731ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 2087679665}
-  rotSpeed: 1.5
+  sensitivity: 2
+  distance: 14.05
+  height: 1.5
+  offsetPosition: 11.35
+  minY: 45
+  maxY: 45
+  inversionX: 0
+  inversionY: 0
+  smooth: 1
+  speed: 8
 --- !u!1 &380259099
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,7 +541,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1128097119
 MonoBehaviour:
@@ -546,7 +554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d978c352fac36934f9263026a5231643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rabbitpref: {fileID: 1090895711516698, guid: c0c19dffcc6a75a4ea92b7d89af9bfc9, type: 2}
+  rabbitpref: {fileID: 0}
 --- !u!4 &1192883734 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400048, guid: fe55e5a0c1bcd72488aa4508bea6f93b, type: 3}
@@ -588,7 +596,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400010, guid: fe55e5a0c1bcd72488aa4508bea6f93b, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400048, guid: fe55e5a0c1bcd72488aa4508bea6f93b, type: 3}
       propertyPath: m_LocalRotation.x
@@ -765,7 +773,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 20.246967}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2048689939
 GameObject:
@@ -851,6 +859,7 @@ GameObject:
   - component: {fileID: 2087679664}
   - component: {fileID: 2087679663}
   - component: {fileID: 2087679666}
+  - component: {fileID: 2087679668}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -869,6 +878,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5a7c44fd33e30b4eb014220249344b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotate: {fileID: 998524524}
   associated: {fileID: 0}
   priority: 6
 --- !u!143 &2087679664
@@ -898,10 +908,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 317147941}
   - {fileID: 998524524}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2087679666
 BoxCollider:
@@ -915,3 +924,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 20, y: 1, z: 20}
   m_Center: {x: 0, y: 0.7, z: 0}
+--- !u!54 &2087679668
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2087679662}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

@@ -3,27 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMove : MonoBehaviour {
-<<<<<<< HEAD
-    float speedx = 3f;
-    float speedz = 0.1f;
-    Animator animator;
-    CharacterController controller;
+    
+	public Transform rotate;
+    public GameObject associated;
+	public int priority = 6;
+	private Vector3 direction;
+	float speedx = 3f;//скорость поворота 
+	float speedz = 0.1f;//скорость ходьбы
+	Animator animator;//анимаотор
+	CharacterController controller; //контроллер для ходьбы
+
 
 	// Use this for initialization
 	void Start () {
-
-=======
-    float speedx = 3f;//скорость поворота 
-    float speedz = 0.1f;//скорость ходьбы
-    Animator animator;//анимаотор
-    CharacterController controller;//контроллер для ходьбы
-    public GameObject associated;
-    public int priority = 6;
-    // Use this for initialization
-    void Start () {
->>>>>>> 437bca7daba3a48b494ca288811308ddfcfd438d
-        animator = GetComponentInChildren<Animator>();
-        controller = GetComponent<CharacterController>();
+    animator = GetComponentInChildren<Animator>();
+    controller = GetComponent<CharacterController>();
 	}
 	
 	// Update is called once per frame
@@ -33,10 +27,18 @@ public class PlayerMove : MonoBehaviour {
         float x = Input.GetAxis("Horizontal");//перемещение курсора по горизонтали
         float z = Input.GetAxis("Vertical");//перемещение курсора по вертикали
 
-        if (x != 0)
-        {
-            transform.Rotate(0f, x * speedx, 0f);//вращаем персонажа
-        }
+		direction = new Vector3 (x, 0, z);
+		direction = Camera.main.transform.TransformDirection (direction);
+		direction = new Vector3 (direction.x, 0, direction.z);
+
+		if (Mathf.Abs (z) > 0 || Mathf.Abs (x) > 0) {
+			rotate.rotation = Quaternion.Lerp (rotate.rotation, Quaternion.LookRotation (direction), 10 * Time.deltaTime);
+		}
+
+//        if (x != 0)
+//        {
+//            transform.Rotate(0f, x * speedx, 0f);//вращаем персонажа
+//        }
 
         if (z != 0)
         {
