@@ -618,6 +618,14 @@ Prefab:
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: fe55e5a0c1bcd72488aa4508bea6f93b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: fe55e5a0c1bcd72488aa4508bea6f93b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fe55e5a0c1bcd72488aa4508bea6f93b, type: 3}
   m_IsPrefabParent: 0
@@ -861,6 +869,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5a7c44fd33e30b4eb014220249344b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  associated: {fileID: 0}
+  priority: 6
 --- !u!143 &2087679664
 CharacterController:
   m_ObjectHideFlags: 0

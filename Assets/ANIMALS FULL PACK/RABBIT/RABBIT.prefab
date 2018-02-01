@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 114057399070632880}
   m_Layer: 0
   m_Name: RABBIT
-  m_TagString: Untagged
+  m_TagString: Rabbit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -854,6 +854,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7784550cae48bd44a74d9cb21c69313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  priority: 0
   state: 0
 --- !u!137 &137546736382936150
 SkinnedMeshRenderer:
@@ -943,6 +944,6 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: -0.06
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
