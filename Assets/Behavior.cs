@@ -49,7 +49,7 @@ public class Behavior : MonoBehaviour {
             if (state == State.run)//если убегаем
             {
                 Vector3 forwardPosition = transform.TransformPoint(Vector3.forward);//переводим в глобальные координаты направление вперед
-                nav.SetDestination(forwardPosition);        //назначаем агенту новое направление  
+                nav.SetDestination(forwardPosition*3);        //назначаем агенту новое направление  
                 if (enemy != null)
                 {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
