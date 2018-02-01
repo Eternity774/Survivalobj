@@ -7,8 +7,10 @@ public class PlayerMove : MonoBehaviour {
     float speedz = 0.1f;
     Animator animator;
     CharacterController controller;
+
 	// Use this for initialization
 	void Start () {
+
         animator = GetComponentInChildren<Animator>();
         controller = GetComponent<CharacterController>();
 	}
@@ -41,11 +43,13 @@ public class PlayerMove : MonoBehaviour {
         {
             speedx = 2;
             animator.SetBool("Run", true);
+		
         }
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             speedx = 1;
             animator.SetBool("Run", false);
+
         }
     }
 }
