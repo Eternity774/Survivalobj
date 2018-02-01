@@ -34,13 +34,15 @@ public class ForCamera : MonoBehaviour
 	{
 		player = GameObject.FindGameObjectWithTag("Player").transform;
 		gameObject.tag = "MainCamera";
+		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
 	}
 
 	// проверяем, если есть на пути луча, от игрока до камеры, какое-либо препятствие (коллайдер)
 	Vector3 PositionCorrection(Vector3 target, Vector3 position)
 	{
 		RaycastHit hit;
-		Debug.DrawLine(target, position, Color.blue);
+		//Debug.DrawLine(target, position, Color.blue);
 		if(Physics.Linecast(target, position, out hit)) 
 		{
 			float tempDistance = Vector3.Distance(target, hit.point);
@@ -74,5 +76,6 @@ public class ForCamera : MonoBehaviour
 			if(smooth == Smooth.Disabled) transform.position = position;
 			else transform.position = Vector3.Lerp(transform.position, position, speed * Time.deltaTime);
 		}
+
 	}
 }

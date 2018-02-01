@@ -7,7 +7,6 @@ public class PlayerMove : MonoBehaviour {
 	public Transform rotate;
     public GameObject associated;
 	public int priority = 6;
-	private Vector3 direction;
 	float speedx = 3f;//скорость поворота 
 	float speedz = 0.1f;//скорость ходьбы
 	Animator animator;//анимаотор
@@ -27,18 +26,11 @@ public class PlayerMove : MonoBehaviour {
         float x = Input.GetAxis("Horizontal");//перемещение курсора по горизонтали
         float z = Input.GetAxis("Vertical");//перемещение курсора по вертикали
 
-		direction = new Vector3 (x, 0, z);
-		direction = Camera.main.transform.TransformDirection (direction);
-		direction = new Vector3 (direction.x, 0, direction.z);
 
-		if (Mathf.Abs (z) > 0 || Mathf.Abs (x) > 0) {
-			rotate.rotation = Quaternion.Lerp (rotate.rotation, Quaternion.LookRotation (direction), 10 * Time.deltaTime);
-		}
-
-//        if (x != 0)
-//        {
-//            transform.Rotate(0f, x * speedx, 0f);//вращаем персонажа
-//        }
+        if (x != 0)
+        {
+            transform.Rotate(0f, x * speedx, 0f);//вращаем персонажа
+        }
 
         if (z != 0)
         {
