@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour {
     
-	public Transform rotate;
+	//public Transform rotate;
     public GameObject associated;
 	public int priority = 6;
 	float speedx = 3f;//скорость поворота 
@@ -37,15 +37,15 @@ public class PlayerMove : MonoBehaviour {
             Vector3 dir;
             if (Input.GetKey(KeyCode.W))
             {
-                dir = transform.TransformDirection(new Vector3(0f, 0f, z * speedz));
+                dir = transform.TransformDirection(new Vector3(0f, -3f, z * speedz));
                 animator.SetBool("Walk", true);//включаем анимацию ходьбы
             }
             else
             {
-                dir = transform.TransformDirection(new Vector3(0f, 0f, z * speedz / 2));
+                dir = transform.TransformDirection(new Vector3(0f, -3f, z * speedz / 2));
                 animator.SetBool("WalkBack", true);//включаем анимацию ходьбы
             }
-            dir = transform.TransformDirection(new Vector3(0f, -3f, z * speedz));//высчитываем смещение вперед
+           // dir = transform.TransformDirection(new Vector3(0f, -3f, z * speedz));//высчитываем смещение вперед
             controller.Move(dir);//двигаем контроллер
             
         }
@@ -56,13 +56,13 @@ public class PlayerMove : MonoBehaviour {
         }
         if(Input.GetKeyDown(KeyCode.LeftShift))
         {
-            speedx = 2;
+            speedz *= 2;
             animator.SetBool("Run", true);
 		
         }
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            speedx = 1;
+            speedz = 0.1f;
             animator.SetBool("Run", false);
 
         }
