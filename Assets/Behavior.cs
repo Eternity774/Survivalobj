@@ -87,7 +87,7 @@ public class Behavior : MonoBehaviour {
         {
             if (other.tag == "Player")//проверяем, что увидели именно игрока (зашли в его триггер)
             {
-                Debug.Log("Rabbit in trigger");
+               // Debug.Log("Rabbit in trigger");
                 enemy = other.gameObject;
                 enemy.GetComponent<PlayerMove>().associated = gameObject;
                 StopAllCoroutines();//останавливаем корутины (т.к. есть возможность входа в триггер во время ожидания)
@@ -106,9 +106,9 @@ public class Behavior : MonoBehaviour {
 
     IEnumerator Wait()//корутина ожидания
     {
-        Debug.Log("Start Coroutine");
+       // Debug.Log("Start Coroutine");
         yield return new WaitForSeconds(10f);//ждем 10 секунд
-        Debug.Log("Go at new point");
+        //Debug.Log("Go at new point");
         nav.speed = 1;//включаем низкую скорость для ходьбы
         state = State.walk;//включаем состояние ходьбы
         nav.SetDestination(new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)));//задаем новую точку для движения в пределах плоскости
