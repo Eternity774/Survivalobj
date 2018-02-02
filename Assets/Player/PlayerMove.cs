@@ -72,7 +72,7 @@ public class PlayerMove : MonoBehaviour {
             animator.SetTrigger("Attack");  
             if(associated!=null)
             {
-                if (Vector3.Distance(transform.position, associated.transform.position) < 2) associated.GetComponent<Behavior>().die();
+                if (Vector3.Distance(transform.position, associated.transform.position) < 2) associated.GetComponent<Behavior>().die(gameObject);
 
             }          
         }
