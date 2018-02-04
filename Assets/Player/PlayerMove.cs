@@ -8,7 +8,7 @@ public class PlayerMove : MonoBehaviour {
     public GameObject associated;
 	public int priority = 6;
 	float speedx = 3f;//скорость поворота 
-	float speedz = 0.1f;//скорость ходьбы
+	float speedz = 0.05f;//скорость ходьбы
 	Animator animator;//анимаотор
 	CharacterController controller; //контроллер для ходьбы
 
@@ -20,7 +20,7 @@ public class PlayerMove : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         
 
         float x = Input.GetAxis("Horizontal");//перемещение курсора по горизонтали
@@ -75,6 +75,21 @@ public class PlayerMove : MonoBehaviour {
                 if (Vector3.Distance(transform.position, associated.transform.position) < 2) associated.GetComponent<Behavior>().die(gameObject);
 
             }          
+        }
+        if(associated!=null)
+        {
+           if( Vector3.Distance(gameObject.transform.position,associated.transform.position)>30)
+            {
+                associated.GetComponent<Behavior>().enemy = null;
+                associated = null;
+            }
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.GetComponent<Behavior>()!=null)
+        {
+            associated = other.gameObject;
         }
     }
 }
