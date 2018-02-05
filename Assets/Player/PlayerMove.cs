@@ -56,7 +56,7 @@ public class PlayerMove : MonoBehaviour {
         }
         if(Input.GetKeyDown(KeyCode.LeftShift))
         {
-            speedz *= 2;
+            speedz = 0.2f;
             animator.SetBool("Run", true);
 		
         }
@@ -85,11 +85,5 @@ public class PlayerMove : MonoBehaviour {
             }
         }
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.GetComponent<Behavior>()!=null)
-        {
-            associated = other.gameObject;
-        }
-    }
+   
 }

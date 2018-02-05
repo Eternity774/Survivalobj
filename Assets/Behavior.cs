@@ -19,6 +19,7 @@ public class Behavior : MonoBehaviour {
         runfrom,
         runfor,
         attack,
+        eat,
         dead        
     }
     public State state;//переменная для состояния
@@ -57,7 +58,7 @@ public class Behavior : MonoBehaviour {
 
                 {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
-                    if (distance > 30)
+                    if (distance > 40)
                     {
                         enemy = null;
                         StartCoroutine(Wait());//запускаем корутину ожидания
@@ -86,7 +87,6 @@ public class Behavior : MonoBehaviour {
                     }
                     else if(distance>30)
                     {
-                        enemy.GetComponent<Behavior>().enemy = null;
                         enemy = null;
                     }
 
@@ -100,14 +100,29 @@ public class Behavior : MonoBehaviour {
             }
             if(state == State.attack)
             {
-               // nav.ResetPath();
+                // nav.ResetPath();
+               // anim.SetBool("Attack", true);
                 transform.LookAt(enemy.transform);
                 enemy.GetComponent<Behavior>().die(gameObject);
-                anim.SetBool("Attack", false);
-                Debug.Log("start coroutine after attack");
-                enemy = null;
-                StartCoroutine(Wait());
+                state = State.eat;
+                //anim.SetBool("Attack", false);
+                //Debug.Log("start coroutine after attack");
+                // enemy = null;
+                // StartCoroutine(Wait());
+                if (Vector3.Distance(transform.position, enemy.transform.position) > 2)
+                {
+                    anim.SetBool("Attack", false);
+                    anim.SetBool("Run", true);
+                    nav.SetDestination(enemy.transform.position);
+                }
+                else
+                {
+                    anim.SetBool("Attack", true);
+                    anim.SetBool("Run", false);                
+                    StartCoroutine(Eating());
+                }
             }
+           
         }
         
     }
@@ -118,7 +133,7 @@ public class Behavior : MonoBehaviour {
             nav.ResetPath();
             nav.enabled = false;
             anim.SetTrigger("Death");
-
+            /*
             if (killer.tag == "Player") killer.GetComponent<PlayerMove>().associated = null;
             else killer.GetComponent<Behavior>().enemy = null;
 
@@ -127,11 +142,13 @@ public class Behavior : MonoBehaviour {
                 if (enemy.tag == "Player") enemy.GetComponent<PlayerMove>().associated = null;//на случай, если гнались двое
                 else enemy.GetComponent<Behavior>().enemy = null;
             }
+            */
             enemy = null;
             state = State.dead;
             priority = 3;
             Creator.GetComponent<Creator>().SomebodyDead(gameObject);
-            StartCoroutine(Death());
+            StopAllCoroutines();
+            //StartCoroutine(Death());
         }
     }
        public void GetEnemy(GameObject newenemy)
@@ -139,15 +156,15 @@ public class Behavior : MonoBehaviour {
         if (state != State.dead && anim!=null)
         {
             int newenemypriority;//приоритет нового врага
-
-            if (newenemy.tag == "Player") newenemypriority = newenemy.GetComponent<PlayerMove>().priority;
+            ///Debug.Log()
+            if (newenemy.tag == "Player") newenemypriority = 6;
             else newenemypriority = newenemy.GetComponent<Behavior>().priority;
 
             bool changenemy = false;
             if (enemy != null)//определяем, будем ли менять врага, если уже есть взаимодействие
             {
                 int oldpriority;
-                if (enemy.tag == "Player") oldpriority = enemy.GetComponent<PlayerMove>().priority;
+                if (enemy.tag == "Player") oldpriority = 6;
                 else oldpriority = enemy.GetComponent<Behavior>().priority;
                 if (newenemypriority > oldpriority) changenemy = true;
             }
@@ -159,8 +176,13 @@ public class Behavior : MonoBehaviour {
                 // Debug.Log(gameObject.name + "with priority:" + priority + " with:" + newenemypriority);
                 if (priority < newenemypriority && newenemypriority > 3)
                 {
-                                      
-                    state = State.runfrom;//указываем состояние бега                                          
+                    if(state==State.eat)
+                    {
+                        StopAllCoroutines();
+                        anim.SetBool("Attack", false);
+                    }
+                    state = State.runfrom;//указываем состояние бега    
+                                                          
                     transform.rotation = Quaternion.Euler(newenemy.transform.rotation.eulerAngles.x, newenemy.transform.rotation.eulerAngles.y, newenemy.transform.rotation.eulerAngles.z);
                     addenemy = true;
                 }
@@ -169,6 +191,7 @@ public class Behavior : MonoBehaviour {
                     state = State.runfor;//указываем состояние бега
                     transform.LookAt(newenemy.transform.position);//разворачиваем сначала к игроку                                                                 
                     addenemy = true;
+                    
                 }
                 if(addenemy)
                 {
@@ -212,20 +235,34 @@ public class Behavior : MonoBehaviour {
         yield return new WaitForSeconds(10f);//ждем 10 секунд
        if(gameObject.tag=="Wolf") Debug.Log("Go at new point");
         nav.speed = 1;//включаем низкую скорость для ходьбы
-        try
-        {
-            nav.SetDestination(new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)));//задаем новую точку для движения в пределах плоскости
-        }
-        catch { Debug.Log("Exeception!!!: " + gameObject.name + state); }
+      
+       nav.SetDestination(new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)));//задаем новую точку для движения в пределах плоскости
+       Debug.Log("Exeception!!!: " + gameObject.name + state);
             if (gameObject.tag == "Wolf") Debug.Log("Where go: "+nav.destination+" Where I: "+gameObject.transform.position + "distance: "+nav.remainingDistance);
         anim.SetBool("Walk", true);//включаем анимацию ходьбы        
         state = State.walk;//включаем состояние ходьбы
         //Debug.Log("wait for " + gameObject+gameObject.GetComponent<Behavior>().state);
               
     }
+    IEnumerator Eating()
+    {
+        yield return new WaitForSeconds(10f);//поедаем 10 секунд
+        if (enemy != null)
+        {
+            if (enemy.GetComponent<Behavior>().state == State.dead)
+            {
+                Destroy(enemy);
+                enemy = null;
+            }
+        }
+        anim.SetBool("Attack", false);
+        StartCoroutine(Wait());
+    }
+    /*
     IEnumerator Death()
     {
         yield return new WaitForSeconds(10f);//ждем 10 секунд
         Destroy(gameObject);
     }
+    */
 }
