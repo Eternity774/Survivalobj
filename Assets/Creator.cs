@@ -13,8 +13,8 @@ public class Creator : MonoBehaviour {
         
         ResponceMatrix = new int[6, 8] { { 0, 0, 0, 0, 0, 0, 0, 0 },
                                          { 0, 0, 5, 1, 0, 0, 2, 2 },
-                                         { 5, 5, 1, 2, 1, 0, 4, 4 },
-                                         { 10, 10, 8, 3, 4, 2, 6, 6 },
+                                         { 5, 0, 1, 2, 1, 0, 4, 4 },
+                                         { 10, 5, 8, 3, 4, 2, 6, 6 },
                                          { 10, 10, 6, 5, 3, 3, 8, 8 },
                                          { 10, 10, 9, 8, 6, 2, 0, 0 } };
         //  for(int i =0;i<5;i++) Instantiate(rabbitpref, new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)), Quaternion.identity);
@@ -44,13 +44,11 @@ public class Creator : MonoBehaviour {
         Debug.Log("Random4ik:"+r+" Resp:"+resp);
 
         if (ResponceMatrix[who - 1, whom - 1] > r)
-        {
-            Debug.Log("answer true");
+        {           
             return true;
         }
         else
-        {
-            Debug.Log("answer false");
+        {            
             return false;
         }
 

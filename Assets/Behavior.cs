@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class Behavior : MonoBehaviour {
-    GameObject Creator;   
+    GameObject CreatorRef;   
 
     NavMeshAgent nav;//агент, который перемещает ai в указанную точку
     Animator anim;//аниматор, для переключения анимаций
@@ -25,37 +25,27 @@ public class Behavior : MonoBehaviour {
     public State state;//переменная для состояния
     
     void Start () {
-        Creator = GameObject.Find("MainController");
+        CreatorRef = GameObject.Find("MainController");
+        
         nav = GetComponent<NavMeshAgent>();//берем компоненты с того же объекта где и скрипт
         anim = GetComponent<Animator>();
-        priority = Creator.GetComponent<Creator>().Priority(gameObject);//определяем приоритет ai по тэгу через создателя
-        StartCoroutine(Wait());//запускаем корутину(процесс) ожидания в 10 сек
+        priority = CreatorRef.GetComponent<Creator>().Priority(gameObject);//определяем приоритет ai по тэгу через создателя
         
+        StartCoroutine(Wait());//запускаем корутину(процесс) ожидания в 10 сек        
     }
-
-
+    
     void FixedUpdate()
     {
         if (state != State.dead)
         {
-
-            //Debug.Log(nav.remainingDistance);
             if (state == State.walk && Vector3.Distance(nav.destination, gameObject.transform.position)<1)//если объект дошел до нужной точки и находится в состоянии ходьбы
             {
-                //nav.remainingDistance < 1
-                if (gameObject.tag == "Wolf")
-                {
-                   // Debug.Log("walk at point");
-                    
-                }
                 StartCoroutine(Wait());//запускаем корутину ожидания
             }
 
             else if (state == State.runfrom)//если убегаем
             {
-                //Debug.Log(gameObject.name + "убегает от" + enemy.gameObject.name);
-                if (enemy != null)
-
+               if (enemy != null)
                 {
                     float distance = Vector3.Distance(transform.position, enemy.transform.position);
                     if (distance > 40)
@@ -65,7 +55,7 @@ public class Behavior : MonoBehaviour {
                     }
                     else
                     {
-                        Vector3 forwardPosition = transform.TransformPoint(Vector3.forward * 2);//переводим в глобальные координаты направление вперед
+                        Vector3 forwardPosition = transform.TransformPoint(Vector3.forward * 3);//переводим в глобальные координаты направление вперед
                         nav.SetDestination(forwardPosition);        //назначаем агенту новое направление  
                     }
                 }
@@ -137,7 +127,7 @@ public class Behavior : MonoBehaviour {
             enemy = null;
             state = State.dead;
             priority = 3;
-            Creator.GetComponent<Creator>().SomebodyDead(gameObject);
+            CreatorRef.GetComponent<Creator>().SomebodyDead(gameObject);
             StopAllCoroutines();
             //StartCoroutine(Death());
         }
@@ -166,7 +156,7 @@ public class Behavior : MonoBehaviour {
 
                 // Debug.Log(gameObject.name + "with priority:" + priority + " with:" + newenemypriority);
                 //вероятность нападения
-                if (Creator.GetComponent<Creator>().Response(priority, newenemypriority))
+                if (CreatorRef.GetComponent<Creator>().Response(priority, newenemypriority))
                 {
                     state = State.runfor;//указываем состояние бега
                     transform.LookAt(newenemy.transform.position);//разворачиваем сначала к игроку                                                                 
@@ -225,12 +215,12 @@ public class Behavior : MonoBehaviour {
         
         state = State.wait;
         yield return new WaitForSeconds(10f);//ждем 10 секунд
-       if(gameObject.tag=="Wolf")// Debug.Log("Go at new point");
-        nav.speed = 1;//включаем низкую скорость для ходьбы
+       
+            nav.speed = 1;       //включаем низкую скорость для ходьбы
       
        nav.SetDestination(new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)));//задаем новую точку для движения в пределах плоскости
        //Debug.Log("Exeception!!!: " + gameObject.name + state);
-            if (gameObject.tag == "Wolf")// Debug.Log("Where go: "+nav.destination+" Where I: "+gameObject.transform.position + "distance: "+nav.remainingDistance);
+       
         anim.SetBool("Walk", true);//включаем анимацию ходьбы        
         state = State.walk;//включаем состояние ходьбы
         //Debug.Log("wait for " + gameObject+gameObject.GetComponent<Behavior>().state);
