@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44231367, g: 0.4913525, b: 0.5712311, a: 1}
+  m_IndirectSpecularColor: {r: 0.44231385, g: 0.4913528, b: 0.5712315, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -560,6 +560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rabbitpref: {fileID: 1090895711516698, guid: c0c19dffcc6a75a4ea92b7d89af9bfc9, type: 2}
+  boarpref: {fileID: 1553254077299886, guid: d3268cfeacd333b45a03c60002127855, type: 2}
   wolfpref: {fileID: 1929996829466778, guid: 112345055a7b1244ca09999521562608, type: 2}
   stagpref: {fileID: 1957564522924748, guid: 0ed690054e168134db60b7b3151afe1e, type: 2}
 --- !u!4 &1192883734 stripped

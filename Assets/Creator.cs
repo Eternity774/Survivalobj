@@ -5,6 +5,7 @@ using UnityEngine;
 public class Creator : MonoBehaviour {
     
     public GameObject rabbitpref;
+    public GameObject boarpref;
     public GameObject wolfpref;
     public GameObject stagpref;
     int[,] ResponceMatrix;
@@ -21,12 +22,14 @@ public class Creator : MonoBehaviour {
         Instantiate(rabbitpref, new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)), Quaternion.identity);
         Instantiate(wolfpref, new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)), Quaternion.identity);
         Instantiate(stagpref, new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)), Quaternion.identity);
+        Instantiate(boarpref, new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)), Quaternion.identity);
     }
 	
     public int Priority(GameObject ai)//функция для определения приоритета каждого ai
     {
         if (ai.tag == "Rabbit") return 1;
         else if (ai.tag == "Stag") return 2;
+        else if (ai.tag == "Boar") return 4;
         else if (ai.tag == "Wolf") return 5;
         else return 0;
     }
@@ -34,6 +37,7 @@ public class Creator : MonoBehaviour {
     {
         if (somebody.tag == "Rabbit") Instantiate(rabbitpref, new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)), Quaternion.identity);
         else if (somebody.tag == "Stag") Instantiate(stagpref, new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)), Quaternion.identity);
+        else if (somebody.tag == "Boar") Instantiate(boarpref, new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)), Quaternion.identity);
         else if (somebody.tag == "Wolf") Instantiate(wolfpref, new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)), Quaternion.identity);
     }
     public bool Response(int who, int whom)
