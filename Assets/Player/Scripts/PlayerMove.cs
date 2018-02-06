@@ -11,22 +11,32 @@ public class PlayerMove : MonoBehaviour {
 	float speedz = 0.1f;//скорость ходьбы
 	Animator animator;//анимаотор
 	CharacterController controller; //контроллер для ходьбы
+	private bool inv_Open;
+	private GameObject inv_Main;
+	private GameObject m_Cam;
+
+	[HideInInspector]
+	public float hspeed; //для хранения скорости мышки (для инвентаря)
+	[HideInInspector]
+	public float vspeed;
 
 	// Use this for initialization
 	void Start () {
-    animator = GetComponentInChildren<Animator>();
-    controller = GetComponent<CharacterController>();
+    	animator = GetComponentInChildren<Animator>();
+    	controller = GetComponent<CharacterController>();
+		inv_Main = GameObject.FindGameObjectWithTag ("inv_main");
+		inv_Open = false;
+		inv_Main.SetActive (false);
+		m_Cam = GameObject.FindGameObjectWithTag ("MainCamera");
+		hspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic> ().horizontalAimingSpeed;
+		vspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic> ().verticalAimingSpeed;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         
-
         float x = Input.GetAxis("Horizontal");//перемещение курсора по горизонтали
         float z = Input.GetAxis("Vertical");//перемещение курсора по вертикали
-
-
-
 
         if (x != 0)
         {
@@ -76,7 +86,7 @@ public class PlayerMove : MonoBehaviour {
 
 		}
         
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+		if (Input.GetKeyDown(KeyCode.Mouse0)&& (inv_Open==false))
         {
             animator.SetTrigger("Attack");  
             if(associated!=null)
@@ -85,6 +95,42 @@ public class PlayerMove : MonoBehaviour {
 
             }          
         }
-		Debug.Log(speedz);
+
+
+		//Open inventory
+		if (Input.GetKeyDown (KeyCode.I)) {
+			if (inv_Open == false) {
+
+				inv_Main.SetActive(true);
+				inv_Open = true;
+				inventory_open (inv_Open);
+			} 
+			else if (inv_Open == true) {
+				
+				inv_Main.SetActive(false);
+				inv_Open = false;
+				inventory_open (inv_Open);
+			}
+		}
+
     }
+
+	public void inventory_open (bool temp){
+		temp = inv_Open;
+		if (temp == false) { //IF INVENTORY OPENED
+			Cursor.visible = false;
+			Cursor.lockState = CursorLockMode.Locked;
+			m_Cam.GetComponent<ThirdPersonOrbitCamBasic> ().horizontalAimingSpeed = hspeed;
+			m_Cam.GetComponent<ThirdPersonOrbitCamBasic> ().verticalAimingSpeed = vspeed;
+
+
+		} else if (temp == true) { // IF INVENTORY CLOSED
+			Cursor.visible = true;
+			Cursor.lockState = CursorLockMode.None;		
+			m_Cam.GetComponent<ThirdPersonOrbitCamBasic> ().horizontalAimingSpeed = 0f;
+			m_Cam.GetComponent<ThirdPersonOrbitCamBasic> ().verticalAimingSpeed = 0f;
+		}
+	}
+
+
 }
