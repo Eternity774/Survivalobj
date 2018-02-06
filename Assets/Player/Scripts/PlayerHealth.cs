@@ -22,7 +22,12 @@ public class PlayerHealth : MonoBehaviour {
 		currentHealth -= amount;
 		healthbar.value = currentHealth;
 
+		if (currentHealth <= 0) {
+			Debug.Log ("You died");
+		}
+
 	}
+
 	// Update is called once per frame
 	void Update () {
 		
