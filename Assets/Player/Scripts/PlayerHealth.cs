@@ -7,15 +7,22 @@ public class PlayerHealth : MonoBehaviour {
 
 	public int startHealth=100;
 	public int currentHealth;
+	public int startFood = 75;
+	public int currentFood;
 	public Slider healthbar;
 	public Slider foodbar;
 	public Slider powerbar;
 
-
-	// Use this for initialization
 	void Start () {
 		currentHealth = startHealth;
 		healthbar.value = startHealth;
+		currentFood = startFood;
+		foodbar.value = startFood;
+		StartCoroutine (FoodBar ());
+	}
+
+	void Update () {
+		
 	}
 
 	public void TakeDamage (int amount){
@@ -25,16 +32,29 @@ public class PlayerHealth : MonoBehaviour {
 		if (currentHealth <= 0) {
 			Debug.Log ("You died");
 		}
-
 	}
-
-	// Update is called once per frame
-	void Update () {
 		
+	public void Hunger(){
+		currentFood--;
+		foodbar.value = currentFood;
+
 	}
+
 	void OnTriggerEnter(Collider col){
 		if (col.tag == "dmgzone") {
 			TakeDamage (5);
+		}
+	}
+
+	IEnumerator FoodBar (){
+		while (true) {
+			
+			if (currentFood > 0) {
+				Hunger ();
+			} else {				
+				TakeDamage (2);
+			}
+			yield return new WaitForSeconds (3f);
 		}
 	}
 }

@@ -73,7 +73,7 @@ public class PlayerMove : MonoBehaviour {
 		if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
         {
             speedx = 3;
-			speedz = 0.4f;
+			speedz = 0.5f;
             animator.SetBool("Run", true);		
 
         }
@@ -112,7 +112,7 @@ public class PlayerMove : MonoBehaviour {
 				inventory_open (inv_Open);
 			}
 		}
-
+		print (speedz);
     }
 
 	public void inventory_open (bool temp){
