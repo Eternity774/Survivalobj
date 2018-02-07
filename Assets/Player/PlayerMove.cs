@@ -85,5 +85,17 @@ public class PlayerMove : MonoBehaviour {
             }
         }
     }
+    public void Die()
+    {
+        StartCoroutine(Dead());
+    }
+    IEnumerator Dead()
+    {
+        Debug.Log("start death");
+        animator.SetTrigger("Death");
+        associated = null;
+        yield return new WaitForSeconds(5f);
+        Application.Quit();
+    }
    
 }

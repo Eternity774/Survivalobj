@@ -15,12 +15,12 @@ public class Creator : MonoBehaviour {
 
     void Start () {
         
-        ResponceMatrix = new int[6, 8] { { 0, 0, 0, 0, 0, 0, 0, 0 },
-                                         { 0, 0, 5, 1, 0, 0, 2, 2 },
-                                         { 5, 0, 1, 2, 1, 0, 4, 4 },
-                                         { 10, 5, 8, 3, 4, 2, 6, 6 },
-                                         { 10, 10, 6, 5, 3, 3, 8, 8 },
-                                         { 10, 10, 9, 8, 6, 2, 0, 0 } };
+        ResponceMatrix = new int[6, 7] { { 0, 0, 0, 0, 0, 0, 0 },//кто-строка, на кого-столбец
+                                         { 0, 0, 5, 1, 0, 2, 2 },
+                                         { 5, 0, 1, 2, 1, 3, 4 },
+                                         { 10, 8, 7, 3, 4, 6, 6 },
+                                         { 10, 10, 6, 5, 3, 4, 8 },
+                                         { 9, 9, 10, 7, 6, 6, 5} };
         //  for(int i =0;i<5;i++) Instantiate(rabbitpref, new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)), Quaternion.identity);
         Instantiate(rabbitpref, FindPoint(), Quaternion.identity);
         Instantiate(wolfpref, FindPoint(), Quaternion.identity);

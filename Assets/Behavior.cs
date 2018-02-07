@@ -94,7 +94,11 @@ public class Behavior : MonoBehaviour {
                 // anim.SetBool("Attack", true);
                
                 transform.LookAt(enemy.transform);
-                if (enemy.tag == "Player") Debug.Log("You die");
+                if (enemy.tag == "Player")
+                {
+                    Debug.Log("You die");
+                    enemy.GetComponent<PlayerMove>().Die();
+                }
                 else enemy.GetComponent<Behavior>().die(gameObject);
                 state = State.eat;
                 //anim.SetBool("Attack", false);
