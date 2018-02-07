@@ -34,7 +34,7 @@ public class Behavior : MonoBehaviour {
         StartCoroutine(Wait());//запускаем корутину(процесс) ожидания в 10 сек        
     }
     
-    void FixedUpdate()
+    void Update()
     {
         if (state != State.dead)
         {
@@ -91,7 +91,8 @@ public class Behavior : MonoBehaviour {
             else if(state == State.attack)
             {
                 // nav.ResetPath();
-               // anim.SetBool("Attack", true);
+                // anim.SetBool("Attack", true);
+               
                 transform.LookAt(enemy.transform);
                 if (enemy.tag == "Player") Debug.Log("You die");
                 else enemy.GetComponent<Behavior>().die(gameObject);
@@ -112,6 +113,12 @@ public class Behavior : MonoBehaviour {
                     anim.SetBool("Run", false);                
                     StartCoroutine(Eating());
                 }
+            }
+            else if(state == State.eat)
+            {
+                Vector3 forwardenemyPosition = enemy.transform.TransformPoint(Vector3.forward*2);//переводим в глобальные координаты направление вперед
+                nav.SetDestination(forwardenemyPosition);
+                transform.LookAt(enemy.transform);
             }
            
         }
@@ -218,7 +225,7 @@ public class Behavior : MonoBehaviour {
        
             nav.speed = 1;       //включаем низкую скорость для ходьбы
       
-       nav.SetDestination(new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)));//задаем новую точку для движения в пределах плоскости
+       nav.SetDestination(CreatorRef.GetComponent<Creator>().FindPoint());//задаем новую точку для движения в пределах плоскости
        //Debug.Log("Exeception!!!: " + gameObject.name + state);
        
         anim.SetBool("Walk", true);//включаем анимацию ходьбы        
