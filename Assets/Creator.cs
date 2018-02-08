@@ -22,10 +22,13 @@ public class Creator : MonoBehaviour {
                                          { 10, 10, 6, 5, 3, 4, 8 },
                                          { 9, 9, 10, 7, 6, 6, 5} };
         //  for(int i =0;i<5;i++) Instantiate(rabbitpref, new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)), Quaternion.identity);
-        Instantiate(rabbitpref, FindPoint(), Quaternion.identity);
-        Instantiate(wolfpref, FindPoint(), Quaternion.identity);
-        Instantiate(stagpref, FindPoint(), Quaternion.identity);
-        Instantiate(boarpref, FindPoint(), Quaternion.identity);
+        for (int i = 0; i < 6; i++) { Instantiate(rabbitpref, FindPoint(), Quaternion.identity); }
+        for (int i = 0; i < 5; i++) { Instantiate(stagpref, FindPoint(), Quaternion.identity); }
+        for (int i = 0; i < 4; i++) { Instantiate(boarpref, FindPoint(), Quaternion.identity); }
+
+        for (int i = 0; i < 3; i++) { Instantiate(wolfpref, FindPoint(), Quaternion.identity); }
+
+        Instantiate(bearpref, FindPoint(), Quaternion.identity);
         Instantiate(bearpref, FindPoint(), Quaternion.identity);
     }
 	

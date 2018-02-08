@@ -100,7 +100,7 @@ public class Behavior : MonoBehaviour {
                     enemy.GetComponent<PlayerMove>().Die();
                 }
                 else enemy.GetComponent<Behavior>().die(gameObject);
-                state = State.eat;
+                
                 //anim.SetBool("Attack", false);
                 //Debug.Log("start coroutine after attack");
                 // enemy = null;
@@ -114,9 +114,19 @@ public class Behavior : MonoBehaviour {
                 else
                 {
                     anim.SetBool("Attack", true);
-                    anim.SetBool("Run", false);                
-                    StartCoroutine(Eating());
+                    anim.SetBool("Run", false);
+                    if (priority > 3)
+                    {
+                        state = State.eat;
+                        StartCoroutine(Eating());
+                    }
+                    else
+                    {
+                        anim.SetBool("Attack", false);
+                        StartCoroutine(Wait());
+                    }
                 }
+
             }
             else if(state == State.eat)
             {
@@ -175,7 +185,7 @@ public class Behavior : MonoBehaviour {
                 }
                 else if(newenemypriority>4)
                 {
-                    if (state == State.eat)
+                    if (state == State.eat||state==State.attack)
                     {
                         StopAllCoroutines();
                         anim.SetBool("Attack", false);
@@ -195,6 +205,7 @@ public class Behavior : MonoBehaviour {
 
                     StopAllCoroutines();//останавливаем корутины (т.к. есть возможность входа в триггер во время ожидания)
                     nav.speed = Random.Range(5, 8);//включаем высокую скорость
+                   // anim.SetBool("Attack", false);//выключаем ходьбу
                     anim.SetBool("Walk", false);//выключаем ходьбу
                     anim.SetBool("Run", true);//переключаем анимацию в бег
                 }
@@ -246,6 +257,8 @@ public class Behavior : MonoBehaviour {
             {
                 Destroy(enemy);
                 enemy = null;
+                state = State.wait;
+                
             }
         }
         anim.SetBool("Attack", false);
