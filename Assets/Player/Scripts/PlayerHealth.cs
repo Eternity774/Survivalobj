@@ -9,6 +9,8 @@ public class PlayerHealth : MonoBehaviour {
 	public int currentHealth;
 	public int startFood = 75;
 	public int currentFood;
+	public int startPower = 100;
+	public int currentPower;
 	public Slider healthbar;
 	public Slider foodbar;
 	public Slider powerbar;
@@ -18,6 +20,8 @@ public class PlayerHealth : MonoBehaviour {
 		healthbar.value = startHealth;
 		currentFood = startFood;
 		foodbar.value = startFood;
+		currentPower = startPower;
+		powerbar.value = startPower;
 		StartCoroutine (FoodBar ());
 	}
 
@@ -37,18 +41,22 @@ public class PlayerHealth : MonoBehaviour {
 	public void Hunger(){
 		currentFood--;
 		foodbar.value = currentFood;
+	}
+
+	public void Tired(){
 
 	}
 
-	void OnTriggerEnter(Collider col){
-		if (col.tag == "dmgzone") {
-			TakeDamage (5);
+	public IEnumerator PowerBar(){
+		while (currentPower<100) {
+			currentPower += 3;
+			powerbar.value = currentPower;
+			yield return new WaitForSeconds (1f);
 		}
 	}
 
-	IEnumerator FoodBar (){
-		while (true) {
-			
+	public IEnumerator FoodBar (){
+		while (true) {			
 			if (currentFood > 0) {
 				Hunger ();
 			} else {				

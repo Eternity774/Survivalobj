@@ -15,6 +15,7 @@ public class PlayerMove : MonoBehaviour {
 	private GameObject inv_Main;
 	private GameObject m_Cam;
 
+
 	[HideInInspector]
 	public float hspeed; //для хранения скорости мышки (для инвентаря)
 	[HideInInspector]
@@ -30,37 +31,36 @@ public class PlayerMove : MonoBehaviour {
 		m_Cam = GameObject.FindGameObjectWithTag ("MainCamera");
 		hspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic> ().horizontalAimingSpeed;
 		vspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic> ().verticalAimingSpeed;
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
         
-        float x = Input.GetAxis("Horizontal");//перемещение курсора по горизонтали
-        float z = Input.GetAxis("Vertical");//перемещение курсора по вертикали
-
-        if (x != 0)
+        float h = Input.GetAxis("Horizontal");//перемещение курсора по горизонтали
+        float v = Input.GetAxis("Vertical");//перемещение курсора по вертикали
+		//x - horiz, z - vert
+        if (h != 0)
         {
-            transform.Rotate(0f, x * speedx, 0f);//вращаем персонажа
+            transform.Rotate(0f, h * speedx, 0f);//вращаем персонажа
         }
 
-        if (z != 0)
+        if (v != 0) //если нажата клавиша ходьбы
         {
             Vector3 dir;
-            if (Input.GetKey(KeyCode.W))
-            {
-				speedz = 0.1f;
-                dir = transform.TransformDirection(new Vector3(0f, 0f, z * speedz));
+			dir = transform.TransformDirection(new Vector3(0f, 0f, v * speedz/100));
+            
+			if (Input.GetKey(KeyCode.W))
+            {		
+				speedz = 5f;
                 animator.SetBool("Walk", true);//включаем анимацию ходьбы
-
-            }
+	        }
 			else if (Input.GetKey(KeyCode.S))
             {
-				speedz = 0.05f;
-                dir = transform.TransformDirection(new Vector3(0f, 0f, z * speedz ));
-                animator.SetBool("WalkBack", true);//включаем анимацию ходьбы
-			
+				speedz = 3f;
+                animator.SetBool("WalkBack", true);//включаем анимацию ходьбы			
             }
-            dir = transform.TransformDirection(new Vector3(0f, -3f, z * speedz));//высчитываем смещение вперед
+           // dir = transform.TransformDirection(new Vector3(0f, -3f, v * speedz));//высчитываем смещение вперед
             controller.Move(dir);//двигаем контроллер
             
         }
@@ -73,15 +73,14 @@ public class PlayerMove : MonoBehaviour {
 		if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
         {
             speedx = 3;
-			speedz = 0.5f;
-            animator.SetBool("Run", true);		
-
+			speedz = 10f;
+            animator.SetBool("Run", true);	
         }
 
 		if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             speedx = 4;
-			speedz = 0.1f;
+			speedz = 5f;
             animator.SetBool("Run", false);
 
 		}
@@ -112,8 +111,9 @@ public class PlayerMove : MonoBehaviour {
 				inventory_open (inv_Open);
 			}
 		}
-		print (speedz);
-    }
+	}
+
+
 
 	public void inventory_open (bool temp){
 		temp = inv_Open;
