@@ -9,8 +9,8 @@ public class PlayerHealth : MonoBehaviour {
 	public int currentHealth;
 	public int startFood = 75;
 	public int currentFood;
-	public int startPower = 100;
-	public int currentPower;
+	public float startPower = 100;
+	public float currentPower;
 	public Slider healthbar;
 	public Slider foodbar;
 	public Slider powerbar;
@@ -26,7 +26,7 @@ public class PlayerHealth : MonoBehaviour {
 	}
 
 	void Update () {
-		
+
 	}
 
 	public void TakeDamage (int amount){
@@ -41,18 +41,6 @@ public class PlayerHealth : MonoBehaviour {
 	public void Hunger(){
 		currentFood--;
 		foodbar.value = currentFood;
-	}
-
-	public void Tired(){
-
-	}
-
-	public IEnumerator PowerBar(){
-		while (currentPower<100) {
-			currentPower += 3;
-			powerbar.value = currentPower;
-			yield return new WaitForSeconds (1f);
-		}
 	}
 
 	public IEnumerator FoodBar (){

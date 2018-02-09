@@ -1561,7 +1561,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 51.4
+  m_Value: 51
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1829,7 +1829,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.514
+  m_FillAmount: 0.51
   m_FillClockwise: 1
   m_FillOrigin: 0
 --- !u!222 &2049963831
@@ -1872,6 +1872,9 @@ MonoBehaviour:
   rotate: {fileID: 998524524}
   associated: {fileID: 0}
   priority: 6
+  pbarSlider: 0
+  pbarStart: 0
+  pbarCurrent: 0
   hspeed: 0
   vspeed: 0
 --- !u!143 &2087679664
@@ -1930,6 +1933,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startHealth: 100
   currentHealth: 100
+  startFood: 75
+  currentFood: 0
+  startPower: 100
+  currentPower: 0
   healthbar: {fileID: 326787312}
   foodbar: {fileID: 1396094309}
   powerbar: {fileID: 1544188797}

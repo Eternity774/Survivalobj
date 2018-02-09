@@ -14,8 +14,10 @@ public class PlayerMove : MonoBehaviour {
 	private bool inv_Open;
 	private GameObject inv_Main;
 	private GameObject m_Cam;
-
-
+	public float pbarSlider;
+	public float pbarStart;
+	public float pbarCurrent;
+	private PlayerHealth playerHealth;
 	[HideInInspector]
 	public float hspeed; //для хранения скорости мышки (для инвентаря)
 	[HideInInspector]
@@ -31,14 +33,24 @@ public class PlayerMove : MonoBehaviour {
 		m_Cam = GameObject.FindGameObjectWithTag ("MainCamera");
 		hspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic> ().horizontalAimingSpeed;
 		vspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic> ().verticalAimingSpeed;
+		playerHealth = GetComponent<PlayerHealth> ();
 
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
-        
+	void Update () {	
+		
         float h = Input.GetAxis("Horizontal");//перемещение курсора по горизонтали
         float v = Input.GetAxis("Vertical");//перемещение курсора по вертикали
+
+		if (playerHealth.currentPower < 100) {				
+			playerHealth.currentPower += 2 * Time.deltaTime;
+			playerHealth.powerbar.value = playerHealth.currentPower;
+		} else if (playerHealth.currentPower > 100) {				
+			playerHealth.currentPower = 100;
+			playerHealth.powerbar.value = playerHealth.currentPower;
+		}
+		//print (GetComponent<PlayerHealth> ().currentPower);
 		//x - horiz, z - vert
         if (h != 0)
         {
@@ -72,13 +84,22 @@ public class PlayerMove : MonoBehaviour {
 
 		if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
         {
-            speedx = 3;
-			speedz = 10f;
-            animator.SetBool("Run", true);	
+			if (playerHealth.currentPower >= 0) {
+				playerHealth.currentPower -= 5 * Time.deltaTime;
+				playerHealth.powerbar.value = playerHealth.currentPower;
+					speedx = 3;
+					speedz = 10f;
+					animator.SetBool ("Run", true);	
+				} else {
+					speedx = 4;
+					speedz = 5f;
+					animator.SetBool("Run", false);
+				}
         }
 
 		if (Input.GetKeyUp(KeyCode.LeftShift))
         {
+
             speedx = 4;
 			speedz = 5f;
             animator.SetBool("Run", false);
@@ -112,7 +133,6 @@ public class PlayerMove : MonoBehaviour {
 			}
 		}
 	}
-
 
 
 	public void inventory_open (bool temp){
