@@ -292,9 +292,9 @@ GameObject:
   - component: {fileID: 4031742758976514}
   - component: {fileID: 95217497194745172}
   - component: {fileID: 195130715395278702}
-  - component: {fileID: 65690415464487356}
-  - component: {fileID: 65987524294101492}
   - component: {fileID: 114732087292838826}
+  - component: {fileID: 135270179711735358}
+  - component: {fileID: 135987764645555722}
   m_Layer: 0
   m_Name: BEAR
   m_TagString: Bear
@@ -534,7 +534,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1468030591553620}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -43.999603, y: 0, z: -20.923538}
+  m_LocalPosition: {x: 1.9290466, y: -0.0000009536743, z: 3.2718506}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4646350591757662}
@@ -1003,30 +1003,6 @@ Transform:
   m_Father: {fileID: 4385825124505640}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &65690415464487356
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1468030591553620}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.5, y: 2, z: 2}
-  m_Center: {x: 0, y: 1, z: 0.3}
---- !u!65 &65987524294101492
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1468030591553620}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 20, y: 1, z: 20}
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!95 &95217497194745172
 Animator:
   serializedVersion: 3
@@ -1058,6 +1034,30 @@ MonoBehaviour:
   enemy: {fileID: 0}
   priority: 7
   state: 0
+--- !u!135 &135270179711735358
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1468030591553620}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 10
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &135987764645555722
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1468030591553620}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!137 &137317572626093390
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

@@ -846,8 +846,8 @@ GameObject:
   - component: {fileID: 2087679665}
   - component: {fileID: 2087679664}
   - component: {fileID: 2087679663}
-  - component: {fileID: 2087679666}
   - component: {fileID: 2087679668}
+  - component: {fileID: 2087679666}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -899,8 +899,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2087679666
-BoxCollider:
+--- !u!135 &2087679666
+SphereCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -909,8 +909,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 20, y: 1, z: 20}
-  m_Center: {x: 0, y: 0.7, z: 0}
+  m_Radius: 10
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &2087679668
 Rigidbody:
   m_ObjectHideFlags: 0

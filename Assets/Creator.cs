@@ -16,11 +16,11 @@ public class Creator : MonoBehaviour {
     void Start () {
         
         ResponceMatrix = new int[6, 7] { { 0, 0, 0, 0, 0, 0, 0 },//кто-строка, на кого-столбец
-                                         { 0, 0, 5, 1, 0, 2, 2 },
-                                         { 5, 0, 1, 2, 1, 3, 4 },
-                                         { 10, 8, 7, 3, 4, 6, 6 },
-                                         { 10, 10, 6, 5, 3, 4, 8 },
-                                         { 9, 9, 10, 7, 6, 6, 5} };
+                                         { 0, 5, 0, 1, 0, 0, 2 },
+                                         { 3, 2, 5, 4, 0, 0, 3 },
+                                         { 9, 8, 10, 7, 5, 1, 6 },
+                                         { 8, 8, 10, 7, 4, 5, 8 },
+                                         { 9, 9, 10, 8, 5, 2, 5} };
         //  for(int i =0;i<5;i++) Instantiate(rabbitpref, new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)), Quaternion.identity);
         for (int i = 0; i < 6; i++) { Instantiate(rabbitpref, FindPoint(), Quaternion.identity); }
         for (int i = 0; i < 5; i++) { Instantiate(stagpref, FindPoint(), Quaternion.identity); }
@@ -58,11 +58,14 @@ public class Creator : MonoBehaviour {
         Debug.Log("Random4ik:"+r+" Resp:"+resp);
         
         if (ResponceMatrix[who - 1, whom - 1] > r)
-        {           
+        {
+            Debug.Log("yes");
             return true;
+            
         }
         else
-        {            
+        {
+            Debug.Log("no");
             return false;
         }
 
