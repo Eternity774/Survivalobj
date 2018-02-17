@@ -16,18 +16,16 @@ public class Creator : MonoBehaviour {
     void Start () {
         
         ResponceMatrix = new int[6, 7] { { 0, 0, 0, 0, 0, 0, 0 },//кто-строка, на кого-столбец
-                                         { 0, 5, 0, 1, 0, 0, 2 },
-                                         { 3, 2, 5, 4, 0, 0, 3 },
-                                         { 9, 8, 10, 7, 5, 1, 6 },
-                                         { 8, 8, 10, 7, 4, 5, 8 },
-                                         { 9, 9, 10, 8, 5, 2, 5} };
+                                         { 0, 5, 0, 1, 0, 2, 0 },
+                                         { 3, 2, 5, 4, 0, 3, 0 },
+                                         { 9, 8, 10, 7, 5, 6, 1 },
+                                         { 8, 8, 10, 7, 4, 5, 3 },
+                                         { 9, 9, 10, 8, 5, 5, 5} };
         //  for(int i =0;i<5;i++) Instantiate(rabbitpref, new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)), Quaternion.identity);
         for (int i = 0; i < 6; i++) { Instantiate(rabbitpref, FindPoint(), Quaternion.identity); }
         for (int i = 0; i < 5; i++) { Instantiate(stagpref, FindPoint(), Quaternion.identity); }
         for (int i = 0; i < 4; i++) { Instantiate(boarpref, FindPoint(), Quaternion.identity); }
-
         for (int i = 0; i < 3; i++) { Instantiate(wolfpref, FindPoint(), Quaternion.identity); }
-
         Instantiate(bearpref, FindPoint(), Quaternion.identity);
         Instantiate(bearpref, FindPoint(), Quaternion.identity);
     }
@@ -51,8 +49,9 @@ public class Creator : MonoBehaviour {
     }
     public bool Response(int who, int whom)
     {
-        if (who > 3) who--;
         Debug.Log("response from " + who + " for" + whom);
+        if (who > 3) who--;
+        
         int r = Random.Range(0, 10);
         int resp = (ResponceMatrix[who - 1, whom - 1]);
         Debug.Log("Random4ik:"+r+" Resp:"+resp);

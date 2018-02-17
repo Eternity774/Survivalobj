@@ -73,7 +73,16 @@ public class Behavior : MonoBehaviour {
                     {
                         state = State.attack;
                         anim.SetBool("Attack", true);
-                        anim.SetBool("Run", false);
+                        //anim.SetBool("Run", false);
+                       /* if (priority==7&&enemy.tag=="Player")
+                        {
+                            Debug.Log("try to change legs!");
+                            anim.SetBool("Attack", false);
+                            anim.SetTrigger("ChangeLegs");
+                            anim.SetBool("Attack", true);
+                        }
+                        */
+                        
                     }
                     else if(distance>30)
                     {
@@ -92,7 +101,7 @@ public class Behavior : MonoBehaviour {
             {
                 // nav.ResetPath();
                 // anim.SetBool("Attack", true);
-               
+                anim.SetBool("Run", false);
                 transform.LookAt(enemy.transform);
                 if (enemy.tag == "Player")
                 {
@@ -107,12 +116,19 @@ public class Behavior : MonoBehaviour {
                 // StartCoroutine(Wait());
                 if (Vector3.Distance(transform.position, enemy.transform.position) > 2)
                 {
+                    if (priority == 7) anim.SetBool("2Legs", false);
                     anim.SetBool("Attack", false);
                     anim.SetBool("Run", true);
                     nav.SetDestination(enemy.transform.position);
                 }
                 else
-                {
+                {/*
+                    if (priority == 7)
+                    {
+                        anim.SetBool("2Legs", false);
+                        anim.SetTrigger("ChangeLegs");
+                    }
+                    */
                     anim.SetBool("Attack", true);
                     anim.SetBool("Run", false);
                     if (priority > 3)
@@ -144,7 +160,8 @@ public class Behavior : MonoBehaviour {
         {
             nav.ResetPath();
             nav.enabled = false;
-            anim.SetTrigger("Death");
+            if(priority==7&&anim.GetBool("2Legs")) anim.SetTrigger("Death2");
+            else anim.SetTrigger("Death");
             enemy = null;
             state = State.dead;
             priority = 3;
@@ -232,9 +249,16 @@ public class Behavior : MonoBehaviour {
         // Debug.Log("Start Coroutine");
         //nav.ResetPath();        
         nav.SetDestination(gameObject.transform.position);//задаем новую точку для движения в пределах плоскости
+        
         anim.SetBool("Run", false);//выключаем бег
         anim.SetBool("Walk", false);//выключаем анимацию ходьбы
-        
+        if (priority == 7 && Random.Range(0, 1) == 1)//особые анимации для медведей
+        {
+            Debug.Log("try to change legs!");
+            anim.SetTrigger("ChangeLegs");
+            anim.SetBool("2Legs", true);
+        }
+
         state = State.wait;
         yield return new WaitForSeconds(10f);//ждем 10 секунд
        
@@ -243,7 +267,8 @@ public class Behavior : MonoBehaviour {
        nav.SetDestination(CreatorRef.GetComponent<Creator>().FindPoint());//задаем новую точку для движения в пределах плоскости
        //Debug.Log("Exeception!!!: " + gameObject.name + state);
        
-        anim.SetBool("Walk", true);//включаем анимацию ходьбы        
+        anim.SetBool("Walk", true);//включаем анимацию ходьбы  
+        if (priority == 7) anim.SetBool("2Legs", false);      
         state = State.walk;//включаем состояние ходьбы
         //Debug.Log("wait for " + gameObject+gameObject.GetComponent<Behavior>().state);
               
