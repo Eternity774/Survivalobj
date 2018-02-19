@@ -21,13 +21,13 @@ public class Creator : MonoBehaviour {
                                          { 9, 8, 10, 7, 5, 6, 1 },
                                          { 8, 8, 10, 7, 4, 5, 3 },
                                          { 9, 9, 10, 8, 5, 5, 5} };
-        //  for(int i =0;i<5;i++) Instantiate(rabbitpref, new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)), Quaternion.identity);
-        for (int i = 0; i < 6; i++) { Instantiate(rabbitpref, FindPoint(), Quaternion.identity); }
+        
+       for (int i = 0; i < 6; i++) { Instantiate(rabbitpref, FindPoint(), Quaternion.identity); }
         for (int i = 0; i < 5; i++) { Instantiate(stagpref, FindPoint(), Quaternion.identity); }
         for (int i = 0; i < 4; i++) { Instantiate(boarpref, FindPoint(), Quaternion.identity); }
         for (int i = 0; i < 3; i++) { Instantiate(wolfpref, FindPoint(), Quaternion.identity); }
-        Instantiate(bearpref, FindPoint(), Quaternion.identity);
-        Instantiate(bearpref, FindPoint(), Quaternion.identity);
+        for (int i = 0; i < 2; i++) { Instantiate(bearpref, FindPoint(), Quaternion.identity); }
+        
     }
 	
     public int Priority(GameObject ai)//функция для определения приоритета каждого ai
@@ -39,6 +39,52 @@ public class Creator : MonoBehaviour {
         else if (ai.tag == "Bear") return 7;
         else return 0;
     }
+    public int HP(GameObject ai)//функция для определения приоритета каждого ai
+    {
+        if (ai.tag == "Rabbit") return 100;
+        else if (ai.tag == "Stag") return 2;
+        else if (ai.tag == "Boar") return 4;
+        else if (ai.tag == "Wolf") return 5;
+        else if (ai.tag == "Bear") return 7;
+        else return 0;
+    }
+    public int[] StartInformation(GameObject ai)
+    {
+        int[] info = new int[3] ;
+        if (ai.tag == "Rabbit")
+        {
+            info[0] = 1;
+            info[1] = 100;
+            info[2] = 0;
+        }
+        else if (ai.tag == "Stag")
+        {
+            info[0] = 2;
+            info[1] = 300;
+            info[2] = 20;
+        }
+        else if (ai.tag == "Boar")
+        {
+            info[0] = 4;
+            info[1] = 500;
+            info[2] = 40;
+        }
+        else if (ai.tag == "Wolf")
+        {
+            info[0] = 5;
+            info[1] = 600;
+            info[2] = 60;
+        }
+        else if (ai.tag == "Bear")
+        {
+            info[0] = 7;
+            info[1] = 1000;
+            info[2] = 100;
+        }
+        return info;
+    }
+
+
     public void SomebodyDead(GameObject somebody)
     {
         if (somebody.tag == "Rabbit") Instantiate(rabbitpref, FindPoint(), Quaternion.identity);
@@ -49,22 +95,22 @@ public class Creator : MonoBehaviour {
     }
     public bool Response(int who, int whom)
     {
-        Debug.Log("response from " + who + " for" + whom);
+       // Debug.Log("response from " + who + " for" + whom);
         if (who > 3) who--;
         
         int r = Random.Range(0, 10);
         int resp = (ResponceMatrix[who - 1, whom - 1]);
-        Debug.Log("Random4ik:"+r+" Resp:"+resp);
+       // Debug.Log("Random4ik:"+r+" Resp:"+resp);
         
         if (ResponceMatrix[who - 1, whom - 1] > r)
         {
-            Debug.Log("yes");
+            //Debug.Log("yes");
             return true;
             
         }
         else
         {
-            Debug.Log("no");
+            //Debug.Log("no");
             return false;
         }
 
