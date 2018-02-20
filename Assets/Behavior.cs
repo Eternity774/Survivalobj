@@ -66,8 +66,8 @@ public class Behavior : MonoBehaviour {
                 {
                     if (enemyinmemory != null)
                     {
-                        state = State.wait;
                         EnemyInMemory(enemyinmemory);//есть ли враг в памяти
+                        
                     }
                     else StartCoroutine(Wait());//отдыхаем
                 }
@@ -104,6 +104,7 @@ public class Behavior : MonoBehaviour {
                     anim.SetBool("Run", true);
                     nav.SetDestination(enemy.transform.position);
                     state = State.runfor;
+                    //попробовать возможность изменения поведения
                 }
                 else
                 {
@@ -129,23 +130,19 @@ public class Behavior : MonoBehaviour {
                         }
                         if (enemyiskilled)
                         {
-                            bool eating = true;
-                            if (enemyinmemory != null)
-                            {
-                                if (enemyinmemory.GetComponent<Behavior>().priority > 4 && Vector3.Distance(transform.position, enemyinmemory.transform.position) < 30)
-                                {
-                                    eating = false;
-                                    EnemyInMemory(enemyinmemory);
-                                }                               
-                                
-                            }
-                            if (priority > 3&&eating) StartCoroutine(Eating());//начинаем есть                          
+                            if (priority > 3) StartCoroutine(Eating());//начинаем есть   
                             else
                             {
                                 enemy = null;
                                 anim.SetBool("Attack", false);//выключаем анимацию атаки
                                 StartCoroutine(Wait());
                             }
+                            if (enemyinmemory != null)
+                            {
+                                if (Vector3.Distance(transform.position, enemyinmemory.transform.position) < 30) EnemyInMemory(enemyinmemory);                                                    
+                                
+                            }                            
+                            
                         }
                     }           
                                        
@@ -162,15 +159,12 @@ public class Behavior : MonoBehaviour {
                 }
                 else
                 {
+                    anim.SetBool("Attack", false);
                     StopAllCoroutines();
                     StartCoroutine(Wait());
                 }
-                if (enemyinmemory != null)
-                {
-                    if (enemyinmemory.GetComponent<Behavior>().priority > 4) EnemyInMemory(enemyinmemory);
-                    else enemyinmemory = null;
-                }
-                
+                if (enemyinmemory != null) EnemyInMemory(enemyinmemory);
+                               
             }           
         }        
     }
@@ -179,6 +173,7 @@ public class Behavior : MonoBehaviour {
         if (Vector3.Distance(transform.position, enemyinmemory.transform.position) < 30)//проверяем рядом еще враг из памяти
         {
             GetEnemy(enemyinmemory);//т.к. враг еще актуален, выполняем запрос на присоединение еще раз
+            enemyinmemory = null;
         }
         else
         {
@@ -263,18 +258,19 @@ public class Behavior : MonoBehaviour {
                     addenemy = true;//указываем, что враг будет добавлен
                 }
                 if (enemy==null && gameObject.tag == "Player") addenemy = true;//если запрос пришел на игрока и у него небыло сопряженных врагов - добавляем
-                
-                if(addenemy)//если добавляем врага
+
+                if (addenemy)//если добавляем врага
                 {
                     enemy = newenemy.gameObject;//записываем врага
                     if (enemy.tag == "Player") enemy.GetComponent<PlayerMove>().associated = gameObject;
 
-                   // else enemy.GetComponent<Behavior>().GetEnemy(gameObject);//оповещаем о присоединении !!!попробуем НЕ ОПОВЕЩАТЬ!!!
+                    // else enemy.GetComponent<Behavior>().GetEnemy(gameObject);//оповещаем о присоединении !!!попробуем НЕ ОПОВЕЩАТЬ!!!
                     StopAllCoroutines();//останавливаем корутины (т.к. есть возможность входа в триггер во время ожидания)
                     nav.speed = Random.Range(5, 8);//включаем высокую скорость
                     anim.SetBool("Walk", false);//выключаем ходьбу
                     anim.SetBool("Run", true);//переключаем анимацию в бег
                 }
+                else StartCoroutine(Wait());
             }
         }
     }
