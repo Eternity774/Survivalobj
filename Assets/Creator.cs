@@ -12,6 +12,7 @@ public class Creator : MonoBehaviour {
     public GameObject bearpref;
 
     int[,] ResponceMatrix;
+    int id = 0;
 
     void Start () {
         
@@ -22,32 +23,14 @@ public class Creator : MonoBehaviour {
                                          { 8, 8, 10, 7, 4, 5, 3 },
                                          { 9, 9, 10, 8, 5, 5, 5} };
         
-       for (int i = 0; i < 6; i++) { Instantiate(rabbitpref, FindPoint(), Quaternion.identity); }
-        for (int i = 0; i < 5; i++) { Instantiate(stagpref, FindPoint(), Quaternion.identity); }
-        for (int i = 0; i < 4; i++) { Instantiate(boarpref, FindPoint(), Quaternion.identity); }
-        for (int i = 0; i < 3; i++) { Instantiate(wolfpref, FindPoint(), Quaternion.identity); }
-        for (int i = 0; i < 2; i++) { Instantiate(bearpref, FindPoint(), Quaternion.identity); }
+       for (int i = 0; i < 6; i++) { CreateSomebody(rabbitpref); }
+        for (int i = 0; i < 5; i++) { CreateSomebody(stagpref); }
+        for (int i = 0; i < 4; i++) { CreateSomebody(boarpref); }
+        for (int i = 0; i < 3; i++) { CreateSomebody(wolfpref); }
+        for (int i = 0; i < 2; i++) { CreateSomebody(bearpref); }
         
     }
 	
-    public int Priority(GameObject ai)//функция для определения приоритета каждого ai
-    {
-        if (ai.tag == "Rabbit") return 1;
-        else if (ai.tag == "Stag") return 2;
-        else if (ai.tag == "Boar") return 4;
-        else if (ai.tag == "Wolf") return 5;
-        else if (ai.tag == "Bear") return 7;
-        else return 0;
-    }
-    public int HP(GameObject ai)//функция для определения приоритета каждого ai
-    {
-        if (ai.tag == "Rabbit") return 100;
-        else if (ai.tag == "Stag") return 2;
-        else if (ai.tag == "Boar") return 4;
-        else if (ai.tag == "Wolf") return 5;
-        else if (ai.tag == "Bear") return 7;
-        else return 0;
-    }
     public int[] StartInformation(GameObject ai)
     {
         int[] info = new int[3] ;
@@ -87,38 +70,27 @@ public class Creator : MonoBehaviour {
 
     public void SomebodyDead(GameObject somebody)
     {
-        if (somebody.tag == "Rabbit") Instantiate(rabbitpref, FindPoint(), Quaternion.identity);
-        else if (somebody.tag == "Stag") Instantiate(stagpref, FindPoint(), Quaternion.identity);
-        else if (somebody.tag == "Boar") Instantiate(boarpref, FindPoint(), Quaternion.identity);
-        else if (somebody.tag == "Wolf") Instantiate(wolfpref, FindPoint(), Quaternion.identity);
-        else if (somebody.tag == "Bear") Instantiate(bearpref, FindPoint(), Quaternion.identity);
+        if (somebody.tag == "Rabbit") CreateSomebody(rabbitpref);
+        else if (somebody.tag == "Stag") CreateSomebody(stagpref); 
+        else if (somebody.tag == "Boar") CreateSomebody(boarpref); 
+        else if (somebody.tag == "Wolf") CreateSomebody(wolfpref); 
+        else if (somebody.tag == "Bear") CreateSomebody(bearpref); 
+    }
+    void CreateSomebody(GameObject prefub)
+    {
+        GameObject a = Instantiate(prefub, FindPoint(), Quaternion.identity); a.name += id; id++;
     }
     public bool Response(int who, int whom)
     {
-       // Debug.Log("response from " + who + " for" + whom);
         if (who > 3) who--;
+        if (ResponceMatrix[who - 1, whom - 1] > Random.Range(0, 10)) return true;
+        else return false;
         
-        int r = Random.Range(0, 10);
-        int resp = (ResponceMatrix[who - 1, whom - 1]);
-       // Debug.Log("Random4ik:"+r+" Resp:"+resp);
-        
-        if (ResponceMatrix[who - 1, whom - 1] > r)
-        {
-            //Debug.Log("yes");
-            return true;
-            
-        }
-        else
-        {
-            //Debug.Log("no");
-            return false;
-        }
-
     }
-    public Vector3 FindPoint()
+    public Vector3 FindPoint()//поиск точки на меше, куда возможно дойти
     {
         int radius = 10;
-        //Vector3 rezultpoint;
+        
         while(true)
         {
             Vector3 startpoint = new Vector3(Random.Range(-240, 240), 0, Random.Range(-240, 240));
@@ -128,7 +100,6 @@ public class Creator : MonoBehaviour {
             {
                 if (NavMesh.SamplePosition(pointwithR, out hit, 1f, NavMesh.AllAreas))
                 {
-                    //rezultpoint = ;
                     return hit.position;
                 }
             }
