@@ -38,135 +38,142 @@ public class Behavior : MonoBehaviour {
         damage = infomas[2];//опрделеяем наносимый урон 
         StartCoroutine(Wait());//запускаем корутину(процесс) ожидания в 10 сек        
     }
-    
+
     void Update()
     {
-        if (state != State.dead)//если не умер
+       switch (state)
         {
-            if (state == State.walk && Vector3.Distance(nav.destination, gameObject.transform.position)<1)//если объект дошел до нужной точки и находится в состоянии ходьбы
-            {
-                hp += 50;
-                StartCoroutine(Wait());//запускаем корутину ожидания
-            }
-
-            else if (state == State.runfrom)//если убегаем
-            {
-                if (enemy != null)//если враг не отсоединился
+            case State.walk:
                 {
-                    float distance = Vector3.Distance(transform.position, enemy.transform.position);//проверяем дистанцию до врага
-
-                    if (distance > 40) enemy = null;//если дистанция больше 40 отсоединяем врага
-                    else //продолжаем убегать
+                    if(Vector3.Distance(nav.destination, gameObject.transform.position) < 1)
                     {
-                        Vector3 forwardPosition = transform.TransformPoint(Vector3.forward * 3);//переводим в глобальные координаты направление вперед
-                        nav.SetDestination(forwardPosition);        //назначаем агенту новое направление  
+                        hp += 50;
+                        StartCoroutine(Wait());//запускаем корутину ожидания
                     }
+                    break;
                 }
-                else//враг был отсоединен
+            case State.runfrom:
                 {
-                    if (enemyinmemory != null)
+                    if (enemy != null)//если враг не отсоединился
                     {
+                        float distance = Vector3.Distance(transform.position, enemy.transform.position);//проверяем дистанцию до врага
+
+                        if (distance > 40) enemy = null;//если дистанция больше 40 отсоединяем врага
+                        else //продолжаем убегать
+                        {
+                            Vector3 forwardPosition = transform.TransformPoint(Vector3.forward * 3);//переводим в глобальные координаты направление вперед
+                            nav.SetDestination(forwardPosition);        //назначаем агенту новое направление  
+                        }
+                    }
+                    else//враг был отсоединен
+                    {
+                        if (enemyinmemory != null)
+                        {
+                            EnemyInMemory(enemyinmemory);//есть ли враг в памяти
+
+                        }
+                        else StartCoroutine(Wait());//отдыхаем
+                    }
+                    break;
+                }
+            case State.runfor:
+                {
+                    if (enemy != null)//если враг не отсоединился
+                    {
+                        nav.SetDestination(enemy.transform.position);//направляем агента на врага
+                        float distance = Vector3.Distance(transform.position, enemy.transform.position);//мереем дистанцию
+
+                        if (distance < 2)//когда дистанция сократилась
+                        {
+                            state = State.attack;//атакуем
+                            anim.SetBool("Attack", true);
+                            anim.SetBool("Run", false);
+                        }
+                        else if (distance > 30) enemy = null;
+                    }
+
+                    else if (enemyinmemory != null)
+                    {
+                        state = State.wait;
                         EnemyInMemory(enemyinmemory);//есть ли враг в памяти
-                        
                     }
-                    else StartCoroutine(Wait());//отдыхаем
+                    else StartCoroutine(Wait());
+                    break;
                 }
-            }
-            else if(state == State.runfor)//гонимся за кем-то
-            {
-                if (enemy != null)//если враг не отсоединился
+            case State.attack:
                 {
-                    nav.SetDestination(enemy.transform.position);//направляем агента на врага
-                    float distance = Vector3.Distance(transform.position, enemy.transform.position);//мереем дистанцию
 
-                    if (distance < 2)//когда дистанция сократилась
+                    if (Vector3.Distance(transform.position, enemy.transform.position) > 3)//если при атаке оказались далеко от объекта
                     {
-                        state = State.attack;//атакуем
-                        anim.SetBool("Attack", true);
-                        anim.SetBool("Run", false);
+                        anim.SetBool("Attack", false);
+                        anim.SetBool("Run", true);
+                        nav.SetDestination(enemy.transform.position);
+                        state = State.runfor;
+                        //попробовать возможность изменения поведения
                     }
-                    else if (distance > 30) enemy = null;
-                }
-
-                else if (enemyinmemory != null)
-                {
-                    state = State.wait;
-                    EnemyInMemory(enemyinmemory);//есть ли враг в памяти
-                }
-                else StartCoroutine(Wait());
-                                               
-            }
-            else if(state == State.attack)//сражаемся
-            {
-                if (Vector3.Distance(transform.position, enemy.transform.position) > 3)//если при атаке оказались далеко от объекта
-                {
-                    anim.SetBool("Attack", false);
-                    anim.SetBool("Run", true);
-                    nav.SetDestination(enemy.transform.position);
-                    state = State.runfor;
-                    //попробовать возможность изменения поведения
-                }
-                else
-                {
-                    
-
-                    Vector3 forwardenemyPosition = enemy.transform.TransformPoint(Vector3.forward * 3);//переводим в глобальные координаты направление вперед
-                    nav.SetDestination(forwardenemyPosition);
-                    transform.LookAt(enemy.transform);
-
-                    int Random4ik = Random.Range(0, 100);
-                    if (Random4ik > 95)
+                    else
                     {
-                        bool enemyiskilled = false;
-                        if (enemy.tag == "Player")//если сражаемся с игроком
+
+
+                        Vector3 forwardenemyPosition = enemy.transform.TransformPoint(Vector3.forward * 3);//переводим в глобальные координаты направление вперед
+                        nav.SetDestination(forwardenemyPosition);
+                        transform.LookAt(enemy.transform);
+
+                        int Random4ik = Random.Range(0, 100);
+                        if (Random4ik > 95)
                         {
-                            enemy.GetComponent<PlayerMove>().TakeDamage(damage);//наносим игроку урон
-                            if (enemy.GetComponent<PlayerMove>().hp <= 0) enemyiskilled = true;
-                        }
-                        else
-                        {
-                            enemy.GetComponent<Behavior>().TakeDamage(gameObject, damage);//наносим урон
-                            if (enemy.GetComponent<Behavior>().state == State.dead) enemyiskilled = true;//если враг стал мертвым
-                        }
-                        if (enemyiskilled)
-                        {
-                            if (priority > 3) StartCoroutine(Eating());//начинаем есть   
+                            bool enemyiskilled = false;
+                            if (enemy.tag == "Player")//если сражаемся с игроком
+                            {
+                                enemy.GetComponent<PlayerMove>().TakeDamage(damage);//наносим игроку урон
+                                if (enemy.GetComponent<PlayerMove>().hp <= 0) enemyiskilled = true;
+                            }
                             else
                             {
-                                enemy = null;
-                                anim.SetBool("Attack", false);//выключаем анимацию атаки
-                                StartCoroutine(Wait());
+                                enemy.GetComponent<Behavior>().TakeDamage(gameObject, damage);//наносим урон
+                                if (enemy.GetComponent<Behavior>().priority==3) enemyiskilled = true;//если враг стал мертвым
                             }
-                            if (enemyinmemory != null)
+                            if (enemyiskilled)
                             {
-                                if (Vector3.Distance(transform.position, enemyinmemory.transform.position) < 30) EnemyInMemory(enemyinmemory);                                                    
+                                if (enemyinmemory != null)
+                                {
+                                    if (Vector3.Distance(transform.position, enemyinmemory.transform.position) < 30 && enemyinmemory.GetComponent<Behavior>().priority>4)
+                                        EnemyInMemory(enemyinmemory);
+                                }                                
+                                    if (priority > 3) StartCoroutine(Eating());//начинаем есть                                 
+                                    else
+                                    {
+                                        enemy = null;
+                                        anim.SetBool("Attack", false);//выключаем анимацию атаки
+                                        StartCoroutine(Wait());
+                                    }
                                 
-                            }                            
-                            
-                        }
-                    }           
-                                       
-                }
 
-            }
-            else if(state == State.eat)
-            {
-                if (enemy != null)
-                {
-                    Vector3 forwardenemyPosition = enemy.transform.TransformPoint(Vector3.forward * 2);//переводим в глобальные координаты направление вперед
-                    nav.SetDestination(forwardenemyPosition);
-                    transform.LookAt(enemy.transform);
+
+                            }
+                        }
+                    }
+                    break;
                 }
-                else
+            case State.eat:
                 {
-                    anim.SetBool("Attack", false);
-                    StopAllCoroutines();
-                    StartCoroutine(Wait());
+                    if (enemy != null)
+                    {
+                        Vector3 forwardenemyPosition = enemy.transform.TransformPoint(Vector3.forward * 2);//переводим в глобальные координаты направление вперед
+                        nav.SetDestination(forwardenemyPosition);
+                        transform.LookAt(enemy.transform);
+                    }
+                    else
+                    {
+                        anim.SetBool("Attack", false);
+                        StopAllCoroutines();
+                        StartCoroutine(Wait());
+                    }
+                    if (enemyinmemory != null) EnemyInMemory(enemyinmemory);
+                    break;
                 }
-                if (enemyinmemory != null) EnemyInMemory(enemyinmemory);
-                               
-            }           
-        }        
+        }
+    
     }
     void EnemyInMemory(GameObject inmemory)
     {
@@ -270,7 +277,7 @@ public class Behavior : MonoBehaviour {
                     anim.SetBool("Walk", false);//выключаем ходьбу
                     anim.SetBool("Run", true);//переключаем анимацию в бег
                 }
-                else StartCoroutine(Wait());
+               // else StartCoroutine(Wait());
             }
         }
     }

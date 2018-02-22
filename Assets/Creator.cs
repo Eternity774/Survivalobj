@@ -30,51 +30,63 @@ public class Creator : MonoBehaviour {
         for (int i = 0; i < 2; i++) { CreateSomebody(bearpref); }
         
     }
-	
+
     public int[] StartInformation(GameObject ai)
     {
-        int[] info = new int[3] ;
-        if (ai.tag == "Rabbit")
+        int[] info = new int[3];
+        switch (ai.tag)
         {
-            info[0] = 1;
-            info[1] = 100;
-            info[2] = 0;
-        }
-        else if (ai.tag == "Stag")
-        {
-            info[0] = 2;
-            info[1] = 300;
-            info[2] = 20;
-        }
-        else if (ai.tag == "Boar")
-        {
-            info[0] = 4;
-            info[1] = 500;
-            info[2] = 40;
-        }
-        else if (ai.tag == "Wolf")
-        {
-            info[0] = 5;
-            info[1] = 600;
-            info[2] = 60;
-        }
-        else if (ai.tag == "Bear")
-        {
-            info[0] = 7;
-            info[1] = 1000;
-            info[2] = 100;
-        }
+            case "Rabbit":
+            {
+                info[0] = 1;
+                info[1] = 100;
+                info[2] = 0;
+                        break;
+            }
+                case "Stag":
+            {
+                info[0] = 2;
+                info[1] = 300;
+                info[2] = 20;
+                        break;
+            }
+                case "Boar":
+            {
+                info[0] = 4;
+                info[1] = 500;
+                info[2] = 40;
+                        break;
+            }
+                case "Wolf":
+        
+            {
+                info[0] = 5;
+                info[1] = 600;
+                info[2] = 60;
+                        break;
+            }
+                case "Bear":
+            {
+                info[0] = 7;
+                info[1] = 1000;
+                info[2] = 100;
+                        break;
+            }
+    }
         return info;
     }
 
 
     public void SomebodyDead(GameObject somebody)
     {
-        if (somebody.tag == "Rabbit") CreateSomebody(rabbitpref);
-        else if (somebody.tag == "Stag") CreateSomebody(stagpref); 
-        else if (somebody.tag == "Boar") CreateSomebody(boarpref); 
-        else if (somebody.tag == "Wolf") CreateSomebody(wolfpref); 
-        else if (somebody.tag == "Bear") CreateSomebody(bearpref); 
+        switch (somebody.tag)
+        {
+            case "Rabbit": CreateSomebody(rabbitpref); break;
+            case "Stag": CreateSomebody(stagpref); break;
+            case "Boar": CreateSomebody(boarpref); break;
+            case "Wolf": CreateSomebody(wolfpref); break;
+            case "Bear": CreateSomebody(bearpref); break;
+        }
     }
     void CreateSomebody(GameObject prefub)
     {

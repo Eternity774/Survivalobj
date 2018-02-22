@@ -81,11 +81,18 @@ public class PlayerMove : MonoBehaviour {
             }
             if (associated != null)
             {
-                if (Vector3.Distance(gameObject.transform.position, associated.transform.position) > 30)
+                if(Input.GetKeyDown(KeyCode.E)&& associated.GetComponent<Behavior>().state == Behavior.State.dead)
+                {
+                    hp += 100;
+                    Destroy(associated);
+                    associated = null;
+                }
+                else if (Vector3.Distance(gameObject.transform.position, associated.transform.position) > 30)
                 {
                     associated.GetComponent<Behavior>().enemy = null;
                     associated = null;
                 }
+                
             }
         }
     }
