@@ -270,7 +270,6 @@ public class Behavior : MonoBehaviour {
                 {
                     enemy = newenemy.gameObject;//записываем врага
                     if (enemy.tag == "Player") enemy.GetComponent<PlayerMove>().associated = gameObject;
-
                     // else enemy.GetComponent<Behavior>().GetEnemy(gameObject);//оповещаем о присоединении !!!попробуем НЕ ОПОВЕЩАТЬ!!!
                     StopAllCoroutines();//останавливаем корутины (т.к. есть возможность входа в триггер во время ожидания)
                     nav.speed = Random.Range(5, 8);//включаем высокую скорость
@@ -331,7 +330,7 @@ public class Behavior : MonoBehaviour {
             {
                 Debug.Log("Game Over");
                 enemy = null;
-                state = State.wait;
+                StartCoroutine(Wait());
             }
         }
        

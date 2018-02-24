@@ -39,12 +39,12 @@ public class PlayerMove : MonoBehaviour {
                 Vector3 dir;
                 if (Input.GetKey(KeyCode.W))
                 {
-                    dir = transform.TransformDirection(new Vector3(0f, -3f, z * speedz));
+                    dir = transform.TransformDirection(new Vector3(0f, -5f, z * speedz));
                     animator.SetBool("Walk", true);//включаем анимацию ходьбы
                 }
                 else
                 {
-                    dir = transform.TransformDirection(new Vector3(0f, -3f, z * speedz / 2));
+                    dir = transform.TransformDirection(new Vector3(0f, -5f, z * speedz / 2));
                     animator.SetBool("WalkBack", true);//включаем анимацию ходьбы
                 }
                 // dir = transform.TransformDirection(new Vector3(0f, -3f, z * speedz));//высчитываем смещение вперед
@@ -105,6 +105,15 @@ public class PlayerMove : MonoBehaviour {
             if (hp <= 0) StartCoroutine(Dead());
         }
     }
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.gameObject.name != "Terrain") 
+        {
+            associated = hit.gameObject;
+            hit.gameObject.GetComponent<Behavior>().GetEnemy(gameObject);
+        }
+    }
+
     IEnumerator Dead()
     {
         Debug.Log("start death");

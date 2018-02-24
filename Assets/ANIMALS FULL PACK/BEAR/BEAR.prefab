@@ -294,7 +294,7 @@ GameObject:
   - component: {fileID: 195130715395278702}
   - component: {fileID: 114732087292838826}
   - component: {fileID: 135270179711735358}
-  - component: {fileID: 135987764645555722}
+  - component: {fileID: 65121087890815928}
   m_Layer: 0
   m_Name: BEAR
   m_TagString: Bear
@@ -534,7 +534,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1468030591553620}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.9290466, y: -0.0000009536743, z: 3.2718506}
+  m_LocalPosition: {x: -145.18515, y: 0, z: 46.280823}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4646350591757662}
@@ -1003,6 +1003,18 @@ Transform:
   m_Father: {fileID: 4385825124505640}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &65121087890815928
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1468030591553620}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 2.45}
+  m_Center: {x: 0, y: 0.8, z: 0.33}
 --- !u!95 &95217497194745172
 Animator:
   serializedVersion: 3
@@ -1032,7 +1044,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 0}
+  enemyinmemory: {fileID: 0}
   priority: 7
+  hp: 0
+  damage: 0
   state: 0
 --- !u!135 &135270179711735358
 SphereCollider:
@@ -1045,18 +1060,6 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 10
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &135987764645555722
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1468030591553620}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!137 &137317572626093390
 SkinnedMeshRenderer:
