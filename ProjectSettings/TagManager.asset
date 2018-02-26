@@ -4,15 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Rabbit
-<<<<<<< HEAD
-  - Wolf
   - Stag
-  - Boar
   - Bear
-=======
-  - inv_main
->>>>>>> eternity
+  - Wolf
+  - Rabbit
+  - Boar
   layers:
   - Default
   - TransparentFX

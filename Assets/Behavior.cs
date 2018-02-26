@@ -39,7 +39,7 @@ public class Behavior : MonoBehaviour {
         StartCoroutine(Wait());//запускаем корутину(процесс) ожидания в 10 сек        
     }
 
-    void Update()
+    void FixedUpdate()
     {
        switch (state)
         {
@@ -125,8 +125,8 @@ public class Behavior : MonoBehaviour {
                             bool enemyiskilled = false;
                             if (enemy.tag == "Player")//если сражаемся с игроком
                             {
-                                enemy.GetComponent<PlayerMove>().TakeDamage(damage);//наносим игроку урон
-                                if (enemy.GetComponent<PlayerMove>().hp <= 0) enemyiskilled = true;
+                                enemy.GetComponent<PlayerHealth>().TakeDamage(damage);//наносим игроку урон
+                                if (enemy.GetComponent<PlayerHealth>().currentHealth <= 0) enemyiskilled = true;
                             }
                             else
                             {
@@ -287,22 +287,7 @@ public class Behavior : MonoBehaviour {
         {
             if (other.GetComponent<Behavior>() != null || other.GetComponent<PlayerMove>() != null)
             {
-<<<<<<< HEAD
                 GetEnemy(other.gameObject);
-=======
-               // Debug.Log("Rabbit in trigger");
-                enemy = other.gameObject;
-                enemy.GetComponent<PlayerMove>().associated = gameObject;
-                StopAllCoroutines();//останавливаем корутины (т.к. есть возможность входа в триггер во время ожидания)
-                anim.SetBool("Run", true);//переключаем анимацию в бег
-                anim.SetBool("Walk", false);//выключаем ходьбу
-                state = State.run;//указываем состояние бега
-                transform.LookAt(other.transform);//разворачиваем сначала к игроку
-                                                  //а затем на 180, чтобы развернуть в другую сторону
-                transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y - 180f, transform.rotation.eulerAngles.z);
-                nav.speed = Random.Range(5, 8);//включаем высокую скорость
-
->>>>>>> eternity
             }
         }
     }
@@ -310,16 +295,6 @@ public class Behavior : MonoBehaviour {
 
     IEnumerator Wait()//корутина ожидания
     {
-<<<<<<< HEAD
-=======
-       // Debug.Log("Start Coroutine");
-        yield return new WaitForSeconds(10f);//ждем 10 секунд
-        //Debug.Log("Go at new point");
-        nav.speed = 1;//включаем низкую скорость для ходьбы
-        state = State.walk;//включаем состояние ходьбы
-        nav.SetDestination(new Vector3(Random.Range(-45, 45), 0, Random.Range(-45, 45)));//задаем новую точку для движения в пределах плоскости
-        anim.SetBool("Walk", true);//включаем анимацию ходьбы        
->>>>>>> eternity
         
         nav.SetDestination(gameObject.transform.position);//задаем новой точкой текущие координаты          
         anim.SetBool("Run", false);//выключаем бег
