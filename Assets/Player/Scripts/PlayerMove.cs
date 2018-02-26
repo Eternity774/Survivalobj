@@ -39,6 +39,24 @@ public class PlayerMove : MonoBehaviour {
     }
     private void Update()
     {
+		//Open inventory
+		if (Input.GetKeyDown(KeyCode.I))
+		{
+			if (inv_Open == false)
+			{
+
+				inv_Main.SetActive(true);
+				inv_Open = true;
+				inventory_open(inv_Open);
+			}
+			else if (inv_Open == true)
+			{
+
+				inv_Main.SetActive(false);
+				inv_Open = false;
+				inventory_open(inv_Open);
+			}
+		}
         if (Input.GetKeyDown(KeyCode.Mouse0) && !(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) && (inv_Open == false))
         {
             
@@ -144,24 +162,7 @@ public class PlayerMove : MonoBehaviour {
             }
 
 
-            //Open inventory
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                if (inv_Open == false)
-                {
-
-                    inv_Main.SetActive(true);
-                    inv_Open = true;
-                    inventory_open(inv_Open);
-                }
-                else if (inv_Open == true)
-                {
-
-                    inv_Main.SetActive(false);
-                    inv_Open = false;
-                    inventory_open(inv_Open);
-                }
-            }
+          
         }
     }
 
