@@ -115,7 +115,7 @@ public class Behavior : MonoBehaviour {
                     {
 
 
-                        Vector3 forwardenemyPosition = enemy.transform.TransformPoint(Vector3.forward * 3);//переводим в глобальные координаты направление вперед
+                        Vector3 forwardenemyPosition = enemy.transform.TransformPoint(Vector3.forward * 2);//переводим в глобальные координаты направление вперед
                         nav.SetDestination(forwardenemyPosition);
                         transform.LookAt(enemy.transform);
 

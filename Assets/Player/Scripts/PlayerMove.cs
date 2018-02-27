@@ -39,32 +39,35 @@ public class PlayerMove : MonoBehaviour {
     }
     private void Update()
     {
-		//Open inventory
-		if (Input.GetKeyDown(KeyCode.I))
-		{
-			if (inv_Open == false)
-			{
-
-				inv_Main.SetActive(true);
-				inv_Open = true;
-				inventory_open(inv_Open);
-			}
-			else if (inv_Open == true)
-			{
-
-				inv_Main.SetActive(false);
-				inv_Open = false;
-				inventory_open(inv_Open);
-			}
-		}
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) && (inv_Open == false))
+        if (live)
         {
-            
-            animator.SetTrigger("Attack");
-            if (associated != null)
+            //Open inventory
+            if (Input.GetKeyDown(KeyCode.I))
             {
-                if (Vector3.Distance(transform.position, associated.transform.position) < 3) associated.GetComponent<Behavior>().TakeDamage(gameObject, Random.Range(50, 100));
+                if (inv_Open == false)
+                {
 
+                    inv_Main.SetActive(true);
+                    inv_Open = true;
+                    inventory_open(inv_Open);
+                }
+                else if (inv_Open == true)
+                {
+
+                    inv_Main.SetActive(false);
+                    inv_Open = false;
+                    inventory_open(inv_Open);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.Mouse0) && !(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) && (inv_Open == false))
+            {
+
+                animator.SetTrigger("Attack");
+                if (associated != null)
+                {
+                    if (Vector3.Distance(transform.position, associated.transform.position) < 3) associated.GetComponent<Behavior>().TakeDamage(gameObject, Random.Range(50, 100));
+
+                }
             }
         }
     }
