@@ -292,9 +292,9 @@ GameObject:
   - component: {fileID: 4031742758976514}
   - component: {fileID: 95217497194745172}
   - component: {fileID: 195130715395278702}
-  - component: {fileID: 114732087292838826}
   - component: {fileID: 135270179711735358}
   - component: {fileID: 65121087890815928}
+  - component: {fileID: 114874429617229154}
   m_Layer: 0
   m_Name: BEAR
   m_TagString: Bear
@@ -1032,7 +1032,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114732087292838826
+--- !u!114 &114874429617229154
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1040,14 +1040,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1468030591553620}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7784550cae48bd44a74d9cb21c69313, type: 3}
+  m_Script: {fileID: 11500000, guid: 62b186b16db4b0d4c9b6981671a8b550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 0}
   enemyinmemory: {fileID: 0}
   priority: 7
-  hp: 0
-  damage: 0
+  hp: 1000
+  damage: 100
   state: 0
 --- !u!135 &135270179711735358
 SphereCollider:

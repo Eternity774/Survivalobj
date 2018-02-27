@@ -37,9 +37,9 @@ GameObject:
   - component: {fileID: 54749536475699378}
   - component: {fileID: 95379978940370278}
   - component: {fileID: 195402127228617042}
-  - component: {fileID: 114057399070632880}
   - component: {fileID: 135898813837055914}
   - component: {fileID: 65315889170184746}
+  - component: {fileID: 114054886318490782}
   m_Layer: 0
   m_Name: RABBIT
   m_TagString: Rabbit
@@ -844,7 +844,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114057399070632880
+--- !u!114 &114054886318490782
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -852,13 +852,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1090895711516698}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7784550cae48bd44a74d9cb21c69313, type: 3}
+  m_Script: {fileID: 11500000, guid: 62b186b16db4b0d4c9b6981671a8b550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 0}
   enemyinmemory: {fileID: 0}
-  priority: 0
-  hp: 0
+  priority: 1
+  hp: 100
   damage: 0
   state: 0
 --- !u!135 &135898813837055914

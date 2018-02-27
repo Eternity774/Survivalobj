@@ -441,11 +441,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4150583829486678}
   - component: {fileID: 95051760283185210}
-  - component: {fileID: 114042590286673092}
-  - component: {fileID: 195822112451852188}
-  - component: {fileID: 54764682229168456}
   - component: {fileID: 135381878370045808}
   - component: {fileID: 65523045595968732}
+  - component: {fileID: 114632545787479692}
+  - component: {fileID: 195714017202371776}
   m_Layer: 0
   m_Name: STAG
   m_TagString: Stag
@@ -888,21 +887,6 @@ Transform:
   m_Father: {fileID: 4027642512501270}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &54764682229168456
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1957564522924748}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!65 &65523045595968732
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -932,7 +916,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114042590286673092
+--- !u!114 &114632545787479692
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -940,14 +924,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1957564522924748}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7784550cae48bd44a74d9cb21c69313, type: 3}
+  m_Script: {fileID: 11500000, guid: 62b186b16db4b0d4c9b6981671a8b550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 0}
   enemyinmemory: {fileID: 0}
   priority: 2
-  hp: 0
-  damage: 0
+  hp: 400
+  damage: 20
   state: 0
 --- !u!135 &135381878370045808
 SphereCollider:
@@ -1033,7 +1017,7 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.08894628, y: -0.015485942, z: 0.76650333}
     m_Extent: {x: 1.1458385, y: 0.6578218, z: 1.2188506}
   m_DirtyAABB: 0
---- !u!195 &195822112451852188
+--- !u!195 &195714017202371776
 NavMeshAgent:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1053,4 +1037,4 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 3
