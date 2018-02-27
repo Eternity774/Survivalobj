@@ -10,6 +10,7 @@ public class Creator : MonoBehaviour {
     public GameObject wolfpref;
     public GameObject stagpref;
     public GameObject bearpref;
+    public GameObject manpref;
 
     int[,] ResponceMatrix;
     int id = 0;
@@ -20,7 +21,7 @@ public class Creator : MonoBehaviour {
                                          { 0, 5, 0, 1, 0, 2, 0 },
                                          { 3, 2, 5, 4, 0, 3, 0 },
                                          { 9, 8, 10, 7, 5, 6, 1 },
-                                         { 8, 8, 10, 7, 4, 5, 3 },
+                                         { 8, 8, 10, 7, 5, 5, 3 },
                                          { 9, 9, 10, 8, 5, 5, 5} };
         
        for (int i = 0; i < 6; i++) { CreateSomebody(rabbitpref); }
@@ -28,7 +29,9 @@ public class Creator : MonoBehaviour {
         for (int i = 0; i < 4; i++) { CreateSomebody(boarpref); }
         for (int i = 0; i < 3; i++) { CreateSomebody(wolfpref); }
         for (int i = 0; i < 2; i++) { CreateSomebody(bearpref); }
-        
+        for (int i = 0; i < 5; i++) { CreateSomebody(manpref); }
+       
+
     }
 
     public int[] StartInformation(GameObject ai)
@@ -72,6 +75,13 @@ public class Creator : MonoBehaviour {
                 info[2] = 100;
                         break;
             }
+            case "AIMan":
+                {
+                    info[0] = 6;
+                    info[1] = 700;
+                    info[2] = 90;
+                    break;
+                }
     }
         return info;
     }
@@ -86,6 +96,7 @@ public class Creator : MonoBehaviour {
             case "Boar": CreateSomebody(boarpref); break;
             case "Wolf": CreateSomebody(wolfpref); break;
             case "Bear": CreateSomebody(bearpref); break;
+            case "AIMAn": CreateSomebody(manpref); break;
         }
     }
     void CreateSomebody(GameObject prefub)

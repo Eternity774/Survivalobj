@@ -102,44 +102,45 @@ public class Behavior : MonoBehaviour {
                 }
             case State.attack:
                 {
-
-                    if (Vector3.Distance(transform.position, enemy.transform.position) > 3)//если при атаке оказались далеко от объекта
+                    if (enemy != null)
                     {
-                        anim.SetBool("Attack", false);
-                        anim.SetBool("Run", true);
-                        nav.SetDestination(enemy.transform.position);
-                        state = State.runfor;
-                        //попробовать возможность изменения поведения
-                    }
-                    else
-                    {
-
-
-                        Vector3 forwardenemyPosition = enemy.transform.TransformPoint(Vector3.forward * 2);//переводим в глобальные координаты направление вперед
-                        nav.SetDestination(forwardenemyPosition);
-                        transform.LookAt(enemy.transform);
-
-                        int Random4ik = Random.Range(0, 100);
-                        if (Random4ik > 95)
+                        if (Vector3.Distance(transform.position, enemy.transform.position) > 3)//если при атаке оказались далеко от объекта
                         {
-                            bool enemyiskilled = false;
-                            if (enemy.tag == "Player")//если сражаемся с игроком
+                            anim.SetBool("Attack", false);
+                            anim.SetBool("Run", true);
+                            nav.SetDestination(enemy.transform.position);
+                            state = State.runfor;
+                            //попробовать возможность изменения поведения
+                        }
+                        else
+                        {
+
+
+                            Vector3 forwardenemyPosition = enemy.transform.TransformPoint(Vector3.forward * 2);//переводим в глобальные координаты направление вперед
+                            nav.SetDestination(forwardenemyPosition);
+                            transform.LookAt(enemy.transform);
+
+                            int Random4ik = Random.Range(0, 100);
+                            if (Random4ik > 95)
                             {
-                                enemy.GetComponent<PlayerHealth>().TakeDamage(damage);//наносим игроку урон
-                                if (enemy.GetComponent<PlayerHealth>().currentHealth <= 0) enemyiskilled = true;
-                            }
-                            else
-                            {
-                                enemy.GetComponent<Behavior>().TakeDamage(gameObject, damage);//наносим урон
-                                if (enemy.GetComponent<Behavior>().priority==3) enemyiskilled = true;//если враг стал мертвым
-                            }
-                            if (enemyiskilled)
-                            {
-                                if (enemyinmemory != null)
+                                bool enemyiskilled = false;
+                                if (enemy.tag == "Player")//если сражаемся с игроком
                                 {
-                                    if (Vector3.Distance(transform.position, enemyinmemory.transform.position) < 30 && enemyinmemory.GetComponent<Behavior>().priority>4)
-                                        EnemyInMemory(enemyinmemory);
-                                }                                
+                                    enemy.GetComponent<PlayerHealth>().TakeDamage(damage);//наносим игроку урон
+                                    if (enemy.GetComponent<PlayerHealth>().currentHealth <= 0) enemyiskilled = true;
+                                }
+                                else
+                                {
+                                    enemy.GetComponent<Behavior>().TakeDamage(gameObject, damage);//наносим урон
+                                    if (enemy.GetComponent<Behavior>().priority == 3) enemyiskilled = true;//если враг стал мертвым
+                                }
+                                if (enemyiskilled)
+                                {
+                                    if (enemyinmemory != null)
+                                    {
+                                        if (Vector3.Distance(transform.position, enemyinmemory.transform.position) < 30 && enemyinmemory.GetComponent<Behavior>().priority > 4)
+                                            EnemyInMemory(enemyinmemory);
+                                    }
                                     if (priority > 3) StartCoroutine(Eating());//начинаем есть                                 
                                     else
                                     {
@@ -147,11 +148,17 @@ public class Behavior : MonoBehaviour {
                                         anim.SetBool("Attack", false);//выключаем анимацию атаки
                                         StartCoroutine(Wait());
                                     }
-                                
 
 
+
+                                }
                             }
                         }
+                    }
+                    else
+                    {
+                        anim.SetBool("Attack", false);
+                        StartCoroutine(Wait());
                     }
                     break;
                 }

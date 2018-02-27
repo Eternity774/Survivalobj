@@ -39,7 +39,7 @@ public class PlayerHealth : MonoBehaviour {
     public void TakeFood(int amount)
     {
         currentFood += amount;
-        if (currentFood > startFood) currentFood = startFood;        
+        if (currentFood > 100) currentFood = 100;        
         foodbar.value = currentFood;        
     }
 

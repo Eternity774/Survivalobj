@@ -34,12 +34,12 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4045879028288336}
-  - component: {fileID: 54749536475699378}
   - component: {fileID: 95379978940370278}
   - component: {fileID: 195402127228617042}
   - component: {fileID: 135898813837055914}
   - component: {fileID: 65315889170184746}
   - component: {fileID: 114054886318490782}
+  - component: {fileID: 54704585156606128}
   m_Layer: 0
   m_Name: RABBIT
   m_TagString: Rabbit
@@ -800,7 +800,7 @@ Transform:
   m_Father: {fileID: 4820728688330462}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &54749536475699378
+--- !u!54 &54704585156606128
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

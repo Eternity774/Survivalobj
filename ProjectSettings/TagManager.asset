@@ -9,6 +9,8 @@ TagManager:
   - Wolf
   - Rabbit
   - Boar
+  - inv_main
+  - AIMan
   layers:
   - Default
   - TransparentFX
