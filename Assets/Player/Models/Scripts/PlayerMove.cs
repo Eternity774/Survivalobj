@@ -13,7 +13,11 @@ public class PlayerMove : MonoBehaviour {
     Animator animator;//анимаотор
     CharacterController controller; //контроллер для ходьбы
     private bool inv_Open;
-    private GameObject inv_Main;
+
+	public bool isRunning;
+	private float powerRegenTimer;
+
+	private GameObject inv_Main;
     private GameObject m_Cam;
     public float pbarSlider;
     public float pbarStart;
@@ -39,6 +43,20 @@ public class PlayerMove : MonoBehaviour {
     }
     private void Update()
     {
+		bool isRunning = Input.GetKey (KeyCode.LeftShift);
+		if (isRunning) {
+			playerHealth.currentPower = Mathf.Clamp (playerHealth.currentPower - (15 * Time.deltaTime), 0.0f, playerHealth.startPower);
+			playerHealth.powerbar.value = playerHealth.currentPower;
+			powerRegenTimer = 0f;
+		} else if (playerHealth.currentPower<playerHealth.startPower){
+			if (powerRegenTimer >= 3.0f) {
+				playerHealth.currentPower = Mathf.Clamp (playerHealth.currentPower + (5 * Time.deltaTime), 0.0f, playerHealth.startPower);
+				playerHealth.powerbar.value = playerHealth.currentPower;
+			} else {
+				powerRegenTimer += Time.deltaTime;
+			}
+		}
+
 		//Open inventory
 		if (Input.GetKeyDown(KeyCode.I))
 		{
@@ -72,21 +90,8 @@ public class PlayerMove : MonoBehaviour {
     void FixedUpdate() {
         if (live)
         {
-
-
             float h = Input.GetAxis("Horizontal");//перемещение курсора по горизонтали
-            float v = Input.GetAxis("Vertical");//перемещение курсора по вертикали
-
-            if (playerHealth.currentPower < 100)
-            {
-                playerHealth.currentPower += 2 * Time.deltaTime;
-                playerHealth.powerbar.value = playerHealth.currentPower;
-            }
-            else if (playerHealth.currentPower > 100)
-            {
-                playerHealth.currentPower = 100;
-                playerHealth.powerbar.value = playerHealth.currentPower;
-            }
+            float v = Input.GetAxis("Vertical");//перемещение курсора по вертикали           
             //print (GetComponent<PlayerHealth> ().currentPower);
             //x - horiz, z - vert
             if (h != 0)
@@ -119,10 +124,8 @@ public class PlayerMove : MonoBehaviour {
                 animator.SetBool("WalkBack", false);//выключаем ходьбу
             }
 
-            if (Input.GetKey(KeyCode.W)&& Input.GetKey(KeyCode.LeftShift)&&playerHealth.currentPower>=0)
+            if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift) && playerHealth.currentPower>=0)
             {                
-                    playerHealth.currentPower -= 5 * Time.deltaTime;
-                    playerHealth.powerbar.value = playerHealth.currentPower;
                     speedx = 3;
                     speedz = 20f;
                     animator.SetBool("Run", true);           
@@ -135,14 +138,11 @@ public class PlayerMove : MonoBehaviour {
             }
 
             if (Input.GetKeyUp(KeyCode.LeftShift))
-            {
-
-                speedx = 4;
+			{
+				speedx = 4;
                 speedz = 5f;
                 animator.SetBool("Run", false);
-
-            }
-            
+            }            
            
             if (Input.GetKeyDown(KeyCode.E) && associated != null)
             {
@@ -158,14 +158,9 @@ public class PlayerMove : MonoBehaviour {
                     associated.GetComponent<Behavior>().enemy = null;
                     associated = null;
                 }
-
-            }
-
-
-          
+            }          
         }
     }
-
 
     public void inventory_open(bool temp) {
         temp = inv_Open;

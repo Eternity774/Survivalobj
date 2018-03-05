@@ -1,10 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[System.Serializable]
-public class Item{
-	
-	public Texture2D Textura;
-	public string Name;
+public enum itemType
+{
+	consumable,
+	weapon,
+	armor
+}
+
+
+[CreateAssetMenu(fileName="New Item", menuName="Inventory/Item")]
+public class Item : ScriptableObject {
+
+	new public string name = "New Item";
+	public Sprite icon = null;
+	public bool isDefaultItem=false;
+	public itemType current;
+
+	public virtual void Use(){
+
+	}
 }
