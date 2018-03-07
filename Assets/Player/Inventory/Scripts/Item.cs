@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public enum itemType
 {
@@ -14,9 +15,23 @@ public class Item : ScriptableObject {
 	new public string name = "New Item";
 	public Sprite icon = null;
 	public bool isDefaultItem=false;
-	public itemType current;
+	public itemType current; 
+	
 
-	public virtual void Use(){
+		public virtual void Use(){
 
+		switch(current)
+		{
+		case itemType.armor:
+			Debug.Log ("using armor");
+			break;
+		case itemType.weapon:
+			Debug.Log ("using weapon");
+			break;
+		case itemType.consumable:
+			Debug.Log ("using consumable");
+			break;
+
+		}
 	}
 }

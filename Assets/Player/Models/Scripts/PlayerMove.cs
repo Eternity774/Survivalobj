@@ -189,7 +189,11 @@ public class PlayerMove : MonoBehaviour {
             hit.gameObject.GetComponent<Behavior>().GetEnemy(gameObject);
         }
     }
-
+	private void OnTriggerEnter(Collider col){
+		if (col.tag=="PickUp"){
+			Destroy(gameObject);
+		}
+	}
     public IEnumerator Dead()
     {
         Debug.Log("start death");
