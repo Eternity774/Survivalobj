@@ -8,30 +8,80 @@ public enum itemType
 	armor
 }
 
+public interface IStrategy
+{
+	void Algorithm ();
+}
+
+public class iConsumable: IStrategy
+{
+	public void Algorithm()
+	{
+		Debug.Log ("Using consumable!");
+	}
+}
+
+public class iWeapon: IStrategy
+{
+	public void Algorithm()
+	{
+		Debug.Log ("Using weapon!");
+	}
+}
+
+public class iArmor: IStrategy
+{
+	public void Algorithm()
+	{
+		Debug.Log ("Using armor!");
+	}
+}
+
+public class Use{
+	
+	private IStrategy _strategy;
+
+	public Use (IStrategy strategy){
+		_strategy = strategy;
+	}
+
+	public void SetStrategy(IStrategy strategy){
+		_strategy = strategy;
+	}
+
+	public void ExecuteOperation(){
+		_strategy.Algorithm ();
+	}
+}
 
 [CreateAssetMenu(fileName="New Item", menuName="Inventory/Item")]
 public class Item : ScriptableObject {
+
 
 	new public string name = "New Item";
 	public Sprite icon = null;
 	public bool isDefaultItem=false;
 	public itemType current; 
-	
 
-		public virtual void Use(){
-
-		switch(current)
-		{
-		case itemType.armor:
-			Debug.Log ("using armor");
-			break;
-		case itemType.weapon:
-			Debug.Log ("using weapon");
-			break;
-		case itemType.consumable:
-			Debug.Log ("using consumable");
-			break;
-
-		}
+	public virtual void UseItem()
+	{
+		Use use = new Use (new iArmor ());
+				switch(current)
+				{
+					case itemType.armor:
+						use.SetStrategy (new iArmor ());
+						use.ExecuteOperation ();
+						break;
+					case itemType.weapon:
+						use.SetStrategy (new iWeapon ());
+						use.ExecuteOperation ();
+						break;
+					case itemType.consumable:
+						use.SetStrategy (new iConsumable ());
+						use.ExecuteOperation ();
+						break;
+		
+				}
 	}
+
 }
