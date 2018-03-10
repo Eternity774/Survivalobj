@@ -13,7 +13,7 @@ public class Creator : MonoBehaviour {
     public GameObject bearpref;
     public GameObject manpref;
 
-    public Text countaitext;
+    
     public int countai = 5;
 
     int[,] ResponceMatrix;
@@ -102,14 +102,9 @@ public class Creator : MonoBehaviour {
             case "Boar": CreateSomebody(boarpref); break;
             case "Wolf": CreateSomebody(wolfpref); break;
             case "Bear": CreateSomebody(bearpref); break;
-            //case "AIMAn": CreateSomebody(manpref); break;
-            case "AIMan":
-                {
-                    countai--;
-                    if (countai == 0) countaitext.text = "You win" + countai;
-                    else countaitext.text = "Men AI on map: "+countai; break;
-                    
-                }
+            case "AIMAn": CreateSomebody(manpref); break;
+            
+               
         }
         
     }
