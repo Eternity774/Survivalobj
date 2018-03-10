@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Creator : MonoBehaviour {
     
@@ -11,6 +12,9 @@ public class Creator : MonoBehaviour {
     public GameObject stagpref;
     public GameObject bearpref;
     public GameObject manpref;
+
+    public Text countaitext;
+    public int countai = 5;
 
     int[,] ResponceMatrix;
     int id = 0;
@@ -79,9 +83,10 @@ public class Creator : MonoBehaviour {
                 {
                     info[0] = 6;
                     info[1] = 700;
-                    info[2] = 90;
+                    info[2] = 60;
                     break;
                 }
+                
     }
         return info;
     }
@@ -89,6 +94,7 @@ public class Creator : MonoBehaviour {
 
     public void SomebodyDead(GameObject somebody)
     {
+        
         switch (somebody.tag)
         {
             case "Rabbit": CreateSomebody(rabbitpref); break;
@@ -96,8 +102,16 @@ public class Creator : MonoBehaviour {
             case "Boar": CreateSomebody(boarpref); break;
             case "Wolf": CreateSomebody(wolfpref); break;
             case "Bear": CreateSomebody(bearpref); break;
-            case "AIMAn": CreateSomebody(manpref); break;
+            //case "AIMAn": CreateSomebody(manpref); break;
+            case "AIMan":
+                {
+                    countai--;
+                    if (countai == 0) countaitext.text = "You win" + countai;
+                    else countaitext.text = "Men AI on map: "+countai; break;
+                    
+                }
         }
+        
     }
     void CreateSomebody(GameObject prefub)
     {
@@ -105,8 +119,8 @@ public class Creator : MonoBehaviour {
     }
     public bool Response(int who, int whom)
     {
-        if (who > 3) who--;
-        if (ResponceMatrix[who - 1, whom - 1] > Random.Range(0, 10)) return true;
+        if (who > 3) who--;           
+        if (ResponceMatrix[who - 1, whom - 1] > Random.Range(0, 11)) return true;
         else return false;
         
     }

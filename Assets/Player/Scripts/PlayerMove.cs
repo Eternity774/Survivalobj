@@ -58,6 +58,7 @@ public class PlayerMove : MonoBehaviour {
                     inv_Open = false;
                     inventory_open(inv_Open);
                 }
+                
             }
             if (Input.GetKeyDown(KeyCode.Mouse0) && !(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) && (inv_Open == false))
             {

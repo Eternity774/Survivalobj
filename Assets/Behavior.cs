@@ -9,8 +9,10 @@ public class Behavior : MonoBehaviour {
     Creator CreatorRef;//ссылка на компонент скрипта создателя
     NavMeshAgent nav;//агент, который перемещает ai в указанную точку
     Animator anim;//аниматор, для переключения анимаций
+    
     public GameObject enemy;//храним, кто преследует кролика
     public GameObject enemyinmemory;//для случая, когда основной враг нейтрализуется, но еще один, который был ранее проигнорирован, станет основным
+    public GameObject friend;
     public int priority;//приоритет для разрешения столкновения нескольких объектов
     public int hp;//здоровье
     public int damage;//наносимый урон
@@ -23,6 +25,7 @@ public class Behavior : MonoBehaviour {
         runfor,
         attack,
         eat,
+        friend,
         dead        
     }
     public State state;//переменная для состояния
@@ -158,7 +161,8 @@ public class Behavior : MonoBehaviour {
                     else
                     {
                         anim.SetBool("Attack", false);
-                        StartCoroutine(Wait());
+                        if (priority == 6 && friend != null) state = State.friend;
+                        else StartCoroutine(Wait());
                     }
                     break;
                 }
@@ -174,9 +178,47 @@ public class Behavior : MonoBehaviour {
                     {
                         anim.SetBool("Attack", false);
                         StopAllCoroutines();
-                        StartCoroutine(Wait());
+                        if(priority==5) anim.SetBool("Eating", false);
+                        if (priority == 6 && friend != null) state = State.friend;
+                        else StartCoroutine(Wait());
                     }
                     if (enemyinmemory != null) EnemyInMemory(enemyinmemory);
+                    break;
+                }
+            case State.friend:
+                {
+                    if (friend != null)//если враг не отсоединился
+                    {
+                        float distance = Vector3.Distance(transform.position, friend.transform.position);//мереем дистанцию
+                        if (distance > 20)
+                        {
+                            nav.SetDestination(friend.transform.position);//направляем агента на врага   
+                            anim.SetBool("Run", true);
+                            nav.speed = 8;  
+                        }               
+                         
+                        if (distance < 8&&distance>=2)//когда дистанция сократилась
+                        {
+                            nav.SetDestination(friend.transform.position);//направляем агента на врага   
+                            anim.SetBool("Walk", true);
+                            anim.SetBool("Run", false);
+                           
+                            nav.speed = 1;
+                        }
+                        if (distance < 2)
+                        {
+                            nav.SetDestination(transform.position);//направляем агента на врага   
+                            anim.SetBool("Walk", false);
+                        }
+                        
+                    }
+
+                    else if (enemyinmemory != null)
+                    {
+                        state = State.wait;
+                        EnemyInMemory(enemyinmemory);//есть ли враг в памяти
+                    }
+                    else StartCoroutine(Wait());
                     break;
                 }
         }
@@ -197,7 +239,7 @@ public class Behavior : MonoBehaviour {
     }
         public void TakeDamage(GameObject killer, int enemydamage)
     {
-        Debug.Log(gameObject.name + " take damage from " + killer.gameObject.name);
+        //Debug.Log(gameObject.name + " take damage from " + killer.gameObject.name);
         if (state != State.dead)
         {
             if (priority != 1 && priority != 3)
@@ -207,13 +249,13 @@ public class Behavior : MonoBehaviour {
                 anim.SetBool("Attack", true);
             }
             if (enemy!=killer) enemy = killer;
-            
+            if (friend == killer) friend = null;
            // Debug.Log("hp before " + hp);
             hp -= Random.Range(enemydamage, enemydamage + 10);
           //  Debug.Log("hp after " + hp);
             if (hp <= 0)
             {
-                Debug.Log(gameObject.name + " is dead");
+                //Debug.Log(gameObject.name + " is dead");
                nav.ResetPath();
                 nav.enabled = false;
                 enemy = null;
@@ -227,9 +269,12 @@ public class Behavior : MonoBehaviour {
     }
        public void GetEnemy(GameObject newenemy)//рядом враг
     {
-        Debug.Log(gameObject.name + "see the" + newenemy.name);
+       // Debug.Log(gameObject.name + "see the" + newenemy.name);
+       
         if (state != State.dead && anim!=null)//если не мертвый и подключился аниматор
         {
+            if (friend!=newenemy)
+            { 
             int newenemypriority;//приоритет нового врага
             if (newenemy.tag == "Player") newenemypriority = 6;//у игрока приоритет всегда 6
             else newenemypriority = newenemy.GetComponent<Behavior>().priority;
@@ -243,45 +288,73 @@ public class Behavior : MonoBehaviour {
                 if (newenemypriority > oldpriority) changenemy = true;
                 if (newenemy.gameObject.name != enemy.gameObject.name)
                 {
-                    Debug.Log("write enemy in memory for:"+gameObject.name+" oldenemy: " + enemy.gameObject.name + "newenemy: " + newenemy.gameObject.name);
+                   // Debug.Log("write enemy in memory for:"+gameObject.name+" oldenemy: " + enemy.gameObject.name + "newenemy: " + newenemy.gameObject.name);
                     if (changenemy) enemyinmemory = enemy;//если враг будет менятся запомним, что он тоже рядом
                     else enemyinmemory = newenemy;//если враг был проигнорирован из-за приоритета, но запомним, что он тоже рядом
                 }
             }
 
-            if (enemy == null || changenemy)
-            {
-                bool addenemy = false;        //добавить ли врага после проверки условий
-                if (CreatorRef.Response(priority, newenemypriority))//запрос к создателю о нападении, если true - нападаем
+                if (enemy == null || changenemy)
                 {
-                    anim.SetBool("Attack", false);//перестаем атаковать
-                    state = State.runfor;//указываем состояние бега
-                    transform.LookAt(newenemy.transform.position);//разворачиваем сначала к игроку                                                                 
-                    addenemy = true;
-                }
-                else if(newenemypriority>4) //если не нападаем и его приоритет выше 4 - убегаем
-                {
-                    if (state == State.eat||state==State.attack)//если в это время ели или сражались с кем-то
+
+                    bool addenemy = false;        //добавить ли врага после проверки условий
+                    bool friendly = false;
+                    // Debug.Log("About friendly!" + priority + newenemypriority);
+                    if (priority == newenemypriority)
                     {
-                        StopAllCoroutines();//останавливаем все процессы
-                        anim.SetBool("Attack", false);//перестаем атаковать
+                        Debug.Log("About friendly!" + priority + newenemypriority);
+                        if (Random.Range(0, 3) != 0)
+                        {
+                            friendly = true;
+                            Debug.Log("FRIENDLY! " + gameObject.name);
+                            if (priority == 6)
+                            {
+                                friend = newenemy;
+                                anim.SetTrigger("Hello");
+                                state = State.friend;
+                                StopAllCoroutines();
+
+                            }
+                        }
+
+
                     }
-                    state = State.runfrom;//указываем состояние бега  
+                    if (!friendly)
+                    {
+                        if (CreatorRef.Response(priority, newenemypriority))//запрос к создателю о нападении, если true - нападаем
+                        {
+                            anim.SetBool("Attack", false);//перестаем атаковать
+                            if (priority == 5) anim.SetBool("Eating", false);//перестаем ксть
+                            state = State.runfor;//указываем состояние бега
+                            transform.LookAt(newenemy.transform.position);//разворачиваем сначала к игроку                                                                 
+                            addenemy = true;
+                        }
+                        else if (newenemypriority > 4) //если не нападаем и его приоритет выше 4 - убегаем
+                        {
+                            if (state == State.eat || state == State.attack)//если в это время ели или сражались с кем-то
+                            {
+                                StopAllCoroutines();//останавливаем все процессы
+                                anim.SetBool("Attack", false);//перестаем атаковать
+                                if (priority == 5) anim.SetBool("Eating", false);
+                            }
+                            state = State.runfrom;//указываем состояние бега  
 
-                    transform.rotation = Quaternion.Euler(newenemy.transform.rotation.eulerAngles.x, newenemy.transform.rotation.eulerAngles.y, newenemy.transform.rotation.eulerAngles.z);//бежим туда, куда направлен и враг
-                    addenemy = true;//указываем, что враг будет добавлен
-                }
-                if (enemy==null && gameObject.tag == "Player") addenemy = true;//если запрос пришел на игрока и у него небыло сопряженных врагов - добавляем
+                            transform.rotation = Quaternion.Euler(newenemy.transform.rotation.eulerAngles.x, newenemy.transform.rotation.eulerAngles.y, newenemy.transform.rotation.eulerAngles.z);//бежим туда, куда направлен и враг
+                            addenemy = true;//указываем, что враг будет добавлен
+                        }
+                        if (enemy == null && gameObject.tag == "Player") addenemy = true;//если запрос пришел на игрока и у него небыло сопряженных врагов - добавляем
 
-                if (addenemy)//если добавляем врага
-                {
-                    enemy = newenemy.gameObject;//записываем врага
-                    if (enemy.tag == "Player") enemy.GetComponent<PlayerMove>().associated = gameObject;
-                    // else enemy.GetComponent<Behavior>().GetEnemy(gameObject);//оповещаем о присоединении !!!попробуем НЕ ОПОВЕЩАТЬ!!!
-                    StopAllCoroutines();//останавливаем корутины (т.к. есть возможность входа в триггер во время ожидания)
-                    nav.speed = Random.Range(5, 8);//включаем высокую скорость
-                    anim.SetBool("Walk", false);//выключаем ходьбу
-                    anim.SetBool("Run", true);//переключаем анимацию в бег
+                        if (addenemy)//если добавляем врага
+                        {
+                            enemy = newenemy.gameObject;//записываем врага
+                            if (enemy.tag == "Player") enemy.GetComponent<PlayerMove>().associated = gameObject;
+                            // else enemy.GetComponent<Behavior>().GetEnemy(gameObject);//оповещаем о присоединении !!!попробуем НЕ ОПОВЕЩАТЬ!!!
+                            StopAllCoroutines();//останавливаем корутины (т.к. есть возможность входа в триггер во время ожидания)
+                            nav.speed = Random.Range(5, 8);//включаем высокую скорость
+                            anim.SetBool("Walk", false);//выключаем ходьбу
+                            anim.SetBool("Run", true);//переключаем анимацию в бег
+                        }
+                    }
                 }
                // else StartCoroutine(Wait());
             }
@@ -294,6 +367,7 @@ public class Behavior : MonoBehaviour {
         {
             if (other.GetComponent<Behavior>() != null || other.GetComponent<PlayerMove>() != null)
             {
+                
                 GetEnemy(other.gameObject);
             }
         }
@@ -317,6 +391,9 @@ public class Behavior : MonoBehaviour {
     IEnumerator Eating()
     {
         state = State.eat;//если приоритет больше 3 - съедаем игрока
+        nav.SetDestination(enemy.transform.position);
+
+        if (priority==5) anim.SetBool("Eating", true);
         yield return new WaitForSeconds(10f);//поедаем 10 секунд
         hp += 200;
         if (enemy != null)
@@ -327,15 +404,17 @@ public class Behavior : MonoBehaviour {
                 {
                     Destroy(enemy);
                     enemy = null;                 
-                    state = State.wait;
-                    anim.SetBool("Attack", false);
-                    StartCoroutine(Wait());
+                    //state = State.wait;
+                    if (priority == 5) anim.SetBool("Eating", false);
+                    else anim.SetBool("Attack", false);
+                    if (enemyinmemory != null) EnemyInMemory(enemyinmemory);//test
+                   // StartCoroutine(Wait());
                     
                 }
             }
             else
             {
-                Debug.Log("Game Over");
+               // Debug.Log("Game Over");
                 enemy = null;
                 StartCoroutine(Wait());
             }
