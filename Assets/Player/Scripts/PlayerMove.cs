@@ -142,7 +142,7 @@ public class PlayerMove : MonoBehaviour {
                 animator.SetBool("Walk", false);//выключаем ходьбу
                 animator.SetBool("WalkBack", false);//выключаем ходьбу
             }
-            Debug.Log(isRunning);
+           // Debug.Log(isRunning);
             if (Input.GetKey(KeyCode.W)&& Input.GetKey(KeyCode.LeftShift)&&isRunning)
             {                
                     playerHealth.currentPower -= 5 * Time.deltaTime;
