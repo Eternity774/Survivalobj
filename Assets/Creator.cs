@@ -28,11 +28,11 @@ public class Creator : MonoBehaviour {
                                          { 8, 8, 10, 7, 5, 5, 3 },
                                          { 9, 9, 10, 8, 5, 5, 5} };
         
-       for (int i = 0; i < 6; i++) { CreateSomebody(rabbitpref); }
-        for (int i = 0; i < 5; i++) { CreateSomebody(stagpref); }
-        for (int i = 0; i < 4; i++) { CreateSomebody(boarpref); }
-        for (int i = 0; i < 3; i++) { CreateSomebody(wolfpref); }
-        for (int i = 0; i < 2; i++) { CreateSomebody(bearpref); }
+       for (int i = 0; i < 48; i++) { CreateSomebody(rabbitpref); }
+        for (int i = 0; i < 24; i++) { CreateSomebody(stagpref); }
+        for (int i = 0; i < 12; i++) { CreateSomebody(boarpref); }
+        for (int i = 0; i < 6; i++) { CreateSomebody(wolfpref); }
+        for (int i = 0; i < 3; i++) { CreateSomebody(bearpref); }
         for (int i = 0; i < 5; i++) { CreateSomebody(manpref); }
        
 
@@ -125,7 +125,7 @@ public class Creator : MonoBehaviour {
         
         while(true)
         {
-            Vector3 startpoint = new Vector3(Random.Range(-240, 240), 0, Random.Range(-240, 240));
+            Vector3 startpoint = new Vector3(Random.Range(0, 3000), 0, Random.Range(0, 3000));
             Vector3 pointwithR = startpoint + Random.insideUnitSphere * radius;
             NavMeshHit hit;
             for (int i = 0; i < 10; i++)
