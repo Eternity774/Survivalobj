@@ -8,10 +8,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68f3022c7ca3fc3439205c531ac2d16a, type: 3}
-  m_Name: Knife
+  m_Script: {fileID: 11500000, guid: c33deb7f3003a4f4f84b6a70b3958d35, type: 3}
+  m_Name: Default knife
   m_EditorClassIdentifier: 
-  name: Stone Knife
+  name: KNIFE DAT BITCH
   icon: {fileID: 21300000, guid: 31e7174f9bde59d4aa0d7f894536c57b, type: 3}
   isDefaultItem: 0
-  current: 1
+  equipSlot: 3
+  armorModifier: 0
+  damageModifier: 10
+  mesh: {fileID: 2300000, guid: 301e323164816f84598815642d98cd7a, type: 3}
