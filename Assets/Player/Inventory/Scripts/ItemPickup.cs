@@ -17,10 +17,7 @@ public class ItemPickup : MonoBehaviour {
 				Debug.Log("You picked up "+ gameObject.name);
 		}
 	}
-//	void PickUp(){
-//	//Adding item to inventory
-//		bool wasPickedUp=Inventory.instance.Add(item);
-//		if (wasPickedUp) 
-//			Destroy (gameObject);
-//	}
+	void Update(){
+		transform.Rotate (Vector3.up * Time.deltaTime*50);
+	}
 }

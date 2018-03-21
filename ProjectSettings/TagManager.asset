@@ -11,6 +11,8 @@ TagManager:
   - Boar
   - inv_main
   - AIMan
+  - rHand
+  - lHand
   layers:
   - Default
   - TransparentFX

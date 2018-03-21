@@ -13,10 +13,14 @@ public class EquipmentManager : MonoBehaviour {
 
 	#endregion
 
+	public Transform rHand;
+	public Transform lHand;
+//	public Transform rHandRotation;
 	public MeshRenderer targetMesh;
 	Equipment[] currentEquipment;
 	MeshRenderer[] currentMeshes;
 	Inventory inventory;
+
 
 	public delegate void OnEquipmentChanged (Equipment newItem, Equipment oldItem);
 	public OnEquipmentChanged onEquipmentChanged;
@@ -34,32 +38,54 @@ public class EquipmentManager : MonoBehaviour {
 
 		int slotIndex = (int)newItem.equipSlot;
 
-		Equipment oldItem = null;
+		Equipment oldItem = Unequip(slotIndex);
 
-		if (currentEquipment [slotIndex] != null) {
-			oldItem = currentEquipment [slotIndex];
-			inventory.Add (oldItem);
+//		if (currentEquipment [slotIndex] != null) {
+//			oldItem = currentEquipment [slotIndex];
+//			inventory.Add (oldItem);
+//		}
+
+		if (onEquipmentChanged != null)
+		{
+			onEquipmentChanged.Invoke(newItem, oldItem);
 		}
 
-		if (onEquipmentChanged != null) {
-			onEquipmentChanged.Invoke (newItem, oldItem);
-		}
 
 		currentEquipment [slotIndex] = newItem;
-		MeshRenderer newMesh = Instantiate<MeshRenderer> (newItem.mesh);
-		newMesh.transform.parent = targetMesh.transform;
+		//HERE WE NEED TO ATTACH WEAPON TO CHARACTER
+
+		MeshRenderer newMesh = Instantiate<MeshRenderer> (newItem.mesh, new Vector3(0,0,0),Quaternion.identity);
+	//	newMesh.transform.parent = targetMesh.transform;
+
+		switch (slotIndex) {  // 3 - Right hand slot, 4 - left hand slot
+		case 3: 
+			newMesh.transform.parent = rHand.transform;
+			break;
+		case 4:
+			newMesh.transform.parent = lHand.transform;
+			break;
+
+
+		}
+
+
+		newMesh.transform.localPosition= new Vector3 (0, 0, 0);
+		newMesh.transform.localRotation = Quaternion.identity;
 		currentMeshes [slotIndex] = newMesh;
 	}
 
 
 
-	public void Unequip(int slotIndex){
+	public Equipment Unequip(int slotIndex){
+		Equipment oldItem = null;
 
 		if (currentEquipment [slotIndex] != null) {
-			if (currentMeshes [slotIndex] != null) {
-				Destroy (currentMeshes [slotIndex].gameObject);
-			}
-			Equipment oldItem = currentEquipment [slotIndex];
+			
+				if (currentMeshes [slotIndex] != null) {
+					Destroy (currentMeshes [slotIndex].gameObject);
+				}
+
+			oldItem = currentEquipment [slotIndex];
 			inventory.Add (oldItem);
 			currentEquipment [slotIndex] = null;
 
@@ -67,6 +93,6 @@ public class EquipmentManager : MonoBehaviour {
 				onEquipmentChanged.Invoke (null, oldItem);
 			}
 		}
-	
+		return oldItem;
 	}
 }

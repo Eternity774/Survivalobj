@@ -1,18 +1,18 @@
 fileFormatVersion: 2
-guid: 301e323164816f84598815642d98cd7a
-timeCreated: 1520970925
+guid: 2e40abfb77e96154b951ccd902f68d1f
+timeCreated: 1521560500
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: black
-    2100002: blackmetal
-    2100004: white
+    2100000: Material.001
+    2100002: Material
+    2100004: Material.003
     2300000: //RootNode
     3300000: //RootNode
-    4300000: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C"
+    4300000: Cube
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -68,7 +68,7 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
