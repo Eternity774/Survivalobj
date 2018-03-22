@@ -13,6 +13,10 @@ public class PlayerMove : MonoBehaviour {
     Animator animator;//анимаотор
     CharacterController controller; //контроллер для ходьбы
     private bool inv_Open;
+
+	bool isRunning = true;
+	private float powerRegenTimer;
+
     private GameObject inv_Main;
     private GameObject m_Cam;
     public float pbarSlider;
@@ -41,6 +45,21 @@ public class PlayerMove : MonoBehaviour {
     {
         if (live)
         {
+            /*
+		bool isRunning = Input.GetKey (KeyCode.LeftShift);
+		if (isRunning) {
+			playerHealth.currentPower = Mathf.Clamp (playerHealth.currentPower - (15 * Time.deltaTime), 0.0f, playerHealth.startPower);
+			playerHealth.powerbar.value = playerHealth.currentPower;
+			powerRegenTimer = 0f;
+		} else if (playerHealth.currentPower<playerHealth.startPower){
+			if (powerRegenTimer >= 3.0f) {
+				playerHealth.currentPower = Mathf.Clamp (playerHealth.currentPower + (5 * Time.deltaTime), 0.0f, playerHealth.startPower);
+				playerHealth.powerbar.value = playerHealth.currentPower;
+			} else {
+				powerRegenTimer += Time.deltaTime;
+			}
+		}
+        */
             //Open inventory
             if (Input.GetKeyDown(KeyCode.I))
             {
@@ -93,6 +112,7 @@ public class PlayerMove : MonoBehaviour {
             }
             //print (GetComponent<PlayerHealth> ().currentPower);
             //x - horiz, z - vert
+
             if (h != 0)
             {
                 transform.Rotate(0f, h * speedx, 0f);//вращаем персонажа
@@ -122,21 +142,24 @@ public class PlayerMove : MonoBehaviour {
                 animator.SetBool("Walk", false);//выключаем ходьбу
                 animator.SetBool("WalkBack", false);//выключаем ходьбу
             }
-
-            if (Input.GetKey(KeyCode.W)&& Input.GetKey(KeyCode.LeftShift)&&playerHealth.currentPower>=0)
+           // Debug.Log(isRunning);
+            if (Input.GetKey(KeyCode.W)&& Input.GetKey(KeyCode.LeftShift)&&isRunning)
             {                
                     playerHealth.currentPower -= 5 * Time.deltaTime;
                     playerHealth.powerbar.value = playerHealth.currentPower;
                     speedx = 3;
                     speedz = 20f;
-                    animator.SetBool("Run", true);           
+                    animator.SetBool("Run", true);
             }
-            else
+             else 
             {
                 speedx = 4;
                 speedz = 5f;
                 animator.SetBool("Run", false);
+
             }
+            if (playerHealth.currentPower < 1 && isRunning) StartCoroutine(NoRun());
+
 
             if (Input.GetKeyUp(KeyCode.LeftShift))
             {
@@ -208,6 +231,17 @@ public class PlayerMove : MonoBehaviour {
         yield return new WaitForSeconds(5f);
         Application.Quit();
     }
+
+    public IEnumerator NoRun()
+    {
+        isRunning = false;
+        speedx = 4;
+        speedz = 5f;
+        animator.SetBool("Run", false);
+        yield return new WaitForSeconds(5f);
+        isRunning = true;
+    }
+
 
 
 }

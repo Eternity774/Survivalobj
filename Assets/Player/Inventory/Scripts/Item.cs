@@ -1,10 +1,21 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class Item{
-	
-	public Texture2D Textura;
-	public string Name;
+
+[CreateAssetMenu(fileName="New Item", menuName="Inventory/Item")]
+public class Item : ScriptableObject {
+
+
+	new public string name = "New Item";
+	public Sprite icon = null;
+	public bool isDefaultItem=false;
+
+	public virtual void UseItem()
+	{
+		Debug.Log ("Using " + name);
+	}
+
+	public void RemoveFromInventory(){
+		Inventory.instance.Remove (this);
+	}
 }
