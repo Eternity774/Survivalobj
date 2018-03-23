@@ -64,10 +64,7 @@ public class EquipmentManager : MonoBehaviour {
 		case 4:
 			newMesh.transform.parent = lHand.transform;
 			break;
-
-
 		}
-
 
 		newMesh.transform.localPosition= new Vector3 (0, 0, 0);
 		newMesh.transform.localRotation = Quaternion.identity;

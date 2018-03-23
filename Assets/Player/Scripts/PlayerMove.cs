@@ -13,12 +13,14 @@ public class PlayerMove : MonoBehaviour {
     Animator animator;//анимаотор
     CharacterController controller; //контроллер для ходьбы
     private bool inv_Open;
+	private bool e_inv_Open;
 
 	bool isRunning = true;
 	private float powerRegenTimer;
 
     private GameObject inv_Main;
-    private GameObject m_Cam;
+	private GameObject equipInventory;
+	private GameObject m_Cam;
     public float pbarSlider;
     public float pbarStart;
     public float pbarCurrent;
@@ -33,8 +35,11 @@ public class PlayerMove : MonoBehaviour {
         animator = GetComponentInChildren<Animator>();
         controller = GetComponent<CharacterController>();
         inv_Main = GameObject.FindGameObjectWithTag("inv_main");
+		equipInventory = GameObject.FindGameObjectWithTag ("equipinventory");
         inv_Open = false;
+		e_inv_Open = false;
         inv_Main.SetActive(false);
+		equipInventory.SetActive (false);
         m_Cam = GameObject.FindGameObjectWithTag("MainCamera");
         hspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic>().horizontalAimingSpeed;
         vspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic>().verticalAimingSpeed;
@@ -66,19 +71,40 @@ public class PlayerMove : MonoBehaviour {
                 if (inv_Open == false)
                 {
 
-                    inv_Main.SetActive(true);
-                    inv_Open = true;
-                    inventory_open(inv_Open);
+					equipInventory.SetActive(true);
+					inv_Main.SetActive(true);
+					inv_Open = true;
+                    e_inv_Open = true;
+                    inventory_open(e_inv_Open);
                 }
                 else if (inv_Open == true)
                 {
-
-                    inv_Main.SetActive(false);
-                    inv_Open = false;
-                    inventory_open(inv_Open);
-                }
-                
+					equipInventory.SetActive(false);
+					inv_Main.SetActive(false);
+					inv_Open = false;
+					e_inv_Open = false;
+                    inventory_open(e_inv_Open);
+                }                
             }
+//
+//			if (Input.GetKeyDown(KeyCode.I))
+//			{
+//				if (e_inv_Open == false)
+//				{
+//
+//
+//					inventory_open(inv_Open);
+//				}
+//				else if (e_inv_Open == true)
+//				{
+//
+//
+//					inventory_open(inv_Open);
+//				}
+//
+//			}
+
+
             if (Input.GetKeyDown(KeyCode.Mouse0) && !(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) && (inv_Open == false))
             {
 
@@ -195,13 +221,12 @@ public class PlayerMove : MonoBehaviour {
 
 
     public void inventory_open(bool temp) {
-        temp = inv_Open;
+      temp = inv_Open;
         if (temp == false) { //IF INVENTORY OPENED
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             m_Cam.GetComponent<ThirdPersonOrbitCamBasic>().horizontalAimingSpeed = hspeed;
             m_Cam.GetComponent<ThirdPersonOrbitCamBasic>().verticalAimingSpeed = vspeed;
-
 
         } else if (temp == true) { // IF INVENTORY CLOSED
             Cursor.visible = true;
