@@ -19,6 +19,7 @@ public class Equipment : Item {
 		EquipmentManager.instance.Equip (this);
 		RemoveFromInventory ();
 	}
+		
 }
 
 public enum EquipmentSlot{Head, Chest, Boots, rHand, lHand}
