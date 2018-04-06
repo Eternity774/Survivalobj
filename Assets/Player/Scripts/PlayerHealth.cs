@@ -25,7 +25,7 @@ public class PlayerHealth : MonoBehaviour {
 	public Slider powerbar;
 
 	void Start () {
-		currentHealth = startHealth;
+		currentHealth = startHealth/2;
 		healthbar.value = startHealth;
 		currentFood = startFood;
 		foodbar.value = startFood;

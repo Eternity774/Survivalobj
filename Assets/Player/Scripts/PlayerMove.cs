@@ -50,21 +50,21 @@ public class PlayerMove : MonoBehaviour {
     {
         if (live)
         {
-            /*
-		bool isRunning = Input.GetKey (KeyCode.LeftShift);
-		if (isRunning) {
-			playerHealth.currentPower = Mathf.Clamp (playerHealth.currentPower - (15 * Time.deltaTime), 0.0f, playerHealth.startPower);
-			playerHealth.powerbar.value = playerHealth.currentPower;
-			powerRegenTimer = 0f;
-		} else if (playerHealth.currentPower<playerHealth.startPower){
-			if (powerRegenTimer >= 3.0f) {
-				playerHealth.currentPower = Mathf.Clamp (playerHealth.currentPower + (5 * Time.deltaTime), 0.0f, playerHealth.startPower);
-				playerHealth.powerbar.value = playerHealth.currentPower;
-			} else {
-				powerRegenTimer += Time.deltaTime;
-			}
-		}
-        */
+            
+//		bool isRunning = Input.GetKey (KeyCode.LeftShift);
+//		if (isRunning) {
+//			playerHealth.currentPower = Mathf.Clamp (playerHealth.currentPower - (15 * Time.deltaTime), 0.0f, playerHealth.startPower);
+//			playerHealth.powerbar.value = playerHealth.currentPower;
+//			powerRegenTimer = 0f;
+//		} else if (playerHealth.currentPower<playerHealth.startPower){
+//			if (powerRegenTimer >= 3.0f) {
+//				playerHealth.currentPower = Mathf.Clamp (playerHealth.currentPower + (5 * Time.deltaTime), 0.0f, playerHealth.startPower);
+//				playerHealth.powerbar.value = playerHealth.currentPower;
+//			} else {
+//				powerRegenTimer += Time.deltaTime;
+//			}
+//		}
+        
             //Open inventory
             if (Input.GetKeyDown(KeyCode.I))
             {
