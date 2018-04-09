@@ -12,6 +12,7 @@ public class PlayerMove : MonoBehaviour {
     bool live = true;
     Animator animator;//анимаотор
     CharacterController controller; //контроллер для ходьбы
+    public Clan ClanOfPlayer;
     private bool inv_Open;
 
 	bool isRunning = true;
@@ -39,7 +40,7 @@ public class PlayerMove : MonoBehaviour {
         hspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic>().horizontalAimingSpeed;
         vspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic>().verticalAimingSpeed;
         playerHealth = GetComponent<PlayerHealth>();
-
+        ClanOfPlayer = new Clan(gameObject);//сразу создаем клан игрока
     }
     private void Update()
     {

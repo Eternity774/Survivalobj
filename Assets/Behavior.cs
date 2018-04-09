@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+
 public class Behavior : MonoBehaviour {
     
     GameObject Creator;//ссылка на создателя
@@ -13,6 +14,9 @@ public class Behavior : MonoBehaviour {
     public GameObject enemy;//храним, кто преследует кролика
     public GameObject enemyinmemory;//для случая, когда основной враг нейтрализуется, но еще один, который был ранее проигнорирован, станет основным
     public GameObject friend;
+    //public GameObject leader;//лидер клана
+    public Clan clan;
+
     public int priority;//приоритет для разрешения столкновения нескольких объектов
     public int hp;//здоровье
     public int damage;//наносимый урон
@@ -97,7 +101,7 @@ public class Behavior : MonoBehaviour {
 
                     else if (enemyinmemory != null)
                     {
-                        state = State.wait;
+                        //state = State.wait;
                         EnemyInMemory(enemyinmemory);//есть ли враг в памяти
                     }
                     else StartCoroutine(Wait());
@@ -158,10 +162,22 @@ public class Behavior : MonoBehaviour {
                             }
                         }
                     }
-                    else
+                    else//после атаки
                     {
                         anim.SetBool("Attack", false);
-                        if (priority == 6 && friend != null) state = State.friend;
+                        if (priority == 6 && friend != null)
+                        {
+                            if (friend.GetComponent<Behavior>().state != State.dead)
+                            {
+                                if (friend.GetComponent<Behavior>().state != State.friend) state = State.friend;
+                            }
+                            else
+                            {
+                                friend = null;
+                                //friend.GetComponent<Behavior>().friend = null;
+                                StartCoroutine(Wait());
+                            }
+                        }
                         else StartCoroutine(Wait());
                     }
                     break;
@@ -179,27 +195,38 @@ public class Behavior : MonoBehaviour {
                         anim.SetBool("Attack", false);
                         StopAllCoroutines();
                         if(priority==5) anim.SetBool("Eating", false);
-                        if (priority == 6 && friend != null) state = State.friend;
+                        if (priority == 6 && friend != null)
+                        {
+                            if (friend.GetComponent<Behavior>().state!=State.dead)
+                            {
+                                if (friend.GetComponent<Behavior>().state != State.friend) state = State.friend;
+                            }
+                            else
+                            {
+                                friend = null;
+                                friend.GetComponent<Behavior>().friend = null;
+                            }
+                        }
                         else StartCoroutine(Wait());
                     }
                     if (enemyinmemory != null) EnemyInMemory(enemyinmemory);
                     break;
                 }
-            case State.friend:
+            case State.friend://имеется в виду не главный
                 {
-                    if (friend != null)//если враг не отсоединился
+                    if (clan != null)//если друг не отсоединился
                     {
-                        float distance = Vector3.Distance(transform.position, friend.transform.position);//мереем дистанцию
+                        float distance = Vector3.Distance(transform.position, clan.Leader.transform.position);//мереем дистанцию
                         if (distance > 20)
                         {
-                            nav.SetDestination(friend.transform.position);//направляем агента на врага   
+                            nav.SetDestination(clan.Leader.transform.position);//направляем агента на врага   
                             anim.SetBool("Run", true);
                             nav.speed = 8;  
                         }               
                          
                         if (distance < 8&&distance>=2)//когда дистанция сократилась
                         {
-                            nav.SetDestination(friend.transform.position);//направляем агента на врага   
+                            nav.SetDestination(clan.Leader.transform.position);//направляем агента на врага   
                             anim.SetBool("Walk", true);
                             anim.SetBool("Run", false);
                            
@@ -215,7 +242,7 @@ public class Behavior : MonoBehaviour {
 
                     else if (enemyinmemory != null)
                     {
-                        state = State.wait;
+                        //state = State.wait;
                         EnemyInMemory(enemyinmemory);//есть ли враг в памяти
                     }
                     else StartCoroutine(Wait());
@@ -260,6 +287,12 @@ public class Behavior : MonoBehaviour {
                 nav.enabled = false;
                 enemy = null;
                 state = State.dead;
+                
+                if (clan!=null)
+                {
+                    clan.DeleteFromClan(gameObject);
+                    clan = null;
+                }
                 anim.SetTrigger("Death");
                 priority = 3;               
                 CreatorRef.SomebodyDead(gameObject);
@@ -277,9 +310,9 @@ public class Behavior : MonoBehaviour {
             { 
             int newenemypriority;//приоритет нового врага
             if (newenemy.tag == "Player") newenemypriority = 6;//у игрока приоритет всегда 6
-            else newenemypriority = newenemy.GetComponent<Behavior>().priority;
+            else newenemypriority = newenemy.GetComponent<Behavior>().priority;//узнаем приоритет нового врага
 
-            bool changenemy = false;
+            bool changenemy = false;//будем ли менять врага
             if (enemy != null)//определяем, будем ли менять врага, если уже есть взаимодействие
             {
                 int oldpriority;
@@ -300,19 +333,81 @@ public class Behavior : MonoBehaviour {
                     bool addenemy = false;        //добавить ли врага после проверки условий
                     bool friendly = false;
                     // Debug.Log("About friendly!" + priority + newenemypriority);
-                    if (priority == newenemypriority)
+                    if (priority == 6 && newenemypriority==6)
                     {
-                        Debug.Log("About friendly!" + priority + newenemypriority);
-                        if (Random.Range(0, 3) != 0)
+                        if(clan!=null)//мы в клане
                         {
-                            friendly = true;
-                            Debug.Log("FRIENDLY! " + gameObject.name);
+                            if (newenemy.tag == "Player")//мы в клане игрока
+                            {
+                                if(clan.name == "Clan of Player") friendly = true;
+
+                            } 
+                            else if (newenemy.GetComponent<Behavior>().clan != null)//мы встретили не игрока
+                            {
+                                if (newenemy.GetComponent<Behavior>().clan == clan) friendly = true;
+                                friendly = false;//!!! в противном случае не дружим однозначно
+                            }
+                            else//т.е. мы в клане, а он - нет
+                            {
+                                if (Random.Range(0, 3) != 0) friendly= true;
+                                //добавить в клан!!!
+                                clan.AddToClan(newenemy);
+                            }
+                            
+                        }
+                        else//мы не в клане
+                        {
+                            if (newenemy.tag == "Player")//мы встретили игрока
+                            {
+                                if (Random.Range(0, 3) != 0)
+                                {
+                                    friendly = true;//присоединть к клану игрока
+                                    clan = newenemy.GetComponent<PlayerMove>().ClanOfPlayer;
+                                    clan.AddToClan(gameObject);
+                                }
+
+                            }
+                            else if (newenemy.GetComponent<Behavior>().clan != null)//встретили не игрока уже в клане
+                            {
+                                if (Random.Range(0, 3) != 0)
+                                {
+                                    friendly = true;//присоединиться к клану другого аи
+                                    clan = newenemy.GetComponent<Behavior>().clan;
+                                    clan.AddToClan(gameObject);
+                                }
+                            }
+                            else //мы оба не в кланах
+                            {
+                                if (Random.Range(0, 3) != 0)
+                                {
+                                    friendly = true;
+                                    clan = new Clan(this.gameObject);
+                                }
+
+                            }
+                        }
+                        //Debug.Log("About friendly!" + priority + newenemypriority);
+                       
+                        if(friendly)//если решили дружить
+                        {
                             if (priority == 6)
                             {
+                                Debug.Log("FRIENDLY! " + gameObject.name);
                                 friend = newenemy;
                                 anim.SetTrigger("Hello");
-                                state = State.friend;
-                                StopAllCoroutines();
+                                if (friend.tag == "Player")//добавляемся в клан игрока
+                                {
+                                    nav.ResetPath();
+                                    state = State.friend;
+                                    StopAllCoroutines();
+                                }
+                                //  else if (friend.GetComponent<Behavior>().state != State.friend)
+                                else if(clan.Leader != gameObject)//если мы не лидер клана
+                                {
+                                    nav.ResetPath();
+                                    state = State.friend;
+                                    StopAllCoroutines();
+                                }
 
                             }
                         }
@@ -381,8 +476,9 @@ public class Behavior : MonoBehaviour {
         anim.SetBool("Run", false);//выключаем бег
         anim.SetBool("Walk", false);//выключаем анимацию ходьбы
         state = State.wait;
+        Vector3 temp = CreatorRef.FindPoint();
         yield return new WaitForSeconds(10f);//ждем 10 секунд               
-        nav.SetDestination(CreatorRef.FindPoint());//задаем новую точку для движения в пределах плоскости
+        nav.SetDestination(temp);//задаем новую точку для движения в пределах плоскости
         nav.speed = 1;       //включаем низкую скорость для ходьбы
         anim.SetBool("Walk", true);//включаем анимацию ходьбы  
         state = State.walk;//включаем состояние ходьбы       

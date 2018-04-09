@@ -13,6 +13,7 @@ public class Creator : MonoBehaviour {
     public GameObject bearpref;
     public GameObject manpref;
 
+    //public List<Clan> clans;
     
     public int countai = 5;
 
@@ -28,13 +29,14 @@ public class Creator : MonoBehaviour {
                                          { 8, 8, 10, 7, 5, 5, 3 },
                                          { 9, 9, 10, 8, 5, 5, 5} };
         
-       for (int i = 0; i < 48; i++) { CreateSomebody(rabbitpref); }
-        for (int i = 0; i < 24; i++) { CreateSomebody(stagpref); }
+        for (int i = 0; i < 50; i++) { CreateSomebody(rabbitpref); }
+        /*for (int i = 0; i < 24; i++) { CreateSomebody(stagpref); }
         for (int i = 0; i < 12; i++) { CreateSomebody(boarpref); }
         for (int i = 0; i < 6; i++) { CreateSomebody(wolfpref); }
         for (int i = 0; i < 3; i++) { CreateSomebody(bearpref); }
-        for (int i = 0; i < 5; i++) { CreateSomebody(manpref); }
-       
+        */
+        for (int i = 0; i < 50; i++) { CreateSomebody(manpref); }
+      
 
     }
 
@@ -111,6 +113,7 @@ public class Creator : MonoBehaviour {
     void CreateSomebody(GameObject prefub)
     {
         GameObject a = Instantiate(prefub, FindPoint(), Quaternion.identity); a.name += id; id++;
+        //GetComponent<NavMeshAgent>().avoidancePriority = Random.Range(0, 100);
     }
     public bool Response(int who, int whom)
     {
@@ -122,19 +125,22 @@ public class Creator : MonoBehaviour {
     public Vector3 FindPoint()//поиск точки на меше, куда возможно дойти
     {
         int radius = 10;
-        
+       
         while(true)
         {
+           
             Vector3 startpoint = new Vector3(Random.Range(0, 3000), 0, Random.Range(0, 3000));
             Vector3 pointwithR = startpoint + Random.insideUnitSphere * radius;
             NavMeshHit hit;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 50; i++)
             {
                 if (NavMesh.SamplePosition(pointwithR, out hit, 1f, NavMesh.AllAreas))
                 {
+                    
                     return hit.position;
                 }
             }
+            
         }
         
     }

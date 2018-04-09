@@ -2383,6 +2383,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 0}
   enemyinmemory: {fileID: 0}
+  friend: {fileID: 0}
   priority: 6
   hp: 700
   damage: 90
@@ -2813,10 +2814,10 @@ NavMeshAgent:
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 3
+  m_WalkableMask: 1
+  m_ObstacleAvoidanceType: 0
