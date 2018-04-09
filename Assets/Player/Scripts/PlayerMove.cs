@@ -9,7 +9,7 @@ public class PlayerMove : MonoBehaviour {
     public int priority = 6;
     float speedx = 4f;//скорость поворота 
     float speedz = 0.1f;//скорость ходьбы
-    bool live = true;
+    public bool live = true;
     Animator animator;//анимаотор
     CharacterController controller; //контроллер для ходьбы
     public Clan ClanOfPlayer;

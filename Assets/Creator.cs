@@ -15,7 +15,7 @@ public class Creator : MonoBehaviour {
 
     //public List<Clan> clans;
     
-    public int countai = 5;
+    public int countai = 20;
 
     int[,] ResponceMatrix;
     int id = 0;
@@ -29,13 +29,12 @@ public class Creator : MonoBehaviour {
                                          { 8, 8, 10, 7, 5, 5, 3 },
                                          { 9, 9, 10, 8, 5, 5, 5} };
         
-        for (int i = 0; i < 50; i++) { CreateSomebody(rabbitpref); }
-        /*for (int i = 0; i < 24; i++) { CreateSomebody(stagpref); }
-        for (int i = 0; i < 12; i++) { CreateSomebody(boarpref); }
+        for (int i = 0; i < 15; i++) { CreateSomebody(rabbitpref); }
+        for (int i = 0; i < 12; i++) { CreateSomebody(stagpref); }
+        for (int i = 0; i < 9; i++) { CreateSomebody(boarpref); }
         for (int i = 0; i < 6; i++) { CreateSomebody(wolfpref); }
         for (int i = 0; i < 3; i++) { CreateSomebody(bearpref); }
-        */
-        for (int i = 0; i < 50; i++) { CreateSomebody(manpref); }
+        for (int i = 0; i < 20; i++) { CreateSomebody(manpref); }
       
 
     }
@@ -104,9 +103,14 @@ public class Creator : MonoBehaviour {
             case "Boar": CreateSomebody(boarpref); break;
             case "Wolf": CreateSomebody(wolfpref); break;
             case "Bear": CreateSomebody(bearpref); break;
-            case "AIMAn": CreateSomebody(manpref); break;
-            
-               
+            //case "AIMAn": CreateSomebody(manpref); break;
+            case "AIMAn":
+                {
+                    Debug.Log("осталось " + countai--);
+                    
+                    break;
+                        }
+
         }
         
     }

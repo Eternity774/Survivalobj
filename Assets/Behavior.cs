@@ -197,7 +197,12 @@ public class Behavior : MonoBehaviour {
                         if(priority==5) anim.SetBool("Eating", false);
                         if (priority == 6 && friend != null)
                         {
-                            if (friend.GetComponent<Behavior>().state!=State.dead)
+                            if(friend.tag == "Player")
+                            {
+                                if (friend.GetComponent<PlayerMove>().live) state = State.friend;
+
+                            }
+                            else if (friend.GetComponent<Behavior>().state!=State.dead)
                             {
                                 if (friend.GetComponent<Behavior>().state != State.friend) state = State.friend;
                             }
@@ -339,19 +344,33 @@ public class Behavior : MonoBehaviour {
                         {
                             if (newenemy.tag == "Player")//мы в клане игрока
                             {
-                                if(clan.name == "Clan of Player") friendly = true;
-
+                                if (clan.name == "Clan of Player")
+                                {
+                                    friendly = true;
+                                    Debug.Log(gameObject.name + "я уже был в клане игрока");
+                                }
+                                else Debug.Log(gameObject.name + "я не в клане игрока");
                             } 
                             else if (newenemy.GetComponent<Behavior>().clan != null)//мы встретили не игрока
                             {
-                                if (newenemy.GetComponent<Behavior>().clan == clan) friendly = true;
-                                friendly = false;//!!! в противном случае не дружим однозначно
+                                if (newenemy.GetComponent<Behavior>().clan == clan)
+                                {
+                                    friendly = true;
+                                    Debug.Log(gameObject.name + "я в том же клане, что и этот аи");
+                                }
+                                else Debug.Log(gameObject.name + "я в другом клане");
+
                             }
                             else//т.е. мы в клане, а он - нет
                             {
-                                if (Random.Range(0, 3) != 0) friendly= true;
-                                //добавить в клан!!!
-                                clan.AddToClan(newenemy);
+                                if (Random.Range(0, 3) != 0)
+                                {
+                                    friendly = true;
+                                    //добавить в клан!!!
+                                    clan.AddToClan(newenemy);
+                                    Debug.Log(gameObject.name + "я возьму его в свой клан");
+                                }
+                                else Debug.Log(gameObject.name + "я не возьму его в свой клан");
                             }
                             
                         }
@@ -364,7 +383,9 @@ public class Behavior : MonoBehaviour {
                                     friendly = true;//присоединть к клану игрока
                                     clan = newenemy.GetComponent<PlayerMove>().ClanOfPlayer;
                                     clan.AddToClan(gameObject);
+                                    Debug.Log(gameObject.name + "Я хочу в клан игрока!");
                                 }
+                                else Debug.Log(gameObject.name + "я не хочу в клан игрока");
 
                             }
                             else if (newenemy.GetComponent<Behavior>().clan != null)//встретили не игрока уже в клане
@@ -374,15 +395,19 @@ public class Behavior : MonoBehaviour {
                                     friendly = true;//присоединиться к клану другого аи
                                     clan = newenemy.GetComponent<Behavior>().clan;
                                     clan.AddToClan(gameObject);
+                                    Debug.Log(gameObject.name + "я пойду в клан этого аи");
                                 }
+                                else Debug.Log(gameObject.name + "я не пойду в клан этого аи");
                             }
                             else //мы оба не в кланах
                             {
                                 if (Random.Range(0, 3) != 0)
                                 {
                                     friendly = true;
-                                    clan = new Clan(this.gameObject);
+                                    clan = new Clan(gameObject);
+                                    Debug.Log(gameObject.name + "Мы сформируем новый клан!");
                                 }
+                                else Debug.Log(gameObject.name + "не будем формировать новый клан");
 
                             }
                         }
@@ -392,7 +417,7 @@ public class Behavior : MonoBehaviour {
                         {
                             if (priority == 6)
                             {
-                                Debug.Log("FRIENDLY! " + gameObject.name);
+                                //Debug.Log("FRIENDLY! " + gameObject.name);
                                 friend = newenemy;
                                 anim.SetTrigger("Hello");
                                 if (friend.tag == "Player")//добавляемся в клан игрока
