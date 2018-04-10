@@ -145,8 +145,16 @@ public class Behavior : MonoBehaviour {
                                 {
                                     if (enemyinmemory != null)
                                     {
-                                        if (Vector3.Distance(transform.position, enemyinmemory.transform.position) < 30 && enemyinmemory.GetComponent<Behavior>().priority > 4)
-                                            EnemyInMemory(enemyinmemory);
+                                        if (Vector3.Distance(transform.position, enemyinmemory.transform.position) < 30)
+                                        {
+                                            if (enemyinmemory.tag == "Player")
+                                            {
+                                                EnemyInMemory(enemyinmemory);
+                                            }
+                                            else if (enemyinmemory.GetComponent<Behavior>().priority > 4) EnemyInMemory(enemyinmemory);
+                                        }
+                                       
+                                           
                                     }
                                     if (priority > 3) StartCoroutine(Eating());//начинаем есть                                 
                                     else
