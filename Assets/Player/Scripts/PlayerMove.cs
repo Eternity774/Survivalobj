@@ -23,7 +23,7 @@ public class PlayerMove : MonoBehaviour {
     public float pbarSlider;
     public float pbarStart;
     public float pbarCurrent;
-    private PlayerHealth playerHealth;
+    public PlayerHealth playerHealth;
     [HideInInspector]
     public float hspeed; //для хранения скорости мышки (для инвентаря)
     [HideInInspector]
@@ -216,10 +216,16 @@ public class PlayerMove : MonoBehaviour {
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (live&&hit.gameObject.name != "Terrain")
+        if (live && hit.gameObject.name != "Terrain" && hit.gameObject.tag != "hut")
         {
             associated = hit.gameObject;
             hit.gameObject.GetComponent<Behavior>().GetEnemy(gameObject);
+        }
+        else if (hit.gameObject.tag == "hut")
+        {
+            playerHealth.Healing(100);
+            playerHealth.currentPower = 100;
+            playerHealth.powerbar.value = playerHealth.currentPower;
         }
     }
 

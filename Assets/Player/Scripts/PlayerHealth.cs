@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour {
 
-	public int startHealth=700;
+	public int startHealth=400;
 	public int currentHealth;
 	public int startFood = 75;
 	public int currentFood;
@@ -47,7 +47,7 @@ public class PlayerHealth : MonoBehaviour {
 		currentFood--;
 		foodbar.value = currentFood;
 	}
-    void Healing(int amount)
+    public void Healing(int amount)
     {
         currentHealth += amount;
         if (currentHealth > startHealth) currentHealth = startHealth;
