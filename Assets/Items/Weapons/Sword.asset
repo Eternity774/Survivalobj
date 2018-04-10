@@ -14,7 +14,9 @@ MonoBehaviour:
   name: Sword of bitches
   icon: {fileID: 21300000, guid: 1ab240b88fe6ddd4abeb0bae4db5c0f5, type: 3}
   isDefaultItem: 0
-  equipSlot: 3
+
+  equipSlot: 4
+
   armorModifier: 0
   damageModifier: 5
   mesh: {fileID: 2300000, guid: 301e323164816f84598815642d98cd7a, type: 3}

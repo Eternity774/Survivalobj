@@ -5,7 +5,16 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour {
 
-	public int startHealth=400;
+	#region Singleton 
+	public static PlayerHealth instance;
+
+	void Awake(){
+		instance = this;
+	}
+
+	#endregion
+
+	public int startHealth=700;
 	public int currentHealth;
 	public int startFood = 75;
 	public int currentFood;
@@ -16,7 +25,7 @@ public class PlayerHealth : MonoBehaviour {
 	public Slider powerbar;
 
 	void Start () {
-		currentHealth = startHealth;
+		currentHealth = startHealth/2;
 		healthbar.value = startHealth;
 		currentFood = startFood;
 		foodbar.value = startFood;
@@ -43,16 +52,26 @@ public class PlayerHealth : MonoBehaviour {
         foodbar.value = currentFood;        
     }
 
+	public void Healing(int amount)
+	{
+		currentHealth += amount;
+		if (currentHealth > startHealth) currentHealth = startHealth;
+		healthbar.value = currentHealth;
+	}
+
+	public void TakePower(int amount)
+	{
+		currentPower += amount;
+		if (currentPower> startPower) currentPower = startPower;
+		powerbar.value = currentPower;
+	}
+
     public void Hunger(){
 		currentFood--;
 		foodbar.value = currentFood;
 	}
-    public void Healing(int amount)
-    {
-        currentHealth += amount;
-        if (currentHealth > startHealth) currentHealth = startHealth;
-        healthbar.value = currentHealth;
-    }
+  
+
 
     public IEnumerator FoodBar (){
 		while (true) {			

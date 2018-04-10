@@ -15,12 +15,12 @@ public class EquipmentManager : MonoBehaviour {
 
 	public Transform rHand;
 	public Transform lHand;
-//	public Transform rHandRotation;
+	public Transform equipParent;
 	public MeshRenderer targetMesh;
 	Equipment[] currentEquipment;
 	MeshRenderer[] currentMeshes;
 	Inventory inventory;
-
+	CharacterSlot[] e_slots;
 
 	public delegate void OnEquipmentChanged (Equipment newItem, Equipment oldItem);
 	public OnEquipmentChanged onEquipmentChanged;
@@ -32,6 +32,10 @@ public class EquipmentManager : MonoBehaviour {
 		int numSlots = System.Enum.GetNames (typeof(EquipmentSlot)).Length;
 		currentEquipment = new Equipment[numSlots];
 		currentMeshes = new MeshRenderer[numSlots];
+		e_slots = equipParent.GetComponentsInChildren<CharacterSlot> ();
+		for (int i = 0; i < e_slots.Length; i++) {
+			print (e_slots [i].name);
+		}
 	}
 
 	public void Equip (Equipment newItem){
@@ -52,6 +56,10 @@ public class EquipmentManager : MonoBehaviour {
 
 
 		currentEquipment [slotIndex] = newItem;
+		//print (slotIndex);
+
+
+
 		//HERE WE NEED TO ATTACH WEAPON TO CHARACTER
 
 		MeshRenderer newMesh = Instantiate<MeshRenderer> (newItem.mesh, new Vector3(0,0,0),Quaternion.identity);
@@ -64,11 +72,8 @@ public class EquipmentManager : MonoBehaviour {
 		case 4:
 			newMesh.transform.parent = lHand.transform;
 			break;
-
-
 		}
-
-
+		e_slots [slotIndex].icon.sprite = newItem.icon;
 		newMesh.transform.localPosition= new Vector3 (0, 0, 0);
 		newMesh.transform.localRotation = Quaternion.identity;
 		currentMeshes [slotIndex] = newMesh;
@@ -88,6 +93,8 @@ public class EquipmentManager : MonoBehaviour {
 			oldItem = currentEquipment [slotIndex];
 			inventory.Add (oldItem);
 			currentEquipment [slotIndex] = null;
+
+			e_slots [slotIndex].icon.sprite = e_slots [slotIndex].defaultImage;
 
 			if (onEquipmentChanged != null) {
 				onEquipmentChanged.Invoke (null, oldItem);

@@ -18,4 +18,8 @@ public class Item : ScriptableObject {
 	public void RemoveFromInventory(){
 		Inventory.instance.Remove (this);
 	}
+	public void DisuseItem(){
+		Inventory.instance.Add (this);
+		Crafting.instance.Remove (this);
+	}
 }
