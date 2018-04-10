@@ -344,7 +344,7 @@ public class Behavior : MonoBehaviour {
                         {
                             if (newenemy.tag == "Player")//мы в клане игрока
                             {
-                                if (clan.name == "Clan of Player")
+                                if (clan.Leader == newenemy)
                                 {
                                     friendly = true;
                                     Debug.Log(gameObject.name + "я уже был в клане игрока");

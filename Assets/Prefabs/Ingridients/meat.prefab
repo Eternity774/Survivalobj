@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 135623395406347522}
   - component: {fileID: 114420336369998370}
   m_Layer: 0
-  m_Name: RockA
+  m_Name: meat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,7 +68,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1628290208963666}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1651.9094, y: 10.128494, z: 1635.3718}
+  m_LocalPosition: {x: 1651.9308, y: 9.069, z: 1637.476}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4134786370868886}
@@ -96,7 +96,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1715494647449814}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0.263, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4134786370868886}
@@ -116,7 +116,7 @@ MeshRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 13006ffa57c01b240add06fe4106add3, type: 2}
+  - {fileID: 2100000, guid: 74f56cf69b97eec4f85fb0e4c5bfc5e7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
