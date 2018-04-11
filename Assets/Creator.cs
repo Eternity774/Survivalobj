@@ -138,7 +138,7 @@ public class Creator : MonoBehaviour {
         while(true)
         {
            
-            Vector3 startpoint = new Vector3(Random.Range(0, 3000), 0, Random.Range(0, 3000));
+            Vector3 startpoint = new Vector3(Random.Range(-250, 750), 0, Random.Range(-250, 750));
             Vector3 pointwithR = startpoint + Random.insideUnitSphere * radius;
             NavMeshHit hit;
             for (int i = 0; i < 50; i++)
