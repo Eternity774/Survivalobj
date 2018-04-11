@@ -13,15 +13,20 @@ public class Creator : MonoBehaviour {
     public GameObject bearpref;
     public GameObject manpref;
 
-    //public List<Clan> clans;
+    public static Text countofclans;
+    public static Text withoutclans;
     
+    public static List<Clan> ListofClans = new List<Clan>();
     public int countai = 20;
 
     int[,] ResponceMatrix;
     int id = 0;
 
     void Start () {
-        
+        countofclans = GameObject.Find("Clans").GetComponent<Text>();
+        withoutclans = GameObject.Find("Free").GetComponent<Text>();
+
+
         ResponceMatrix = new int[6, 7] { { 0, 0, 0, 0, 0, 0, 0 },//кто-строка, на кого-столбец
                                          { 0, 5, 0, 1, 0, 2, 0 },
                                          { 3, 2, 5, 4, 0, 3, 0 },
@@ -35,7 +40,7 @@ public class Creator : MonoBehaviour {
         for (int i = 0; i < 6; i++) { CreateSomebody(wolfpref); }
         for (int i = 0; i < 3; i++) { CreateSomebody(bearpref); }
         for (int i = 0; i < 20; i++) { CreateSomebody(manpref); }
-      
+        ChangeInClans();
 
     }
 
@@ -148,4 +153,31 @@ public class Creator : MonoBehaviour {
         }
         
     }
+    public static void ChangeInClans()
+    {
+        if (countofclans != null)//текст уже загрузился
+        {
+            Debug.Log("Действующих кланов: " + ListofClans.Count);
+            countofclans.text = "Clans:" + ListofClans.Count;
+            GameObject[] temparray = GameObject.FindGameObjectsWithTag("AIMan");
+            Debug.Log("АИ игроков: " + temparray.Length);
+            int countwithoutclan = 0;
+            foreach (GameObject i in temparray)
+            {
+                if (i.GetComponent<Behavior>().clan == null&&i.GetComponent<Behavior>().state!=Behavior.State.dead) countwithoutclan++;
+            }
+            Debug.Log("АИ игроков без клана: " + countwithoutclan);
+            withoutclans.text = "Free:" + countwithoutclan;
+            if (countwithoutclan == 0 && ListofClans.Count == 1)
+            {
+                Debug.Log("You win");
+                countofclans.text = "YOU";
+                withoutclans.text = "WIN:";
+            }
+        }
+            
+    }
+
+
+
 }
