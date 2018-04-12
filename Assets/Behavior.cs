@@ -81,7 +81,12 @@ public class Behavior : MonoBehaviour {
                         }
                         else
                         {
-                            if (clan != null) state = State.friend;
+                            if (clan != null)
+                            {
+                                nav.ResetPath();
+                                state = State.friend;
+                                StopAllCoroutines();
+                            }
                             else StartCoroutine(Wait());//отдыхаем
                         }
                     }
@@ -110,7 +115,13 @@ public class Behavior : MonoBehaviour {
                     }
                     else
                     {
-                        if (clan != null) state = State.friend;
+                        anim.SetBool("Attack", false);
+                        if (clan != null)
+                        {
+                            nav.ResetPath();
+                            state = State.friend;
+                            StopAllCoroutines();
+                        }
                         else StartCoroutine(Wait());
                     }
                     
@@ -131,7 +142,7 @@ public class Behavior : MonoBehaviour {
                         else
                         {
 
-
+                            
                             Vector3 forwardenemyPosition = enemy.transform.TransformPoint(Vector3.forward * 2);//переводим в глобальные координаты направление вперед
                             nav.SetDestination(forwardenemyPosition);
                             transform.LookAt(enemy.transform);
@@ -184,8 +195,9 @@ public class Behavior : MonoBehaviour {
                         anim.SetBool("Attack", false);
                         if (clan != null)
                         {
-                            state = State.friend;                         
-                           
+                            nav.ResetPath();
+                            state = State.friend;
+                            StopAllCoroutines();
                         }
                         else StartCoroutine(Wait());
                     }
@@ -206,7 +218,9 @@ public class Behavior : MonoBehaviour {
                         if(priority==5) anim.SetBool("Eating", false);
                         if (clan != null)
                         {
+                            nav.ResetPath();
                             state = State.friend;
+                            StopAllCoroutines();
                         }
                         else StartCoroutine(Wait());
                     }
@@ -277,7 +291,11 @@ public class Behavior : MonoBehaviour {
                 anim.SetBool("Attack", true);
             }
             if (enemy!=killer) enemy = killer;
-            if (friend == killer) friend = null;
+            if (friend == killer)
+            {
+                friend = null;
+                clan = null;
+            }
            // Debug.Log("hp before " + hp);
             hp -= Random.Range(enemydamage, enemydamage + 10);
           //  Debug.Log("hp after " + hp);
@@ -392,6 +410,17 @@ public class Behavior : MonoBehaviour {
                                     clan = newenemy.GetComponent<Behavior>().clan;
                                     clan.AddToClan(gameObject);
                                     Debug.Log(gameObject.name + "я пойду в клан этого аи");
+                                    if (enemy != null)
+                                    {
+                                        if (enemy.tag != "Player")
+                                        {
+                                            if (enemy.GetComponent<Behavior>().clan != null)
+                                            {
+                                                if (enemy.GetComponent<Behavior>().clan == newenemy.GetComponent<Behavior>().clan) enemy = null;
+                                            }
+                                        }
+                                        else if (enemy.GetComponent<PlayerMove>().ClanOfPlayer == clan) enemy = null;
+                                    }
                                 }
                                 else Debug.Log(gameObject.name + "я не пойду в клан этого аи");
                             }
@@ -415,6 +444,7 @@ public class Behavior : MonoBehaviour {
                             {
                                 //Debug.Log("FRIENDLY! " + gameObject.name);
                                 friend = newenemy;
+                                anim.SetBool("Attack", false);
                                 anim.SetTrigger("Hello");
                                 if (friend.tag == "Player")//добавляемся в клан игрока
                                 {

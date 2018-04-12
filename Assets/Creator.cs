@@ -165,6 +165,7 @@ public class Creator : MonoBehaviour {
             foreach (GameObject i in temparray)
             {
                 if (i.GetComponent<Behavior>().clan == null&&i.GetComponent<Behavior>().state!=Behavior.State.dead) countwithoutclan++;
+                
             }
             Debug.Log("АИ игроков без клана: " + countwithoutclan);
             withoutclans.text = "Free:" + countwithoutclan;

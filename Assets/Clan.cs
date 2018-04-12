@@ -35,14 +35,13 @@ public class Clan{
             if (members.Count == 1)
             {
                 Debug.Log(name + "IS DEAD");
-                Creator.ListofClans.Remove(this);
-                Creator.ChangeInClans();
-                Debug.Log("after deleting");
-
+                Creator.ListofClans.Remove(this);               
+               
             }
             else Leader = members[1];     
         }
         else members.Remove(oldmember);
+        Creator.ChangeInClans();
 
     }
    
