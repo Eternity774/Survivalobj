@@ -212,7 +212,7 @@ public class PlayerMove : MonoBehaviour {
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (live && hit.gameObject.name != "Terrain" && hit.gameObject.tag != "hut")
+        if (live && hit.gameObject.name != "Terrain" && hit.gameObject.tag != "hut" && hit.gameObject.name != "block")
         {
             associated = hit.gameObject;
             hit.gameObject.GetComponent<Behavior>().GetEnemy(gameObject);
