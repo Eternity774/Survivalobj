@@ -79,7 +79,11 @@ public class Behavior : MonoBehaviour {
                             EnemyInMemory(enemyinmemory);//есть ли враг в памяти
 
                         }
-                        else StartCoroutine(Wait());//отдыхаем
+                        else
+                        {
+                            if (clan != null) state = State.friend;
+                            else StartCoroutine(Wait());//отдыхаем
+                        }
                     }
                     break;
                 }
@@ -104,7 +108,12 @@ public class Behavior : MonoBehaviour {
                         //state = State.wait;
                         EnemyInMemory(enemyinmemory);//есть ли враг в памяти
                     }
-                    else StartCoroutine(Wait());
+                    else
+                    {
+                        if (clan != null) state = State.friend;
+                        else StartCoroutine(Wait());
+                    }
+                    
                     break;
                 }
             case State.attack:
@@ -173,18 +182,10 @@ public class Behavior : MonoBehaviour {
                     else//после атаки
                     {
                         anim.SetBool("Attack", false);
-                        if (priority == 6 && friend != null)
+                        if (clan != null)
                         {
-                            if (friend.GetComponent<Behavior>().state != State.dead)
-                            {
-                                if (friend.GetComponent<Behavior>().state != State.friend) state = State.friend;
-                            }
-                            else
-                            {
-                                friend = null;
-                                //friend.GetComponent<Behavior>().friend = null;
-                                StartCoroutine(Wait());
-                            }
+                            state = State.friend;                         
+                           
                         }
                         else StartCoroutine(Wait());
                     }
@@ -203,22 +204,9 @@ public class Behavior : MonoBehaviour {
                         anim.SetBool("Attack", false);
                         StopAllCoroutines();
                         if(priority==5) anim.SetBool("Eating", false);
-                        if (priority == 6 && friend != null)
+                        if (clan != null)
                         {
-                            if(friend.tag == "Player")
-                            {
-                                if (friend.GetComponent<PlayerMove>().live) state = State.friend;
-
-                            }
-                            else if (friend.GetComponent<Behavior>().state!=State.dead)
-                            {
-                                if (friend.GetComponent<Behavior>().state != State.friend) state = State.friend;
-                            }
-                            else
-                            {
-                                friend = null;
-                                friend.GetComponent<Behavior>().friend = null;
-                            }
+                            state = State.friend;
                         }
                         else StartCoroutine(Wait());
                     }
