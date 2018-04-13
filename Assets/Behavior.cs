@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class Behavior : MonoBehaviour {
     
-    GameObject Creator;//ссылка на создателя
+   // GameObject Creator;//ссылка на создателя
     Creator CreatorRef;//ссылка на компонент скрипта создателя
     NavMeshAgent nav;//агент, который перемещает ai в указанную точку
     Animator anim;//аниматор, для переключения анимаций
@@ -35,8 +35,7 @@ public class Behavior : MonoBehaviour {
     public State state;//переменная для состояния
     
     void Start () {
-        Creator = GameObject.Find("MainController");//находим контроллер на сцене
-        CreatorRef = Creator.GetComponent<Creator>();//берем компонент со скриптом
+        CreatorRef = GameObject.Find("MainController").GetComponent<Creator>();//находим контроллер на сцене
         nav = GetComponent<NavMeshAgent>();//берем компоненты с того же объекта где и скрипт (навмеш)
         anim = GetComponent<Animator>();//берем компонент аниматора
         int[] infomas = CreatorRef.StartInformation(gameObject);
@@ -294,6 +293,7 @@ public class Behavior : MonoBehaviour {
             if (friend == killer)
             {
                 friend = null;
+                clan.DeleteFromClan(gameObject);
                 clan = null;
             }
            // Debug.Log("hp before " + hp);
@@ -305,13 +305,16 @@ public class Behavior : MonoBehaviour {
                nav.ResetPath();
                 nav.enabled = false;
                 enemy = null;
-                state = State.dead;
-                
-                if (clan!=null)
+                if (clan != null)
                 {
+                    Debug.Log("удаляем умершего");
                     clan.DeleteFromClan(gameObject);
                     clan = null;
                 }
+                if(priority==6) Creator.ChangeInClans();
+                state = State.dead;
+                
+               
                 anim.SetTrigger("Death");
                 priority = 3;               
                 CreatorRef.SomebodyDead(gameObject);
