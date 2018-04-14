@@ -122,7 +122,7 @@ public class Creator : MonoBehaviour {
     void CreateSomebody(GameObject prefub)
     {
         GameObject a = Instantiate(prefub, FindPoint(), Quaternion.identity); a.name += id; id++;
-        //GetComponent<NavMeshAgent>().avoidancePriority = Random.Range(0, 100);
+        a.GetComponent<NavMeshAgent>().avoidancePriority = Random.Range(0, 100);
     }
     public bool Response(int who, int whom)
     {

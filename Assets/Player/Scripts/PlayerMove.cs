@@ -17,6 +17,7 @@ public class PlayerMove : MonoBehaviour {
 
 	private bool e_inv_Open;
 
+  //  public GameObject arrow;
 
 	bool isRunning = true;
 	private float powerRegenTimer;
@@ -48,6 +49,8 @@ public class PlayerMove : MonoBehaviour {
         vspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic>().verticalAimingSpeed;
         playerHealth = GetComponent<PlayerHealth>();
         ClanOfPlayer = new Clan(gameObject);//сразу создаем клан игрока
+        //arrow = GameObject.Find("arrow");
+       // arrow.SetActive(false);
     }
     private void Update()
     {
@@ -244,7 +247,23 @@ public class PlayerMove : MonoBehaviour {
         yield return new WaitForSeconds(5f);
         isRunning = true;
     }
+    /*
+    public void Where()
+    {
+       GameObject otherman = GameObject.FindGameObjectWithTag("AIMan");
+        if (otherman != null)
+        {
+            arrow = GameObject.Find("arrow");
+            arrow.transform.LookAt(otherman.transform);
+            arrow.SetActive(true);
+            StartCoroutine(cORArrow());
+        }
+    }
+    public IEnumerator cORArrow()
+    {
+        yield return new WaitForSeconds(2f);
+        //arrow.SetActive(false);
+    }
 
-
-
+    */
 }
