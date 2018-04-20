@@ -279,7 +279,13 @@ public class Behavior : MonoBehaviour {
         else
         {
             enemyinmemory = null;
-            StartCoroutine(Wait());//если враг из памяти уже далеко - отдыхаем
+            if (clan != null)
+            {
+                nav.ResetPath();
+                state = State.friend;
+                StopAllCoroutines();
+            }
+            else StartCoroutine(Wait());//если враг из памяти уже далеко - отдыхаем
         }
     }
         public void TakeDamage(GameObject killer, int enemydamage)
@@ -386,11 +392,22 @@ public class Behavior : MonoBehaviour {
                             {
                                 if (Random.Range(0, 3) != 0)
                                 {
-                                    if (newenemy.GetComponent<Behavior>().enemy.GetComponent<Behavior>().clan != clan)
-
+                                    if(newenemy.GetComponent<Behavior>().enemy!=null)//у нашего объекта есть враг
+                                    {
+                                        if (newenemy.GetComponent<Behavior>().enemy.tag == "Player")//если враг объекта игрок
+                                        {
+                                            if (clan.Leader.name == "Player") friendly = false;//и мы в клане игрока
+                                            else friendly = true;
+                                        }
+                                        else if (newenemy.GetComponent<Behavior>().enemy.GetComponent<Behavior>().clan != clan) friendly = true;//если встретили объект с врагом не из нашего клана
+                                    }
+                                    else
                                     {
                                         friendly = true;
+                                    }
                                         //добавить в клан!!!
+                                    if(friendly)
+                                    {
                                         clan.AddToClan(newenemy);
                                         Debug.Log(gameObject.name + "я возьму его в свой клан");
                                     }
@@ -442,6 +459,7 @@ public class Behavior : MonoBehaviour {
                                 {
                                     friendly = true;
                                     clan = new Clan(gameObject);
+                                    Creator.ChangeInClans();
                                     Debug.Log(gameObject.name + "Мы сформируем новый клан!");
                                 }
                                 else Debug.Log(gameObject.name + "не будем формировать новый клан");

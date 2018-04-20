@@ -109,12 +109,8 @@ public class Creator : MonoBehaviour {
             case "Wolf": CreateSomebody(wolfpref); break;
             case "Bear": CreateSomebody(bearpref); break;
             //case "AIMAn": CreateSomebody(manpref); break;
-            case "AIMAn":
-                {
-                    Debug.Log("осталось " + countai--);
-                    
-                    break;
-                        }
+            case "AIMAn": ChangeInClans(); break;
+                        
 
         }
         

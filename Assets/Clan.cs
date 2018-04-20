@@ -24,7 +24,7 @@ public class Clan{
         name = "Clan of " + Leader;
         Debug.Log("Creating "+name);        
         Creator.ListofClans.Add(this);
-        Creator.ChangeInClans();
+        //Creator.ChangeInClans();
 
     }
    public void DeleteFromClan(GameObject oldmember)
