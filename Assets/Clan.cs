@@ -35,10 +35,17 @@ public class Clan{
             if (members.Count == 1)
             {
                 Debug.Log(name + "IS DEAD");
-                Creator.ListofClans.Remove(this);               
-               
+                Creator.ListofClans.Remove(this);
+
             }
-            else Leader = members[1];     
+            else
+            {
+                members.Remove(oldmember);
+                Debug.Log("в клане " + name + "переизбрание т.к. умер лидер клана: " + oldmember.name);
+                Leader = members[0];
+                Debug.Log("в клане " + name + "новый лидер: " + Leader.name);
+               
+            }  
         }
         else members.Remove(oldmember);
         Creator.ChangeInClans();

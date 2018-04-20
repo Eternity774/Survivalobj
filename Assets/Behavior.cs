@@ -65,9 +65,9 @@ public class Behavior : MonoBehaviour {
                         float distance = Vector3.Distance(transform.position, enemy.transform.position);//проверяем дистанцию до врага
 
                         if (distance > 40) enemy = null;//если дистанция больше 40 отсоединяем врага
-                        else //продолжаем убегать
+                        else if(Vector3.Distance(nav.destination, gameObject.transform.position) < 1)//продолжаем убегать
                         {
-                            Vector3 forwardPosition = transform.TransformPoint(Vector3.forward * 3);//переводим в глобальные координаты направление вперед
+                            Vector3 forwardPosition = transform.TransformPoint(Vector3.forward * 5);//переводим в глобальные координаты направление вперед
                             nav.SetDestination(forwardPosition);        //назначаем агенту новое направление  
                         }
                     }
@@ -95,10 +95,14 @@ public class Behavior : MonoBehaviour {
                 {
                     if (enemy != null)//если враг не отсоединился
                     {
-                        nav.SetDestination(enemy.transform.position);//направляем агента на врага
                         float distance = Vector3.Distance(transform.position, enemy.transform.position);//мереем дистанцию
+                        if(distance>=2 && distance <= 30 && Vector3.Distance(nav.destination, gameObject.transform.position)<1)
+                        {
+                            nav.SetDestination(enemy.transform.position);//направляем агента на врага
+                        }              
+                        
 
-                        if (distance < 2)//когда дистанция сократилась
+                        else if (distance < 2)//когда дистанция сократилась
                         {
                             state = State.attack;//атакуем
                             anim.SetBool("Attack", true);
@@ -140,10 +144,9 @@ public class Behavior : MonoBehaviour {
                         }
                         else
                         {
-
-                            
+                                                       
                             Vector3 forwardenemyPosition = enemy.transform.TransformPoint(Vector3.forward * 2);//переводим в глобальные координаты направление вперед
-                            nav.SetDestination(forwardenemyPosition);
+                            if(Vector3.Distance(nav.destination, gameObject.transform.position)>1) nav.SetDestination(forwardenemyPosition);
                             transform.LookAt(enemy.transform);
 
                             int Random4ik = Random.Range(0, 100);
@@ -231,25 +234,26 @@ public class Behavior : MonoBehaviour {
                     if (clan != null)//если друг не отсоединился
                     {
                         float distance = Vector3.Distance(transform.position, clan.Leader.transform.position);//мереем дистанцию
+                        if (distance >= 2&&Vector3.Distance(nav.destination, gameObject.transform.position) < 1) nav.SetDestination(clan.Leader.transform.position);//направляем агента за лидером   
+
                         if (distance > 20)
-                        {
-                            nav.SetDestination(clan.Leader.transform.position);//направляем агента на врага   
-                            anim.SetBool("Run", true);
-                            nav.speed = 8;  
+                        {                                                           
+                                anim.SetBool("Run", true);
+                                nav.speed = 8;                           
                         }               
                          
                         if (distance < 8&&distance>=2)//когда дистанция сократилась
-                        {
-                            nav.SetDestination(clan.Leader.transform.position);//направляем агента на врага   
-                            anim.SetBool("Walk", true);
-                            anim.SetBool("Run", false);
-                           
-                            nav.speed = 1;
+                        {                            
+                                anim.SetBool("Walk", true);
+                                anim.SetBool("Run", false);
+                                nav.speed = 1;                         
+                            
                         }
                         if (distance < 2)
                         {
-                            nav.SetDestination(transform.position);//направляем агента на врага   
+                            //nav.SetDestination(transform.position);//направляем агента на врага   
                             anim.SetBool("Walk", false);
+                            nav.ResetPath();
                         }
                         
                     }
@@ -359,7 +363,7 @@ public class Behavior : MonoBehaviour {
                     {
                         if(clan!=null)//мы в клане
                         {
-                            if (newenemy.tag == "Player")//мы в клане игрока
+                            if (newenemy.tag == "Player")//мы втретили игрока
                             {
                                 if (clan.Leader == newenemy)
                                 {
@@ -382,10 +386,15 @@ public class Behavior : MonoBehaviour {
                             {
                                 if (Random.Range(0, 3) != 0)
                                 {
-                                    friendly = true;
-                                    //добавить в клан!!!
-                                    clan.AddToClan(newenemy);
-                                    Debug.Log(gameObject.name + "я возьму его в свой клан");
+                                    if (newenemy.GetComponent<Behavior>().enemy.GetComponent<Behavior>().clan != clan)
+
+                                    {
+                                        friendly = true;
+                                        //добавить в клан!!!
+                                        clan.AddToClan(newenemy);
+                                        Debug.Log(gameObject.name + "я возьму его в свой клан");
+                                    }
+                                    else Debug.Log("он враждует с моим кланом!");
                                 }
                                 else Debug.Log(gameObject.name + "я не возьму его в свой клан");
                             }
