@@ -169,7 +169,7 @@ public class Creator : MonoBehaviour {
             {
                 Debug.Log("You win");
                 countofclans.text = "YOU";
-                withoutclans.text = "WIN:";
+                withoutclans.text = "WIN!";
             }
         }
             

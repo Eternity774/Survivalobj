@@ -9,7 +9,7 @@ public class arrowway : MonoBehaviour {
 
     public void Where()
     {
-        Debug.Log("функция вызвана ");
+        Creator.ChangeInClans();
 
         GameObject otherman = null;
 

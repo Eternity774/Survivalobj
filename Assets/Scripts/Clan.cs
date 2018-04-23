@@ -11,10 +11,21 @@ public class Clan{
    
     public void AddToClan(GameObject newmember)
     {
-        members.Add(newmember);
-        Debug.Log("В клан " + name + "добавилcя " + newmember.name);
-        Creator.ChangeInClans();
-
+        bool addnewmember = true;
+        foreach(GameObject a in members)
+        {
+            if(a.name == newmember.name)
+            {
+                addnewmember = false;
+                break;
+            }
+        }
+        if (addnewmember)
+        {
+            members.Add(newmember);
+            Debug.Log("В клан " + name + "добавилcя " + newmember.name);
+            Creator.ChangeInClans();
+        }
     }
    public Clan(GameObject newleader)
     {
@@ -32,22 +43,31 @@ public class Clan{
         Debug.Log("в клане " + name + " убили " + oldmember.name);
         if (oldmember == Leader)
         {
-            if (members.Count == 1)
+           
+            members.Remove(oldmember);
+            Debug.Log("в клане " + name + "умер лидер клана: " + oldmember.name);
+            bool destinyofthisclan = false;
+            foreach(GameObject a in members)
+            {
+                if (a.GetComponent<Behavior>().clan==this && a!=Leader)
+                {
+                    Leader = a;
+                    destinyofthisclan = true;
+                    Debug.Log("в клане " + name + "новый лидер: " + oldmember.name);
+                    break;
+                }
+            }
+            if (!destinyofthisclan)
             {
                 Debug.Log(name + "IS DEAD");
                 Creator.ListofClans.Remove(this);
-
-            }
-            else
-            {
-                members.Remove(oldmember);
-                Debug.Log("в клане " + name + "переизбрание т.к. умер лидер клана: " + oldmember.name);
-                Leader = members[0];
-                Debug.Log("в клане " + name + "новый лидер: " + Leader.name);
+            }       
+                
                
-            }  
+            
         }
         else members.Remove(oldmember);
+        Debug.Log("в клане " + name + members.Count);
         Creator.ChangeInClans();
 
     }
