@@ -54,6 +54,7 @@ public class Clan{
                     Leader = a;
                     destinyofthisclan = true;
                     Debug.Log("в клане " + name + "новый лидер: " + oldmember.name);
+                    Leader.GetComponent<Behavior>().state = Behavior.State.wait;
                     break;
                 }
             }

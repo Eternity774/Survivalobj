@@ -67,7 +67,7 @@ public class Behavior : MonoBehaviour {
                         if (distance > 40) enemy = null;//если дистанция больше 40 отсоединяем врага
                         else if(Vector3.Distance(nav.destination, gameObject.transform.position) < 1)//продолжаем убегать
                         {
-                            Vector3 forwardPosition = transform.TransformPoint(Vector3.forward * 5);//переводим в глобальные координаты направление вперед
+                            Vector3 forwardPosition = transform.TransformPoint(Vector3.forward * 8);//переводим в глобальные координаты направление вперед
                             nav.SetDestination(forwardPosition);        //назначаем агенту новое направление  
                         }
                     }
