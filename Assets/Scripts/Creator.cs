@@ -19,21 +19,28 @@ public class Creator : MonoBehaviour {
     public static List<Clan> ListofClans = new List<Clan>();
     public int countai = 20;
 
-    int[,] ResponceMatrix;
+    int[,,] ResponceMatrix;
     int id = 0;
 
     void Start () {
         countofclans = GameObject.Find("Clans").GetComponent<Text>();
         withoutclans = GameObject.Find("Free").GetComponent<Text>();
 
+        ResponceMatrix = new int[6,7,3] { { {10,0,0}, {10,0,0}, {10,0,0}, {5,5,0}, {0,10,0}, {0,10,0}, {0,10,0} },//кто-строка, на кого-столбец
+                                         { {10,0,0}, {4,2,4}, {10,0,0}, {5,3,2}, {0,0,10}, {0,8,2}, {10,0,0} },
+                                         { {7,0,3}, {8,1,1},{3,0,7},{5,2,3}, {0,9,1}, {0,6,4}, {0,10,0}},
+                                         { {1,0,9}, {2,0,8}, {0,0,10}, {3,1,6}, {4,3,3},{0,3,7}, {0,9,1} },
+                                         { {1,0,9}, {2,0,8}, {0,0,10}, {3,2,5}, {0,7,3}, {4,3,3}, {0,9,1} },
+                                         { {5,0,5}, {5,0,5}, {0,0,10}, {5,0,5}, {4,2,4}, {0,3,7}, {4,3,3}} };
 
-        ResponceMatrix = new int[6, 7] { { 0, 0, 0, 0, 0, 0, 0 },//кто-строка, на кого-столбец
+        /*
+        ResponceMatrix = new int[6, 7] { { 0, 0, 0, -5, -10, -10, -10 },//кто-строка, на кого-столбец
                                          { 0, 5, 0, 1, 0, 2, 0 },
                                          { 3, 2, 5, 4, 0, 3, 0 },
                                          { 9, 8, 10, 7, 5, 6, 1 },
                                          { 8, 8, 10, 7, 5, 5, 3 },
                                          { 9, 9, 10, 8, 5, 5, 5} };
-        
+     /*   
         for (int i = 0; i < 15; i++) { CreateSomebody(rabbitpref); }
         for (int i = 0; i < 12; i++) { CreateSomebody(stagpref); }
         for (int i = 0; i < 9; i++) { CreateSomebody(boarpref); }
@@ -41,7 +48,7 @@ public class Creator : MonoBehaviour {
         for (int i = 0; i < 3; i++) { CreateSomebody(bearpref); }
         for (int i = 0; i < 20; i++) { CreateSomebody(manpref); }
         ChangeInClans();
-
+        */
     }
 
     public int[] StartInformation(GameObject ai)
@@ -120,12 +127,17 @@ public class Creator : MonoBehaviour {
         GameObject a = Instantiate(prefub, FindPoint(), Quaternion.identity); a.name += id; id++;
         a.GetComponent<NavMeshAgent>().avoidancePriority = Random.Range(0, 100);
     }
-    public bool Response(int who, int whom)
+    public int Response(int who, int whom)
     {
-        if (who > 3) who--;           
-        if (ResponceMatrix[who - 1, whom - 1] > Random.Range(0, 11)) return true;
-        else return false;
-        
+        //if (ResponceMatrix[who - 1, whom - 1] > Random.Range(0, 11)) return true;
+        //  else return false;
+        if (who > 3) who--;
+        int ignore = ResponceMatrix[who - 1, whom - 1, 0];        
+        int random4ik = Random.Range(1, 11);
+        if (random4ik <= ignore) return 0;
+        int runfrom = ResponceMatrix[who - 1, whom - 1, 1];
+        if (random4ik <= runfrom+ignore) return 1;
+        else return 3;
     }
     public Vector3 FindPoint()//поиск точки на меше, куда возможно дойти
     {
@@ -133,8 +145,9 @@ public class Creator : MonoBehaviour {
        
         while(true)
         {
-           
-            Vector3 startpoint = new Vector3(Random.Range(-250, 750), 0, Random.Range(-250, 750));
+
+            //Vector3 startpoint = new Vector3(Random.Range(-250, 750), 0, Random.Range(-250, 750));
+            Vector3 startpoint = new Vector3(Random.Range(500, 600), 0, Random.Range(-150, 0));
             Vector3 pointwithR = startpoint + Random.insideUnitSphere * radius;
             NavMeshHit hit;
             for (int i = 0; i < 50; i++)
