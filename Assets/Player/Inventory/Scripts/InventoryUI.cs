@@ -10,7 +10,7 @@ public class InventoryUI : MonoBehaviour {
 	Inventory inventory;
 	Crafting crafting;
 	InventorySlot[] slots;
-	CraftingSlot[] c_slots;
+	//CraftingSlot[] c_slots;
 	//CharacterSlot[] e_slots;
 	// Use this for initialization
 	void Start () {
@@ -19,7 +19,7 @@ public class InventoryUI : MonoBehaviour {
 		inventory.onItemChangedCallback += UpdateUI;
 	
 		slots = itemsParent.GetComponentsInChildren<InventorySlot> ();
-		c_slots = craftingParent.GetComponentsInChildren<CraftingSlot> ();
+		//c_slots = craftingParent.GetComponentsInChildren<CraftingSlot> ();
 	//	e_slots = equipParent.GetComponentsInChildren<CharacterSlot> ();
 	}
 	
@@ -32,13 +32,13 @@ public class InventoryUI : MonoBehaviour {
 				slots [i].ClearSlot ();
 			}
 		}
-		for (int i = 0; i < c_slots.Length; i++) {
-			if (i < crafting.crafts.Count) {
-				c_slots [i].AddItem (crafting.crafts [i]);
-			} else {
-				c_slots [i].ClearSlot ();
-			}
-		}
+		//for (int i = 0; i < c_slots.Length; i++) {
+		//	if (i < crafting.crafts.Count) {
+		//		c_slots [i].AddItem (crafting.crafts [i]);
+		//	} else {
+		//		c_slots [i].ClearSlot ();
+		//	}
+		//}
 	}
 
 	void UpdateUI(){
