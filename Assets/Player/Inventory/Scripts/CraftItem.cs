@@ -12,13 +12,9 @@ public class CraftItem : Item {
 
 	public override void UseItem(){
 		base.UseItem ();
-		//Crafting.instance.Add (this);
-		//RemoveFromInventory ();
 	}
-	//public void DisUseItem(){
-	//	Inventory.instance.Add (this);
-	//	Crafting.instance.Remove (this);
-	//}
+
+
 		
 }
 	

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c685d16b4cf60564f8f1f7e3fff4530a, type: 3}
+  m_Name: Lego
+  m_EditorClassIdentifier: 
+  name: Lego
+  icon: {fileID: 21300000, guid: b4a921bcab1370a498b98ced66be217d, type: 3}
+  isDefaultItem: 0
+  mesh: {fileID: 23524823507302960, guid: 057b887e0e082a34cbc1c79c8c918b63, type: 2}
