@@ -6210,7 +6210,7 @@ MonoBehaviour:
   - {fileID: 1396378604}
   - {fileID: 785061337}
   dPanel: {fileID: 1876394431}
-  _instObj: {fileID: 100114, guid: 166485d352b376b4aac7b2ad8bf99260, type: 3}
+  _instObj: {fileID: 1828059050813908, guid: 5c481bc7c135efa4b8fb4a27a2a26fff, type: 2}
 --- !u!1 &1232959527
 GameObject:
   m_ObjectHideFlags: 0
