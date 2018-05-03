@@ -18,6 +18,7 @@ public class PlayerMove : MonoBehaviour {
 	private bool e_inv_Open;
 
    public GameObject way;
+    public GameObject friend;
 
 	bool isRunning = true;
 	private float powerRegenTimer;
@@ -25,6 +26,7 @@ public class PlayerMove : MonoBehaviour {
     private GameObject inv_Main;
 	private GameObject equipInventory;
 	private GameObject m_Cam;
+    public GameObject FriendlyPanel;
     public float pbarSlider;
     public float pbarStart;
     public float pbarCurrent;
@@ -44,6 +46,7 @@ public class PlayerMove : MonoBehaviour {
 		e_inv_Open = false;
         inv_Main.SetActive(false);
 		equipInventory.SetActive (false);
+        FriendlyPanel.SetActive(false);
         m_Cam = GameObject.FindGameObjectWithTag("MainCamera");
         hspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic>().horizontalAimingSpeed;
         vspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic>().verticalAimingSpeed;
@@ -248,7 +251,26 @@ public class PlayerMove : MonoBehaviour {
         yield return new WaitForSeconds(5f);
         isRunning = true;
     }
-    
-    
-    
+    public void request(GameObject friend)//заявка на дружбу
+    {
+        FriendlyPanel.SetActive(true);
+        this.friend = friend;
+        friend.GetComponent<CleverAI>().AddTask(new CleverAI.Task(CleverAI.Action.Friend, gameObject, 6));
+    }
+    public void answeryes()
+    {
+        if(friend!=null)
+        {
+            friend.GetComponent<CleverAI>().clan = ClanOfPlayer;
+            ClanOfPlayer.AddToClan(friend);            
+            Creator.ChangeInClans();
+        }
+    }
+    public void answerno()
+    {
+        FriendlyPanel.SetActive(false);
+        friend = null;
+    }
+
+
 }

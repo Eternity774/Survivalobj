@@ -17,7 +17,7 @@ public class CleverAI : MonoBehaviour {
     public int damage;//наносимый урон
 
 
-    struct Task
+    public struct Task
     {
         public Action action;
         public GameObject target;
@@ -41,7 +41,7 @@ public class CleverAI : MonoBehaviour {
         RunFrom,
         Dead
     }
-    Stack<Task> Tasks;//очередь для выполнения
+    Stack<Task> Tasks = new Stack<Task>();//очередь для выполнения
    
     void Start () {
         CreatorRef = GameObject.Find("MainController").GetComponent<Creator>();//находим контроллер на сцене
@@ -52,14 +52,14 @@ public class CleverAI : MonoBehaviour {
         priority = infomas[0];//определяем приоритет ai по тэгу через создателя
         hp = infomas[1];//определяем кол-во здоровья
         damage = infomas[2];//опрделеяем наносимый урон 
-        currenttask = new Task(Action.Default, gameObject, 0);
-        runuptask();
-        
+        currenttask = new Task(Action.Default, gameObject, 0);        
+        runuptask();       
         
     }
 	
 	
 	void Update () {
+       // Debug.Log(currenttask.action);
 		switch (currenttask.action)
         {
             case Action.Default:
@@ -74,9 +74,15 @@ public class CleverAI : MonoBehaviour {
                 {
                     if (currenttask.target != null)
                     {
-                        if (Vector3.Distance(gameObject.transform.position,currenttask.target.transform.position) > 40) CompleteTask();
+                        //Debug.Log("таргет не пустой");
+                        if (Vector3.Distance(gameObject.transform.position, currenttask.target.transform.position) > 40)
+                        {
+                            Debug.Log("враг далеко, завершаю");
+                            CompleteTask();
+                        }
                         else if (Vector3.Distance(nav.destination, gameObject.transform.position) < 2)//продолжаем убегать
                         {
+                            Debug.Log("добежал до точки, беру следующую");
                             Vector3 forwardPosition = transform.TransformPoint(Vector3.forward * 8);//переводим в глобальные координаты направление вперед
                             nav.SetDestination(forwardPosition);        //назначаем агенту новое направление  
                         }
@@ -124,42 +130,48 @@ public class CleverAI : MonoBehaviour {
                 }
             case Action.Friend:
                 {
-                    float distance = Vector3.Distance(transform.position, clan.Leader.transform.position);//мереем дистанцию
-                    if (distance >= 2 && Vector3.Distance(nav.destination, gameObject.transform.position) < 2) nav.SetDestination(clan.Leader.transform.position);//направляем агента за лидером   
-
-                    if (distance > 20)
+                    if (clan != null)
                     {
-                        anim.SetBool("Run", true);
-                        nav.speed = 8;
-                    }
+                        float distance = Vector3.Distance(transform.position, clan.Leader.transform.position);//мереем дистанцию
+                        if (distance >= 2 && Vector3.Distance(nav.destination, gameObject.transform.position) < 2) nav.SetDestination(clan.Leader.transform.position);//направляем агента за лидером   
 
-                    if (distance < 8 && distance >= 2)//когда дистанция сократилась
-                    {
-                        anim.SetBool("Walk", true);
-                        anim.SetBool("Run", false);
-                        nav.speed = 1;
+                        if (distance > 20)
+                        {
+                            anim.SetBool("Run", true);
+                            nav.speed = 8;
+                        }
 
+                        if (distance < 8 && distance >= 2)//когда дистанция сократилась
+                        {
+                            anim.SetBool("Walk", true);
+                            anim.SetBool("Run", false);
+                            nav.speed = 1;
+
+                        }
+                        if (distance < 2)
+                        {
+                            anim.SetBool("Walk", false);
+                            nav.ResetPath();
+                        }
                     }
-                    if (distance < 2)
-                    {
-                        anim.SetBool("Walk", false);
-                        nav.ResetPath();
-                    }
+                    else CompleteTask();
                     break;
                 }
         }
 	}
-    void AddTask(Task newtask)
+    public void AddTask(Task newtask)
     {
-       
+        Debug.Log("добавляем задание" + newtask.action);
        if (Compare(newtask,currenttask))
         {
+            Debug.Log("это задание выше");
             Tasks.Push(currenttask);
             currenttask = newtask;
             runuptask();
         }
         else
         {
+            Debug.Log("это задание ниже");
             Stack<Task> temp = new Stack<Task>();
             temp.Push(Tasks.Pop());
             while (Tasks.Count > 0)
@@ -194,6 +206,11 @@ public class CleverAI : MonoBehaviour {
                     break;
                 }
             }
+            else if (temptask.action == Action.Default)
+            {
+                currenttask = temptask;
+                currenttask.target = gameObject;
+            }
         }
         runuptask();
     }
@@ -221,17 +238,25 @@ public class CleverAI : MonoBehaviour {
         {
             case Action.Default:
                 {
+                    if (currenttask.target != gameObject) Destroy(currenttask.target);
+                    currenttask.target = new GameObject("Point");
                     currenttask.target.transform.position = CreatorRef.FindPoint();
                     nav.speed = 0;
                     nav.SetDestination(currenttask.target.transform.position);//задаем новую точку для движения в пределах плоскости
                     StartCoroutine(Wait());
                     break;
                 }
+            case Action.Friend:
+                {
+                    anim.SetTrigger("Hello");
+                    break;                    
+                }
             case Action.RunFrom:
                 {
-                    
-                    Vector3 forwardPosition = transform.TransformPoint(Vector3.forward * 8);//переводим в глобальные координаты направление вперед
+                    Debug.Log("начинаем убегать");
+                    Vector3 forwardPosition =currenttask.target.transform.TransformPoint(Vector3.forward * 20);//переводим в глобальные координаты направление вперед
                     nav.SetDestination(forwardPosition);
+                    nav.speed = Random.Range(5, 8);
                     anim.SetBool("Run", true);
                     break;
                 }
@@ -289,166 +314,103 @@ public class CleverAI : MonoBehaviour {
     
     private void OnTriggerEnter(Collider other)//для обработки взаимодействий (рядом игрок)
     {
-        if (currenttask.action != Action.Dead && anim != null)
+        if (currenttask.action != Action.Dead && anim != null && currenttask.target!=other.gameObject)
         {
+            Debug.Log(other.name + currenttask.target.name);
             if (other.GetComponent<CleverAI>() != null || other.GetComponent<PlayerMove>() != null)
             {
                 int newenemypriority;//приоритет нового врага
                 if (other.gameObject.tag == "Player") newenemypriority = 6;//у игрока приоритет всегда 6
                 else newenemypriority = other.gameObject.GetComponent<CleverAI>().priority;//узнаем приоритет нового врага
 
-                if (priority == 6 && newenemypriority == 6) people(other.gameObject);//встретились 2 человека
+                if (priority == 6 && newenemypriority == 6) People(other.gameObject);//встретились 2 человека
                 else GetEnemy(other.gameObject, newenemypriority);
             }
         }
     }
 
-    public void people(GameObject otherman)
+    public void People(GameObject otherman)//втретились 2 человека
     {
-        int reaction = 0;
-        if(clan==null)
+        int reaction = 1;//по умолчанию убегаем
+        bool friendly = false;//будем ли сотрудничать
+        if(clan==null)//если аи не в клане
         {
-            if (Random.Range(0, 10) < sociability) reaction = 3;
+            if (Random.Range(0, 10) < sociability) friendly=true;//предлагаем дружбу  
+                      
         }
-
-
-        /*if (priority == 6 && newenemypriority == 6)//встретились 2 человека
+        else//мы в клане
         {
-            bool friendly = false;
-            if (clan != null)//мы в клане
+            if(otherman.tag != "Player")//втретили не игрока
             {
-                if (newenemy.tag == "Player")//мы вcтретили игрока
+                if (otherman.GetComponent<CleverAI>().clan == null)//другой не в клане
                 {
-                    if (clan.Leader == newenemy)
-                    {
-                        friendly = true;
-                        Debug.Log(gameObject.name + "я уже был в клане игрока");
-                    }
-                    else Debug.Log(gameObject.name + "я не в клане игрока");
+                    if (Random.Range(0, 10) < sociability) friendly = true;//предлагаем дружбу
                 }
-                else if (newenemy.GetComponent<CleverAI>().clan != null)//мы встретили не игрока
+                else //мы и встречный в кланах
                 {
-                    if (newenemy.GetComponent<CleverAI>().clan == clan)
+                    if (clan == otherman.GetComponent<CleverAI>().clan)//мы в одном клане
                     {
-                        friendly = true;
-                        Debug.Log(gameObject.name + "я в том же клане, что и этот аи");
+                        reaction = 0;//будем игнорировать
                     }
-                    else Debug.Log(gameObject.name + "я в другом клане");
-
-                }
-                else//т.е. мы в клане, а он - нет
-                {
-                    if (Random.Range(0, 10) < sociability)//дружелюбный исход
+                    else//мы в разных кланах
                     {
-                        if (newenemy.GetComponent<CleverAI>().currenttask.target != null)//у нашего объекта есть враг
-                        {
-                            if (newenemy.GetComponent<CleverAI>().currenttask.target.tag == "Player")//если враг объекта игрок
-                            {
-                                if (clan.Leader.name == "Player") friendly = false;//и мы в клане игрока
-                                else friendly = true;
-                            }
-                        }
-                        else
-                        {
-                            friendly = true;
-                        }
-                        //добавить в клан!!!
-                        if (friendly)
-                        {
-                            clan.AddToClan(newenemy);
-                            Debug.Log(gameObject.name + "я возьму его в свой клан");
-                        }
-                        else Debug.Log("он враждует с моим кланом!");
+                        if (Random.Range(0, 10) < sociability) reaction = 2;//убегаем
+                        else reaction = 3;//атакуем
                     }
-                    else Debug.Log(gameObject.name + "я не возьму его в свой клан");
-                }
-
-            }
-            else//мы не в клане
-            {
-                if (newenemy.tag == "Player")//мы встретили игрока
-                {
-                    if (Random.Range(0, 10) < sociability)//дружелюбный исход
-                    {
-                        friendly = true;//присоединть к клану игрока
-                        clan = newenemy.GetComponent<PlayerMove>().ClanOfPlayer;
-                        clan.AddToClan(gameObject);
-                        Debug.Log(gameObject.name + "Я хочу в клан игрока!");
-                    }
-                    else Debug.Log(gameObject.name + "я не хочу в клан игрока");
-
-                }
-                else if (newenemy.GetComponent<CleverAI>().clan != null)//встретили не игрока уже в клане
-                {
-                    if (Random.Range(0, 10) < sociability)//дружелюбный исход
-                    {
-                        friendly = true;//присоединиться к клану другого аи
-                        clan = newenemy.GetComponent<CleverAI>().clan;
-                        clan.AddToClan(gameObject);
-                        Debug.Log(gameObject.name + "я пойду в клан этого аи");
-                    /*    if (currenttask.target != null)//случай, когда нужно вступить в клан и сбросить из него врагов?!
-                        {
-                            if (currenttask.target.tag != "Player")
-                            {
-                                if (currenttask.target.GetComponent<CleverAI>().clan != null)
-                                {
-                                    if (currenttask.target.GetComponent<CleverAI>().clan == newenemy.GetComponent<CleverAI>().clan) enemy = null;
-                                }
-                            }
-                            else if (enemy.GetComponent<PlayerMove>().ClanOfPlayer == clan) enemy = null;
-                        }
-                    }
-                    
-                   // else Debug.Log(gameObject.name + "я не пойду в клан этого аи");
-                }
-                else //мы оба не в кланах
-                {
-                    if (Random.Range(0, 3) != 0)
-                    {
-                        friendly = true;
-                        clan = new Clan(gameObject);
-                        Creator.ChangeInClans();
-                        Debug.Log(gameObject.name + "Мы сформируем новый клан!");
-                    }
-                    else Debug.Log(gameObject.name + "не будем формировать новый клан");
-
                 }
             }
-            //Debug.Log("About friendly!" + priority + newenemypriority);
-
-            if (friendly)//если решили дружить
+            else//втретили игрока
             {
-                if (priority == 6)
+                if (clan == otherman.GetComponent<PlayerMove>().ClanOfPlayer)//мы уже в клане игрока
                 {
-                    //Debug.Log("FRIENDLY! " + gameObject.name);
-                    friend = newenemy;
-                    anim.SetBool("Attack", false);
-                    anim.SetTrigger("Hello");
-                    if (friend.tag == "Player")//добавляемся в клан игрока
-                    {
-                        nav.ResetPath();
-                        state = State.friend;
-                        StopAllCoroutines();
-                    }
-                    //  else if (friend.GetComponent<Behavior>().state != State.friend)
-                    else if (clan.Leader != gameObject)//если мы не лидер клана
-                    {
-                        nav.ResetPath();
-                        state = State.friend;
-                        StopAllCoroutines();
-                    }
-
+                    reaction = 0;//игнорируем
+                }
+                else//мы не в клане игрока
+                {
+                    if (Random.Range(0, 10) < sociability) reaction = 2;//убегаем
+                    else reaction = 3;//атакуем
                 }
             }
-
-
+              
+            
         }
-        */
-        if (reaction == 0)//т.е. выпал игнор
+        if(friendly)//в процессе решили дружить
         {
-            if (Random.Range(0, 10) < sociability) reaction = 3;
+            if(otherman.tag=="Player")
+            {
+                otherman.GetComponent<PlayerMove>().request(gameObject);
+            }
+            else
+            {
+                otherman.GetComponent<CleverAI>().request(gameObject);
+            }
         }
+        else if(reaction==0)//не подружились и реакция не однозначна
+        {
+            GetEnemy(otherman, 6);
+        }
+        else//определилась другая конкретная реакция
+        {
+            if (reaction == 1)//т.е. нужно убегать
+            {
+                AddTask(new Task(Action.RunFrom, otherman, 6));
+            }
+            else if (reaction == 2)
+            {
+                AddTask(new Task(Action.RunFor, otherman, 6));
+            }
+        }      
 
+    }
+    public void request(GameObject friend)//заявка на дружбу
+    {
+        if (Random.Range(0, 10) < sociability)//принимаем
+        {
+            clan = friend.GetComponent<CleverAI>().clan;
+            clan.AddToClan(gameObject);
+            Creator.ChangeInClans();
+            AddTask(new Task(Action.Friend, clan.Leader, 6));
+        }
     }
     public void GetEnemy(GameObject newenemy, int newenemypriority)//рядом враг
     {      
@@ -456,7 +418,7 @@ public class CleverAI : MonoBehaviour {
         
         if(reaction==1)//т.е. нужно убегать
         {
-            AddTask(new Task(Action.RunFrom, gameObject, newenemypriority));
+            AddTask(new Task(Action.RunFrom, newenemy, newenemypriority));
         }
         else if(reaction==2)
         {
@@ -497,11 +459,9 @@ public class CleverAI : MonoBehaviour {
                     clan.DeleteFromClan(gameObject);
                     clan = null;
                     Creator.ChangeInClans();
-                }
-                              
+                }                             
                 
-            }
-            
+            }            
         }
     }
 }

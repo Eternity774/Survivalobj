@@ -23,7 +23,8 @@ public class Clan{
         if (addnewmember)
         {
             members.Add(newmember);
-            Debug.Log("В клан " + name + "добавилcя " + newmember.name);
+            Debug.Log("В клан " + name + "добавилcя " + newmember.name);            
+            
             Creator.ChangeInClans();
         }
     }

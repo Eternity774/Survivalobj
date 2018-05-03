@@ -497,7 +497,7 @@ public class Behavior : MonoBehaviour {
                     }
                     if (!friendly)
                     {
-                        if (CreatorRef.Response(priority, newenemypriority))//запрос к создателю о нападении, если true - нападаем
+                        if (CreatorRef.Response(6, 6)==1)//запрос к создателю о нападении, если true - нападаем
                         {
                             anim.SetBool("Attack", false);//перестаем атаковать
                             if (priority == 5) anim.SetBool("Eating", false);//перестаем ксть

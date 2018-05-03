@@ -22,11 +22,12 @@ public class Creator : MonoBehaviour {
     int[,,] ResponceMatrix;
     int id = 0;
 
-    void Start () {
+    void Start()
+    {
         countofclans = GameObject.Find("Clans").GetComponent<Text>();
         withoutclans = GameObject.Find("Free").GetComponent<Text>();
 
-        ResponceMatrix = new int[6,7,3] { { {10,0,0}, {10,0,0}, {10,0,0}, {5,5,0}, {0,10,0}, {0,10,0}, {0,10,0} },//кто-строка, на кого-столбец
+        ResponceMatrix = new int[6, 7, 3] { { {10,0,0}, {10,0,0}, {10,0,0}, {5,5,0}, {0,10,0}, {0,10,0}, {0,10,0} },//кто-строка, на кого-столбец
                                          { {10,0,0}, {4,2,4}, {10,0,0}, {5,3,2}, {0,0,10}, {0,8,2}, {10,0,0} },
                                          { {7,0,3}, {8,1,1},{3,0,7},{5,2,3}, {0,9,1}, {0,6,4}, {0,10,0}},
                                          { {1,0,9}, {2,0,8}, {0,0,10}, {3,1,6}, {4,3,3},{0,3,7}, {0,9,1} },
@@ -49,6 +50,11 @@ public class Creator : MonoBehaviour {
         for (int i = 0; i < 20; i++) { CreateSomebody(manpref); }
         ChangeInClans();
         */
+        for (int i = 0; i < 1; i++)
+        {
+            Debug.Log("вызываем");
+            CreateSomebody(rabbitpref);
+        }
     }
 
     public int[] StartInformation(GameObject ai)
@@ -129,6 +135,7 @@ public class Creator : MonoBehaviour {
     }
     public int Response(int who, int whom)
     {
+        Debug.Log("Поступил запрос" + who + whom);
         //if (ResponceMatrix[who - 1, whom - 1] > Random.Range(0, 11)) return true;
         //  else return false;
         if (who > 3) who--;
