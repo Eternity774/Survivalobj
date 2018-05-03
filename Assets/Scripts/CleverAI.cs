@@ -256,6 +256,7 @@ public class CleverAI : MonoBehaviour {
                     nav.SetDestination(currenttask.target.transform.TransformPoint(Vector3.forward * 2));
                     transform.LookAt(currenttask.target.transform.position);
                     anim.SetBool("Eat", true);
+                    StartCoroutine(Wait());
                     break;
                 }
             case Action.Dead:
@@ -268,34 +269,50 @@ public class CleverAI : MonoBehaviour {
 
     }
 
-      
-    
+
+
     IEnumerator Wait()//корутина ожидания
     {
-        
-        yield return new WaitForSeconds(10f);//ждем 10 секунд               
-        nav.speed = 1;       //включаем низкую скорость для ходьбы
-        anim.SetBool("Walk", true);//включаем анимацию ходьбы
-                
+
+        yield return new WaitForSeconds(10f);//ждем 10 секунд       
+        if (currenttask.action == Action.Default)
+        {
+            nav.speed = 1;       //включаем низкую скорость для ходьбы
+            anim.SetBool("Walk", true);//включаем анимацию ходьбы
+        }
+        else if(currenttask.action == Action.Eat)
+        {
+            Destroy(currenttask.target);
+        }
     }
+                
+    
     private void OnTriggerEnter(Collider other)//для обработки взаимодействий (рядом игрок)
     {
         if (currenttask.action != Action.Dead && anim != null)
         {
             if (other.GetComponent<CleverAI>() != null || other.GetComponent<PlayerMove>() != null)
             {
-                GetEnemy(other.gameObject);
+                int newenemypriority;//приоритет нового врага
+                if (other.gameObject.tag == "Player") newenemypriority = 6;//у игрока приоритет всегда 6
+                else newenemypriority = other.gameObject.GetComponent<CleverAI>().priority;//узнаем приоритет нового врага
+
+                if (priority == 6 && newenemypriority == 6) people(other.gameObject);//встретились 2 человека
+                else GetEnemy(other.gameObject, newenemypriority);
             }
         }
     }
-    public void GetEnemy(GameObject newenemy)//рядом враг
+
+    public void people(GameObject otherman)
     {
-       int newenemypriority;//приоритет нового врага
+        int reaction = 0;
+        if(clan==null)
+        {
+            if (Random.Range(0, 10) < sociability) reaction = 3;
+        }
 
-       if (newenemy.tag == "Player") newenemypriority = 6;//у игрока приоритет всегда 6
-       else newenemypriority = newenemy.GetComponent<CleverAI>().priority;//узнаем приоритет нового врага
 
-      /*  if (priority == 6 && newenemypriority == 6)//встретились 2 человека
+        /*if (priority == 6 && newenemypriority == 6)//встретились 2 человека
         {
             bool friendly = false;
             if (clan != null)//мы в клане
@@ -427,13 +444,16 @@ public class CleverAI : MonoBehaviour {
 
         }
         */
-
-
-        int reaction = CreatorRef.Response(priority, newenemypriority);
-        if(priority==6&&newenemypriority==6&&reaction==0)//т.е. выпал игнор
+        if (reaction == 0)//т.е. выпал игнор
         {
             if (Random.Range(0, 10) < sociability) reaction = 3;
         }
+
+    }
+    public void GetEnemy(GameObject newenemy, int newenemypriority)//рядом враг
+    {      
+        int reaction = CreatorRef.Response(priority, newenemypriority);
+        
         if(reaction==1)//т.е. нужно убегать
         {
             AddTask(new Task(Action.RunFrom, gameObject, newenemypriority));
@@ -442,11 +462,7 @@ public class CleverAI : MonoBehaviour {
         {
             AddTask(new Task(Action.RunFor, newenemy, newenemypriority));
         }
-        else if(reaction==3)
-        {
-            AddTask(new Task(Action.Friend, newenemy, newenemypriority));
-
-        }
+        
         
     }
     public void TakeDamage(GameObject killer, int enemydamage)
