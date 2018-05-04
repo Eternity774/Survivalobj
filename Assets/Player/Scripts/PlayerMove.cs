@@ -16,7 +16,7 @@ public class PlayerMove : MonoBehaviour {
     private bool inv_Open;
 
 	private bool e_inv_Open;
-
+    EquipmentManager equipment;
    public GameObject way;
 
 	bool isRunning = true;
@@ -36,6 +36,7 @@ public class PlayerMove : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        equipment = EquipmentManager.instance;
         animator = GetComponentInChildren<Animator>();
         controller = GetComponent<CharacterController>();
         inv_Main = GameObject.FindGameObjectWithTag("inv_main");
@@ -81,10 +82,15 @@ public class PlayerMove : MonoBehaviour {
 
 
 
-            if (Input.GetKeyDown(KeyCode.Mouse0) && !(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) && (inv_Open == false))
+            if (Input.GetKeyDown(KeyCode.Mouse0) && (inv_Open == false))
             {
-
+                if (equipment.currentEquipment[3] && !(animator.GetCurrentAnimatorStateInfo(0).IsName("sword_slash_01")))
+                {
+                    animator.SetTrigger("sAttack");
+                }
+                else if (!(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))&& !equipment.currentEquipment[3]) { 
                 animator.SetTrigger("Attack");
+                }
                 if (associated != null)
                 {
                     if (Vector3.Distance(transform.position, associated.transform.position) < 3) associated.GetComponent<Behavior>().TakeDamage(gameObject, Random.Range(50, 100));

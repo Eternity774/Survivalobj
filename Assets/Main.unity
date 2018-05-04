@@ -16,18 +16,18 @@ RenderSettings:
   serializedVersion: 8
   m_Fog: 1
   m_FogColor: {r: 0.89705884, g: 0.89705884, b: 0.89705884, a: 1}
-  m_FogMode: 2
-  m_FogDensity: 0.01
-  m_LinearFogStart: 10
-  m_LinearFogEnd: 50
-  m_AmbientSkyColor: {r: 0.1865773, g: 0.22794116, b: 0.20421778, a: 1}
-  m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
-  m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+  m_FogMode: 1
+  m_FogDensity: 0
+  m_LinearFogStart: 40.1
+  m_LinearFogEnd: 386.69
+  m_AmbientSkyColor: {r: 0.11159169, g: 0.9485294, b: 0.9485294, a: 1}
+  m_AmbientEquatorColor: {r: 0, g: 0.57894707, b: 1, a: 1}
+  m_AmbientGroundColor: {r: 1, g: 0.66666687, b: 0, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 71f14a2d79f732f4d9893ef1b911f4ff, type: 2}
-  m_HaloStrength: 0.191
+  m_HaloStrength: 0.252
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
@@ -1190,6 +1190,7 @@ GameObject:
   - component: {fileID: 317147946}
   - component: {fileID: 317147943}
   - component: {fileID: 317147942}
+  - component: {fileID: 317147945}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -1204,7 +1205,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 317147940}
   m_LocalRotation: {x: 0.12794687, y: -0.10305089, z: 0.01336792, w: 0.98632216}
-  m_LocalPosition: {x: 0.70758915, y: 2.4416552, z: -2.4007337}
+  m_LocalPosition: {x: 572.3, y: 8.66, z: -128.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1260,6 +1261,18 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &317147945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 317147940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: b374756ccba6e5545813df37c05ec60a, type: 2}
 --- !u!114 &317147946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1526,12 +1539,12 @@ Light:
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
-    m_Resolution: -1
+    m_Resolution: 2
     m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_Strength: 0.644
+    m_Bias: 0
+    m_NormalBias: 0
+    m_NearPlane: 0.55
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
@@ -5224,6 +5237,12 @@ MonoBehaviour:
   lHand: {fileID: 863159154}
   equipParent: {fileID: 1834372000}
   targetMesh: {fileID: 2146938754}
+  currentEquipment:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &1128097121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9246,7 +9265,8 @@ Prefab:
       propertyPath: way
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114897783325102250, guid: 9591c918af6780d4bb169965a5e7dfa2, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 9591c918af6780d4bb169965a5e7dfa2, type: 2}
   m_IsPrefabParent: 0
 --- !u!23 &2146938754 stripped

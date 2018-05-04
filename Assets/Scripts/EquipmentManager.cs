@@ -17,7 +17,7 @@ public class EquipmentManager : MonoBehaviour {
 	public Transform lHand;
 	public Transform equipParent;
 	public MeshRenderer targetMesh;
-	Equipment[] currentEquipment;
+	public Equipment[] currentEquipment;
 	MeshRenderer[] currentMeshes;
 	Inventory inventory;
 	CharacterSlot[] e_slots;
