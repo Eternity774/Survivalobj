@@ -36,9 +36,9 @@ public class CleverAI : MonoBehaviour {
         Default,//патрулирование   
         Friend,
         RunFor,
-        Eat,   
-        RunFrom,
+        Eat,
         Attack,
+        RunFrom,        
         Dead
     }
     Stack<Task> Tasks = new Stack<Task>();//очередь для выполнения
@@ -149,8 +149,20 @@ public class CleverAI : MonoBehaviour {
                 }
             case Action.Eat:
                 {
-                    
-                    if (currenttask.target == null) CompleteTask();
+                    if (currenttask.target != null)//никто другой не съел
+                    {
+                        //Debug.Log("таргет не пустой");
+                        if (Vector3.Distance(currenttask.target.transform.position, gameObject.transform.position) < 1 && !anim.GetBool("Eat"))//должны подойти к туше
+                        {
+                            nav.ResetPath();
+                            transform.LookAt(currenttask.target.transform);
+                            anim.SetBool("Walk", false);
+                            anim.SetBool("Eat", true);
+                            StartCoroutine(Wait());
+                        }
+
+                    }
+                    else CompleteTask();
                     break;
                 }
             case Action.Friend:
@@ -186,17 +198,17 @@ public class CleverAI : MonoBehaviour {
 	}
     public void AddTask(Task newtask)
     {
-        Debug.Log("добавляем задание" + newtask.action + gameObject);
+        //Debug.Log("добавляем задание" + newtask.action + gameObject);
        if (Compare(newtask,currenttask))
         {
-            Debug.Log("это задание выше");
+           // Debug.Log("это задание выше");
             Tasks.Push(currenttask);
             currenttask = newtask;
             runuptask();
         }
         else
         {
-            Debug.Log("это задание ниже");
+            //Debug.Log("это задание ниже");
             Stack<Task> temp = new Stack<Task>();
             temp.Push(Tasks.Pop());
             while (Tasks.Count > 0)
@@ -260,12 +272,13 @@ public class CleverAI : MonoBehaviour {
     {
         StopAllCoroutines();
         nav.ResetPath();
+        
         anim.SetBool("Walk", false);
         anim.SetBool("Run", false);
         anim.SetBool("Eat", false);
         anim.SetBool("Attack", false);
 
-        print("новое задание у " + gameObject);
+        print("новое задание у " + gameObject+currenttask.target);
         switch (currenttask.action)
         {
             case Action.Default:
@@ -282,7 +295,7 @@ public class CleverAI : MonoBehaviour {
                 }
             case Action.RunFrom:
                 {
-                    Debug.Log("начинаем убегать");
+                   // Debug.Log("начинаем убегать");
                     //M(x;y) - мы, K(a;b)-враг, цель (2a - x;2b - y).
                     transform.LookAt(new Vector3(2*transform.position.x - currenttask.target.transform.position.x, 2 * transform.position.y - currenttask.target.transform.position.y, 2 * transform.position.z - currenttask.target.transform.position.z));
                     Vector3 forwardPosition = transform.TransformPoint(Vector3.forward * 20);
@@ -294,7 +307,7 @@ public class CleverAI : MonoBehaviour {
                 }
             case Action.RunFor:
                 {
-                    Debug.Log("начинаем догонять");
+                   // Debug.Log("начинаем догонять");
                     nav.SetDestination(currenttask.target.transform.position);
                     nav.speed = Random.Range(5, 8);
                     anim.SetBool("Run", true);
@@ -302,7 +315,7 @@ public class CleverAI : MonoBehaviour {
                 } 
             case Action.Attack:
                 {
-                    Debug.Log("начинаем атаковать");
+                   // Debug.Log("начинаем атаковать");
                     nav.SetDestination(currenttask.target.transform.TransformPoint(Vector3.forward * 2));
                     transform.LookAt(currenttask.target.transform.position);
                     anim.SetBool("Attack", true);
@@ -310,16 +323,18 @@ public class CleverAI : MonoBehaviour {
                 }
             case Action.Eat:
                 {
-                    Debug.Log("начинаем есть");
-                    nav.SetDestination(currenttask.target.transform.TransformPoint(Vector3.forward * 2));                    
-                    anim.SetBool("Eat", true);
-                    StartCoroutine(Wait());
-                    transform.LookAt(currenttask.target.transform.position);
+                    //Debug.Log("идем к еде");
+                    nav.SetDestination(currenttask.target.transform.TransformPoint(Vector3.forward * 2));
+                    nav.speed = 1;
+                    anim.SetBool("Walk", true);               
+                    //anim.SetBool("Eat", true);
+                    //StartCoroutine(Wait());
+                    //transform.LookAt(currenttask.target.transform.position);
                     break;
                 }
             case Action.Dead:
                 {
-                    Debug.Log("умираем");
+                    //Debug.Log("умираем");
                     anim.SetTrigger("Death");
                     Tasks.Clear();
                     break;
@@ -342,6 +357,7 @@ public class CleverAI : MonoBehaviour {
         else if(currenttask.action == Action.Eat)
         {
             Destroy(currenttask.target);
+            hp += 200;
         }
     }
                 
@@ -358,6 +374,7 @@ public class CleverAI : MonoBehaviour {
                 else newenemypriority = other.gameObject.GetComponent<CleverAI>().priority;//узнаем приоритет нового врага
 
                 if (priority == 6 && newenemypriority == 6) People(other.gameObject);//встретились 2 человека
+                else if (priority > 2 && newenemypriority == 3) AddTask(new Task(Action.Eat, other.gameObject, newenemypriority));
                 else GetEnemy(other.gameObject, newenemypriority);
             }
         }
@@ -467,11 +484,12 @@ public class CleverAI : MonoBehaviour {
         {
             if (priority != 1 && currenttask.action != Action.Attack)//не заяц
             {
+                Tasks.Push(currenttask);
                 if (killer.tag == "Player")
                 {
-                   AddTask(new Task(Action.Attack, killer, killer.GetComponent<PlayerMove>().priority));
+                   currenttask = new Task(Action.Attack, killer, killer.GetComponent<PlayerMove>().priority);
                 }
-                else AddTask(new Task(Action.Attack, killer, killer.GetComponent<CleverAI>().priority));
+                else currenttask = new Task(Action.Attack, killer, killer.GetComponent<CleverAI>().priority);
             
             }                    
             hp -= Random.Range(enemydamage, enemydamage + 10);
