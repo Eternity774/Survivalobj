@@ -90,7 +90,7 @@ public class PlayerMove : MonoBehaviour {
                 animator.SetTrigger("Attack");
                 if (associated != null)
                 {
-                    if (Vector3.Distance(transform.position, associated.transform.position) < 3) associated.GetComponent<Behavior>().TakeDamage(gameObject, Random.Range(50, 100));
+                    if (Vector3.Distance(transform.position, associated.transform.position) < 3) associated.GetComponent<CleverAI>().TakeDamage(gameObject, Random.Range(50, 100));
 
                 }
             }
@@ -178,7 +178,7 @@ public class PlayerMove : MonoBehaviour {
            
             if (Input.GetKeyDown(KeyCode.E) && associated != null)
             {
-                if (associated.GetComponent<Behavior>().state == Behavior.State.dead)
+                if (associated.GetComponent<CleverAI>().priority == 3)
                 {
                     playerHealth.TakeFood(20);
                     //hp += 100;///когда кого-то съел
@@ -222,7 +222,7 @@ public class PlayerMove : MonoBehaviour {
         if (live && hit.gameObject.name != "Terrain" && hit.gameObject.tag != "hut" && hit.gameObject.name != "block" && hit.gameObject.name != "Arrowrotator(Clone)")
         {
             associated = hit.gameObject;
-            hit.gameObject.GetComponent<Behavior>().GetEnemy(gameObject);
+           // hit.gameObject.GetComponent<CleverAI>().GetEnemy(gameObject);
         }
         else if (hit.gameObject.tag == "hut")
         {

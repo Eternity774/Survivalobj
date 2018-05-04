@@ -36,9 +36,9 @@ public class CleverAI : MonoBehaviour {
         Default,//патрулирование   
         Friend,
         RunFor,
-        Eat,        
-        Attack,
+        Eat,   
         RunFrom,
+        Attack,
         Dead
     }
     Stack<Task> Tasks = new Stack<Task>();//очередь для выполнения
@@ -58,13 +58,13 @@ public class CleverAI : MonoBehaviour {
     }
 	
 	
-	void Update () {
+	void FixedUpdate () {
        // Debug.Log(currenttask.action);
 		switch (currenttask.action)
         {
             case Action.Default:
                 {
-                    if (Vector3.Distance(currenttask.target.transform.position, gameObject.transform.position) < 2)
+                    if (Vector3.Distance(nav.destination, gameObject.transform.position) < 4)
                     {
                         runuptask();
                     }
@@ -77,12 +77,12 @@ public class CleverAI : MonoBehaviour {
                         //Debug.Log("таргет не пустой");
                         if (Vector3.Distance(gameObject.transform.position, currenttask.target.transform.position) > 40)
                         {
-                            Debug.Log("враг далеко, завершаю");
+                            Debug.Log("враг далеко, завершаю"+gameObject);
                             CompleteTask();
                         }
                         else if (Vector3.Distance(nav.destination, gameObject.transform.position) < 2)//продолжаем убегать
                         {
-                            Debug.Log("добежал до точки, беру следующую");
+                            //Debug.Log("добежал до точки, беру следующую");
                             Vector3 forwardPosition = transform.TransformPoint(Vector3.forward * 8);//переводим в глобальные координаты направление вперед
                             nav.SetDestination(forwardPosition);        //назначаем агенту новое направление  
                         }
@@ -95,8 +95,9 @@ public class CleverAI : MonoBehaviour {
                 {
                     if (currenttask.target != null)
                     {
-                        float distance = Vector3.Distance(transform.position, currenttask.target.transform.position);//мереем дистанцию
-                        if (distance >= 2 && distance <= 30 && Vector3.Distance(nav.destination, gameObject.transform.position) < 2)
+                        float distance = Vector3.Distance(transform.position, currenttask.target.transform.position);//мереем дистанцию до врага
+
+                        if (distance >= 2 && distance <= 30 && Vector3.Distance(nav.destination, gameObject.transform.position) < 4)
                         {
                             nav.SetDestination(currenttask.target.transform.position);//направляем агента на врага
                         }
@@ -114,17 +115,41 @@ public class CleverAI : MonoBehaviour {
                 {
                     if (currenttask.target != null)
                     {
+
+                        transform.LookAt(currenttask.target.transform.position);
                         if (Vector3.Distance(transform.position, currenttask.target.transform.position) > 3)//если при атаке оказались далеко от объекта
                         {
                             CompleteTask();//при завершении в стеке найдется предшествующее действие (runfor или runfrom)
                         }
-
+                        int Random4ik = Random.Range(0, 100);
+                        if (Random4ik > 95)
+                        {
+                            bool enemyiskilled = false;
+                            if (currenttask.target.tag == "Player")//если сражаемся с игроком
+                            {
+                                currenttask.target.GetComponent<PlayerHealth>().TakeDamage(damage);//наносим игроку урон
+                                if (currenttask.target.GetComponent<PlayerHealth>().currentHealth <= 0) enemyiskilled = true;
+                            }
+                            else
+                            {
+                                currenttask.target.GetComponent<CleverAI>().TakeDamage(gameObject, damage);//наносим урон
+                                if (currenttask.target.GetComponent<CleverAI>().priority == 3) enemyiskilled = true;//если враг стал мертвым
+                            }
+                            if (enemyiskilled)
+                            {
+                                CompleteTask();
+                                if (priority > 3) AddTask(new Task(Action.Eat, currenttask.target, currenttask.targetpriority));
+                            }
+                        }
+                        
+                        
                     }
                     else CompleteTask();
                     break;
                 }
             case Action.Eat:
                 {
+                    
                     if (currenttask.target == null) CompleteTask();
                     break;
                 }
@@ -161,7 +186,7 @@ public class CleverAI : MonoBehaviour {
 	}
     public void AddTask(Task newtask)
     {
-        Debug.Log("добавляем задание" + newtask.action);
+        Debug.Log("добавляем задание" + newtask.action + gameObject);
        if (Compare(newtask,currenttask))
         {
             Debug.Log("это задание выше");
@@ -194,23 +219,28 @@ public class CleverAI : MonoBehaviour {
     }
     void CompleteTask()
     {
-        
+        print("завершаем задание " + currenttask.action + gameObject);
         while(Tasks.Count>0)
         {
             Task temptask = Tasks.Pop();
-            if (temptask.target != null)
+
+            if (temptask.action == Action.Default)//если дефолтное состояние, то оно всегда актуально
             {
+                currenttask = temptask;
+                currenttask.target = gameObject;
+                break;
+            }
+            else if (temptask.target != null)//след. в стэке состояние не дефолтное
+            {
+                print("цель не ноль");
                 if (Vector3.Distance(gameObject.transform.position, temptask.target.transform.position) < 40)
                 {
+                    print("цель еще актуальна");
                     currenttask = temptask;
                     break;
                 }
             }
-            else if (temptask.action == Action.Default)
-            {
-                currenttask = temptask;
-                currenttask.target = gameObject;
-            }
+            
         }
         runuptask();
     }
@@ -232,17 +262,16 @@ public class CleverAI : MonoBehaviour {
         nav.ResetPath();
         anim.SetBool("Walk", false);
         anim.SetBool("Run", false);
+        anim.SetBool("Eat", false);
         anim.SetBool("Attack", false);
 
+        print("новое задание у " + gameObject);
         switch (currenttask.action)
         {
             case Action.Default:
-                {
-                    if (currenttask.target != gameObject) Destroy(currenttask.target);
-                    currenttask.target = new GameObject("Point");
-                    currenttask.target.transform.position = CreatorRef.FindPoint();
+                {                    
                     nav.speed = 0;
-                    nav.SetDestination(currenttask.target.transform.position);//задаем новую точку для движения в пределах плоскости
+                    nav.SetDestination(CreatorRef.FindPoint());//задаем новую точку для движения в пределах плоскости
                     StartCoroutine(Wait());
                     break;
                 }
@@ -254,7 +283,10 @@ public class CleverAI : MonoBehaviour {
             case Action.RunFrom:
                 {
                     Debug.Log("начинаем убегать");
-                    Vector3 forwardPosition =currenttask.target.transform.TransformPoint(Vector3.forward * 20);//переводим в глобальные координаты направление вперед
+                    //M(x;y) - мы, K(a;b)-враг, цель (2a - x;2b - y).
+                    transform.LookAt(new Vector3(2*transform.position.x - currenttask.target.transform.position.x, 2 * transform.position.y - currenttask.target.transform.position.y, 2 * transform.position.z - currenttask.target.transform.position.z));
+                    Vector3 forwardPosition = transform.TransformPoint(Vector3.forward * 20);
+                    //currenttask.target.transform.TransformPoint(Vector3.forward * 20);//переводим в глобальные координаты направление вперед
                     nav.SetDestination(forwardPosition);
                     nav.speed = Random.Range(5, 8);
                     anim.SetBool("Run", true);
@@ -262,14 +294,15 @@ public class CleverAI : MonoBehaviour {
                 }
             case Action.RunFor:
                 {
-                    
+                    Debug.Log("начинаем догонять");
                     nav.SetDestination(currenttask.target.transform.position);
+                    nav.speed = Random.Range(5, 8);
                     anim.SetBool("Run", true);
                     break;
                 } 
             case Action.Attack:
                 {
-                    
+                    Debug.Log("начинаем атаковать");
                     nav.SetDestination(currenttask.target.transform.TransformPoint(Vector3.forward * 2));
                     transform.LookAt(currenttask.target.transform.position);
                     anim.SetBool("Attack", true);
@@ -277,16 +310,17 @@ public class CleverAI : MonoBehaviour {
                 }
             case Action.Eat:
                 {
-                    
-                    nav.SetDestination(currenttask.target.transform.TransformPoint(Vector3.forward * 2));
-                    transform.LookAt(currenttask.target.transform.position);
+                    Debug.Log("начинаем есть");
+                    nav.SetDestination(currenttask.target.transform.TransformPoint(Vector3.forward * 2));                    
                     anim.SetBool("Eat", true);
                     StartCoroutine(Wait());
+                    transform.LookAt(currenttask.target.transform.position);
                     break;
                 }
             case Action.Dead:
                 {
-                    anim.SetTrigger("Deth");
+                    Debug.Log("умираем");
+                    anim.SetTrigger("Death");
                     Tasks.Clear();
                     break;
                 }
@@ -316,7 +350,7 @@ public class CleverAI : MonoBehaviour {
     {
         if (currenttask.action != Action.Dead && anim != null && currenttask.target!=other.gameObject)
         {
-            Debug.Log(other.name + currenttask.target.name);
+            //Debug.Log(other.name + currenttask.target.name);
             if (other.GetComponent<CleverAI>() != null || other.GetComponent<PlayerMove>() != null)
             {
                 int newenemypriority;//приоритет нового врага
@@ -420,20 +454,23 @@ public class CleverAI : MonoBehaviour {
         {
             AddTask(new Task(Action.RunFrom, newenemy, newenemypriority));
         }
-        else if(reaction==2)
+        else if(reaction==2)//нападать
         {
             AddTask(new Task(Action.RunFor, newenemy, newenemypriority));
         }
-        
+        print(gameObject+"работает с " + newenemy + " ответ " + reaction);
         
     }
     public void TakeDamage(GameObject killer, int enemydamage)
     {
         if (currenttask.action != Action.Dead)//если не мертвый       
         {
-            if (priority != 1)//не заяц
+            if (priority != 1 && currenttask.action != Action.Attack)//не заяц
             {
-                if (killer.tag == "Player") AddTask(new Task(Action.Attack, killer, killer.GetComponent<PlayerMove>().priority));
+                if (killer.tag == "Player")
+                {
+                   AddTask(new Task(Action.Attack, killer, killer.GetComponent<PlayerMove>().priority));
+                }
                 else AddTask(new Task(Action.Attack, killer, killer.GetComponent<CleverAI>().priority));
             
             }                    
