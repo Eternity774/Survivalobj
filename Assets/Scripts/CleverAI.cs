@@ -97,7 +97,7 @@ public class CleverAI : MonoBehaviour {
                     {
                         float distance = Vector3.Distance(transform.position, currenttask.target.transform.position);//мереем дистанцию до врага
 
-                        if (distance >= 2 && distance <= 40 && Vector3.Distance(nav.destination, gameObject.transform.position) < 4)
+                        if (distance >= 2 && distance <= 40 && Vector3.Distance(nav.destination, gameObject.transform.position) < 2)
                         {
                             nav.SetDestination(currenttask.target.transform.position);//направляем агента на врага
                         }
@@ -117,7 +117,7 @@ public class CleverAI : MonoBehaviour {
                     {
 
                         transform.LookAt(currenttask.target.transform.position);
-                        if (Vector3.Distance(transform.position, currenttask.target.transform.position) > 5)//если при атаке оказались далеко от объекта
+                        if (Vector3.Distance(transform.position, currenttask.target.transform.position) > 3)//если при атаке оказались далеко от объекта
                         {
                             CompleteTask();//при завершении в стеке найдется предшествующее действие (runfor или runfrom)
                         }
@@ -153,9 +153,10 @@ public class CleverAI : MonoBehaviour {
                     {
                         transform.LookAt(currenttask.target.transform);
                         //Debug.Log("таргет не пустой");
-                        if (Vector3.Distance(currenttask.target.transform.position, gameObject.transform.position) < 3 && !anim.GetBool("Eat"))//должны подойти к туше
+                        if (Vector3.Distance(currenttask.target.transform.position, gameObject.transform.position) < 2 && !anim.GetBool("Eat"))//должны подойти к туше
                         {
                             print(gameObject + "буду хавать");
+                            anim.SetBool("Run", false);
                             anim.SetBool("Eat", true);
                             nav.ResetPath();
                                                       
@@ -285,6 +286,7 @@ public class CleverAI : MonoBehaviour {
         anim.SetBool("Eat", false);
         anim.SetBool("Attack", false);
         anim.SetBool("RunAttack", false);
+        anim.SetBool("Action", false);
 
         print("новое задание у " + gameObject+currenttask.action);
         switch (currenttask.action)
@@ -293,7 +295,7 @@ public class CleverAI : MonoBehaviour {
                 {                    
                     nav.speed = 0;
                     nav.SetDestination(CreatorRef.FindPoint());//задаем новую точку для движения в пределах плоскости
-                    anim.SetTrigger("Action");
+                    if(Random.Range(0, 2) ==1) anim.SetBool("Action", true);                     
                     StartCoroutine(Wait());
                     break;
                 }
@@ -319,7 +321,8 @@ public class CleverAI : MonoBehaviour {
                    // Debug.Log("начинаем догонять");
                     nav.SetDestination(currenttask.target.transform.position);
                     nav.speed = Random.Range(5, 8);
-                    anim.SetBool("RunAttack", true);
+                    if (priority > 5) anim.SetBool("Run", true);
+                    else anim.SetBool("RunAttack", true);
                     break;
                 } 
             case Action.Attack:
@@ -361,6 +364,7 @@ public class CleverAI : MonoBehaviour {
         if (currenttask.action == Action.Default)
         {
             nav.speed = 1;       //включаем низкую скорость для ходьбы
+            anim.SetBool("Action", false);
             anim.SetBool("Walk", true);//включаем анимацию ходьбы
         }
         else if(currenttask.action == Action.Eat)

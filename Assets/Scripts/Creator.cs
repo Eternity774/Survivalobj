@@ -29,35 +29,29 @@ public class Creator : MonoBehaviour {
 
         //кто-строка, на кого-столбец (в ячейках вероятности)
         //{игнора, убегания, нападения}
-        ResponceMatrix = new int[6, 7, 3] { { {10,0,0}, {10,0,0}, {10,0,0}, {5,5,0}, {0,10,0}, {0,10,0}, {0,10,0} },
-                                         { {10,0,0}, {4,2,4}, {10,0,0}, {5,3,2}, {0,0,10}, {0,8,2}, {10,0,0} },
-                                         { {7,0,3}, {8,1,1},{3,0,7},{5,2,3}, {0,9,1}, {0,6,4}, {0,10,0}},
-                                         { {1,0,9}, {2,0,8}, {0,0,10}, {3,1,6}, {4,3,3},{0,3,7}, {0,9,1} },
-                                         { {1,0,9}, {2,0,8}, {0,0,10}, {3,2,5}, {0,7,3}, {6,2,2}, {0,9,1} },
-                                         { {5,0,5}, {5,0,5}, {0,0,10}, {5,0,5}, {4,2,4}, {0,3,7}, {4,3,3}} };
+        ResponceMatrix = new int[6, 6, 3] { { {10,0,0}, {10,0,0}, {5,5,0}, {0,10,0}, {0,10,0}, {0,10,0} },
+                                         { {10,0,0}, {4,2,4}, {5,3,2}, {0,0,10}, {0,8,2}, {10,0,0} },
+                                         { {7,0,3}, {8,1,1},{5,2,3}, {0,9,1}, {0,6,4}, {0,10,0}},
+                                         { {1,0,9}, {2,0,8}, {3,1,6}, {4,3,3},{0,3,7}, {0,9,1} },
+                                         { {1,0,9}, {2,0,8}, {3,2,5}, {0,7,3}, {6,2,2}, {0,9,1} },
+                                         { {5,0,5}, {5,0,5}, {5,0,5}, {4,2,4}, {0,3,7}, {4,3,3}} };
 
-        /*
+      /*  
         ResponceMatrix = new int[6, 7] { { 0, 0, 0, -5, -10, -10, -10 },//кто-строка, на кого-столбец
                                          { 0, 5, 0, 1, 0, 2, 0 },
                                          { 3, 2, 5, 4, 0, 3, 0 },
                                          { 9, 8, 10, 7, 5, 6, 1 },
                                          { 8, 8, 10, 7, 5, 5, 3 },
                                          { 9, 9, 10, 8, 5, 5, 5} };
-     /*   
+      */
         for (int i = 0; i < 15; i++) { CreateSomebody(rabbitpref); }
         for (int i = 0; i < 12; i++) { CreateSomebody(stagpref); }
         for (int i = 0; i < 9; i++) { CreateSomebody(boarpref); }
         for (int i = 0; i < 6; i++) { CreateSomebody(wolfpref); }
         for (int i = 0; i < 3; i++) { CreateSomebody(bearpref); }
-        for (int i = 0; i < 20; i++) { CreateSomebody(manpref); }
+        //for (int i = 0; i < 20; i++) { CreateSomebody(manpref); }
         ChangeInClans();
-        
-        for (int i = 0; i < 1; i++)
-        {
-            Debug.Log("вызываем");
-            CreateSomebody(rabbitpref);
-        }
-        */
+      
     }
 
     public int[] StartInformation(GameObject ai)
@@ -141,7 +135,6 @@ public class Creator : MonoBehaviour {
         //Debug.Log("Поступил запрос" + who + whom);
         //if (ResponceMatrix[who - 1, whom - 1] > Random.Range(0, 11)) return true;
         //  else return false;
-        if (who > 3) who--;
         int ignore = ResponceMatrix[who - 1, whom - 1, 0];        
         int random4ik = Random.Range(1, 11);
         if (random4ik <= ignore) return 0;
@@ -156,8 +149,8 @@ public class Creator : MonoBehaviour {
         while(true)
         {
 
-            //Vector3 startpoint = new Vector3(Random.Range(-250, 750), 0, Random.Range(-250, 750));
-            Vector3 startpoint = new Vector3(Random.Range(500, 600), 0, Random.Range(-150, 0));
+            Vector3 startpoint = new Vector3(Random.Range(-250, 750), 0, Random.Range(-250, 750));
+           // Vector3 startpoint = new Vector3(Random.Range(500, 600), 0, Random.Range(-150, 0));
             Vector3 pointwithR = startpoint + Random.insideUnitSphere * radius;
             NavMeshHit hit;
             for (int i = 0; i < 50; i++)
