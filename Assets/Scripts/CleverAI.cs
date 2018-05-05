@@ -284,6 +284,7 @@ public class CleverAI : MonoBehaviour {
         anim.SetBool("Run", false);
         anim.SetBool("Eat", false);
         anim.SetBool("Attack", false);
+        anim.SetBool("RunAttack", false);
 
         print("новое задание у " + gameObject+currenttask.action);
         switch (currenttask.action)
@@ -292,6 +293,7 @@ public class CleverAI : MonoBehaviour {
                 {                    
                     nav.speed = 0;
                     nav.SetDestination(CreatorRef.FindPoint());//задаем новую точку для движения в пределах плоскости
+                    anim.SetTrigger("Action");
                     StartCoroutine(Wait());
                     break;
                 }
@@ -317,7 +319,7 @@ public class CleverAI : MonoBehaviour {
                    // Debug.Log("начинаем догонять");
                     nav.SetDestination(currenttask.target.transform.position);
                     nav.speed = Random.Range(5, 8);
-                    anim.SetBool("Run", true);
+                    anim.SetBool("RunAttack", true);
                     break;
                 } 
             case Action.Attack:
