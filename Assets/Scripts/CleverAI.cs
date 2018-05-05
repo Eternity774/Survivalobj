@@ -202,38 +202,43 @@ public class CleverAI : MonoBehaviour {
     public void AddTask(Task newtask)
     {
         //Debug.Log("добавляем задание" + newtask.action + gameObject);
-       if (Compare(newtask,currenttask))
+        if (Compare(newtask, currenttask))
         {
-           // Debug.Log("это задание выше");
+            // Debug.Log("это задание выше");
             Tasks.Push(currenttask);
             currenttask = newtask;
             runuptask();
         }
         else//новое задание ниже по приоритету
-        {                                                 
-           if (Compare(newtask,Tasks.Peek()))//проверяем след. в стэке
-           {
-                Tasks.Push(newtask);//просто ставим в верх стэка                    
-           }
-            else//если и след. не то
-            {
-                Stack<Task> temp = new Stack<Task>();//создаем временный стек
-                while (true)
+        {
+            Task nexttask = Tasks.Peek();
+            if (newtask.target == nexttask.target && newtask.action == nexttask.action) { }
+            else {
+                if (Compare(newtask, nexttask))//проверяем след. в стэке
                 {
-                    temp.Push(Tasks.Pop());//закидываем верхний в стэке во временный стек
-                    if (Compare(newtask, Tasks.Peek()))//если круче след. эелемента
-                    {
-                        Tasks.Push(currenttask);//закидываем таки на него
-                        while(temp.Count>0)//пока не опустеет временный стек
-                        {
-                            Tasks.Push(temp.Pop());//перекидываем из временного обратно
-                        }
-                        break;//завершаем перебор
-                    }
-                    
+                    Tasks.Push(newtask);//просто ставим в верх стэка                    
                 }
+                else//если и след. не то
+                {
+                    Stack<Task> temp = new Stack<Task>();//создаем временный стек
+                    while (true)
+                    {
+                        temp.Push(Tasks.Pop());//закидываем верхний в стэке во временный стек
+                        if (Compare(newtask, Tasks.Peek()))//если круче след. эелемента
+                        {
+                            Tasks.Push(currenttask);//закидываем таки на него
+                            while (temp.Count > 0)//пока не опустеет временный стек
+                            {
+                                Tasks.Push(temp.Pop());//перекидываем из временного обратно
+                            }
+                            break;//завершаем перебор
+                        }
+
+                    }
+                }
+
             }
-            
+
         }
     }
     void CompleteTask()
@@ -360,10 +365,11 @@ public class CleverAI : MonoBehaviour {
     IEnumerator Wait()//корутина ожидания
     {
 
-        yield return new WaitForSeconds(10f);//ждем 10 секунд       
+        yield return new WaitForSeconds(15f);//ждем 10 секунд       
         if (currenttask.action == Action.Default)
         {
             nav.speed = 1;       //включаем низкую скорость для ходьбы
+            print("нав уже включен");
             anim.SetBool("Action", false);
             anim.SetBool("Walk", true);//включаем анимацию ходьбы
         }

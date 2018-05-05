@@ -30,20 +30,20 @@ public class Creator : MonoBehaviour {
         //кто-строка, на кого-столбец (в ячейках вероятности)
         //{игнора, убегания, нападения}
         ResponceMatrix = new int[6, 6, 3] { { {10,0,0}, {10,0,0}, {5,5,0}, {0,10,0}, {0,10,0}, {0,10,0} },
-                                         { {10,0,0}, {4,2,4}, {5,3,2}, {0,0,10}, {0,8,2}, {10,0,0} },
-                                         { {7,0,3}, {8,1,1},{5,2,3}, {0,9,1}, {0,6,4}, {0,10,0}},
+                                         { {10,0,0}, {4,2,4}, {5,3,2}, {0,0,10}, {0,8,2}, {0,10,0} },
+                                         { {7,0,3}, {8,1,1},{5,2,3}, {0,9,1}, {1,6,3}, {0,10,0}},
                                          { {1,0,9}, {2,0,8}, {3,1,6}, {4,3,3},{0,3,7}, {0,9,1} },
                                          { {1,0,9}, {2,0,8}, {3,2,5}, {0,7,3}, {6,2,2}, {0,9,1} },
                                          { {5,0,5}, {5,0,5}, {5,0,5}, {4,2,4}, {0,3,7}, {4,3,3}} };
 
-      /*  
-        ResponceMatrix = new int[6, 7] { { 0, 0, 0, -5, -10, -10, -10 },//кто-строка, на кого-столбец
-                                         { 0, 5, 0, 1, 0, 2, 0 },
-                                         { 3, 2, 5, 4, 0, 3, 0 },
-                                         { 9, 8, 10, 7, 5, 6, 1 },
-                                         { 8, 8, 10, 7, 5, 5, 3 },
-                                         { 9, 9, 10, 8, 5, 5, 5} };
-      */
+        /*  
+          ResponceMatrix = new int[6, 7] { { 0, 0, 0, -5, -10, -10, -10 },//кто-строка, на кого-столбец
+                                           { 0, 5, 0, 1, 0, 2, 0 },
+                                           { 3, 2, 5, 4, 0, 3, 0 },
+                                           { 9, 8, 10, 7, 5, 6, 1 },
+                                           { 8, 8, 10, 7, 5, 5, 3 },
+                                           { 9, 9, 10, 8, 5, 5, 5} };
+        */
         for (int i = 0; i < 15; i++) { CreateSomebody(rabbitpref); }
         for (int i = 0; i < 12; i++) { CreateSomebody(stagpref); }
         for (int i = 0; i < 9; i++) { CreateSomebody(boarpref); }
@@ -51,6 +51,7 @@ public class Creator : MonoBehaviour {
         for (int i = 0; i < 3; i++) { CreateSomebody(bearpref); }
         //for (int i = 0; i < 20; i++) { CreateSomebody(manpref); }
         ChangeInClans();
+        //print("разбор матрицы:"+ResponceMatrix[1,5,0]);
       
     }
 
@@ -135,7 +136,10 @@ public class Creator : MonoBehaviour {
         //Debug.Log("Поступил запрос" + who + whom);
         //if (ResponceMatrix[who - 1, whom - 1] > Random.Range(0, 11)) return true;
         //  else return false;
-        int ignore = ResponceMatrix[who - 1, whom - 1, 0];        
+        
+        if (who > 3) who--;
+        if (whom > 3) whom--;
+        int ignore = ResponceMatrix[who - 1, whom - 1, 0];
         int random4ik = Random.Range(1, 11);
         if (random4ik <= ignore) return 0;
         int runfrom = ResponceMatrix[who - 1, whom - 1, 1];
