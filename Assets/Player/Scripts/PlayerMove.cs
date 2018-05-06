@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour {
 
-    [HideInInspector]
+    
     public GameObject associated;
     public int priority = 6;
     float speedx = 4f;//скорость поворота 
@@ -18,7 +18,7 @@ public class PlayerMove : MonoBehaviour {
 	private bool e_inv_Open;
 
    public GameObject way;
-    public GameObject friend;
+    public GameObject Friend;
 
 	bool isRunning = true;
 	private float powerRegenTimer;
@@ -26,14 +26,14 @@ public class PlayerMove : MonoBehaviour {
     private GameObject inv_Main;
 	private GameObject equipInventory;
 	private GameObject m_Cam;
-    public GameObject FriendlyPanel;
+    
     public float pbarSlider;
     public float pbarStart;
     public float pbarCurrent;
     public PlayerHealth playerHealth;
-    [HideInInspector]
+    
     public float hspeed; //для хранения скорости мышки (для инвентаря)
-    [HideInInspector]
+    
     public float vspeed;
 
     // Use this for initialization
@@ -46,18 +46,17 @@ public class PlayerMove : MonoBehaviour {
 		e_inv_Open = false;
         inv_Main.SetActive(false);
 		equipInventory.SetActive (false);
-        FriendlyPanel.SetActive(false);
+        
         m_Cam = GameObject.FindGameObjectWithTag("MainCamera");
         hspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic>().horizontalAimingSpeed;
         vspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic>().verticalAimingSpeed;
         playerHealth = GetComponent<PlayerHealth>();
         ClanOfPlayer = new Clan(gameObject);//сразу создаем клан игрока
-
        
-        
     }
-    private void Update()
+    public void Update()
     {
+        print(gameObject.GetComponent<PlayerMove>().Friend.name);
         if (live)
         {
 
@@ -84,7 +83,7 @@ public class PlayerMove : MonoBehaviour {
 
 
 
-            if (Input.GetKeyDown(KeyCode.Mouse0) && !(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) && (inv_Open == false))
+            if (Input.GetKeyDown(KeyCode.Mouse0) && !(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) && (inv_Open == false)&&!GetComponent<Friendship>().FriendlyPanel.activeSelf)
             {
 
                 animator.SetTrigger("Attack");
@@ -215,8 +214,7 @@ public class PlayerMove : MonoBehaviour {
         }
     }
 
-
-
+    
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (live && hit.gameObject.name != "Terrain" && hit.gameObject.tag != "hut" && hit.gameObject.name != "block" && hit.gameObject.name != "Arrowrotator(Clone)")
@@ -251,26 +249,6 @@ public class PlayerMove : MonoBehaviour {
         yield return new WaitForSeconds(5f);
         isRunning = true;
     }
-    public void request(GameObject friend)//заявка на дружбу
-    {
-        FriendlyPanel.SetActive(true);
-        this.friend = friend;
-        friend.GetComponent<CleverAI>().AddTask(new CleverAI.Task(CleverAI.Action.Friend, gameObject, 6));
-    }
-    public void answeryes()
-    {
-        if(friend!=null)
-        {
-            friend.GetComponent<CleverAI>().clan = ClanOfPlayer;
-            ClanOfPlayer.AddToClan(friend);            
-            Creator.ChangeInClans();
-        }
-    }
-    public void answerno()
-    {
-        FriendlyPanel.SetActive(false);
-        friend = null;
-    }
-
+   
 
 }

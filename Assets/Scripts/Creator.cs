@@ -43,13 +43,14 @@ public class Creator : MonoBehaviour {
                                            { 9, 8, 10, 7, 5, 6, 1 },
                                            { 8, 8, 10, 7, 5, 5, 3 },
                                            { 9, 9, 10, 8, 5, 5, 5} };
-        */
+        
         for (int i = 0; i < 15; i++) { CreateSomebody(rabbitpref); }
         for (int i = 0; i < 12; i++) { CreateSomebody(stagpref); }
         for (int i = 0; i < 9; i++) { CreateSomebody(boarpref); }
         for (int i = 0; i < 6; i++) { CreateSomebody(wolfpref); }
         for (int i = 0; i < 3; i++) { CreateSomebody(bearpref); }
         //for (int i = 0; i < 20; i++) { CreateSomebody(manpref); }
+        */
         ChangeInClans();
         //print("разбор матрицы:"+ResponceMatrix[1,5,0]);
       
@@ -180,7 +181,7 @@ public class Creator : MonoBehaviour {
             int countwithoutclan = 0;
             foreach (GameObject i in temparray)
             {
-                if (i.GetComponent<Behavior>().clan == null&&i.GetComponent<Behavior>().state!=Behavior.State.dead) countwithoutclan++;
+                if (i.GetComponent<CleverAI>().clan == null&&i.GetComponent<CleverAI>().priority!=3) countwithoutclan++;
                 
             }
             Debug.Log("АИ игроков без клана: " + countwithoutclan);

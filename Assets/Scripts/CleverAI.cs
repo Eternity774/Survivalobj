@@ -181,10 +181,10 @@ public class CleverAI : MonoBehaviour {
                             nav.speed = 8;
                         }
 
-                        if (distance < 8 && distance >= 2)//когда дистанция сократилась
+                        if (distance < 8 && distance >= 2)  //когда дистанция сократилась
                         {
-                            anim.SetBool("Walk", true);
                             anim.SetBool("Run", false);
+                            anim.SetBool("Walk", true);                            
                             nav.speed = 1;
 
                         }
@@ -401,12 +401,17 @@ public class CleverAI : MonoBehaviour {
 
     public void People(GameObject otherman)//втретились 2 человека
     {
-        int reaction = 1;//по умолчанию убегаем
+        int reaction = 0;//по умолчанию игнорируем
         bool friendly = false;//будем ли сотрудничать
         if(clan==null)//если аи не в клане
         {
-            if (Random.Range(0, 10) < sociability) friendly=true;//предлагаем дружбу  
-                      
+            print("AI не в клани и ");
+            if (Random.Range(0, 10) < sociability)
+            {
+                friendly = true;//предлагаем дружбу  
+                print("предлагает дружбу");
+            }
+            
         }
         else//мы в клане
         {
@@ -448,7 +453,7 @@ public class CleverAI : MonoBehaviour {
         {
             if(otherman.tag=="Player")
             {
-                otherman.GetComponent<PlayerMove>().request(gameObject);
+                otherman.GetComponent<Friendship>().request(gameObject);
             }
             else
             {
