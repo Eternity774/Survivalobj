@@ -44,11 +44,6 @@ public class EquipmentManager : MonoBehaviour {
 
 		Equipment oldItem = Unequip(slotIndex);
 
-//		if (currentEquipment [slotIndex] != null) {
-//			oldItem = currentEquipment [slotIndex];
-//			inventory.Add (oldItem);
-//		}
-
 		if (onEquipmentChanged != null)
 		{
 			onEquipmentChanged.Invoke(newItem, oldItem);
@@ -56,14 +51,9 @@ public class EquipmentManager : MonoBehaviour {
 
 
 		currentEquipment [slotIndex] = newItem;
-		//print (slotIndex);
 
-
-
-		//HERE WE NEED TO ATTACH WEAPON TO CHARACTER
 
 		MeshRenderer newMesh = Instantiate<MeshRenderer> (newItem.mesh, new Vector3(0,0,0),Quaternion.identity);
-	//	newMesh.transform.parent = targetMesh.transform;
 
 		switch (slotIndex) {  // 3 - Right hand slot, 4 - left hand slot
 		case 3: 

@@ -33,19 +33,19 @@ MonoBehaviour:
     m_Settings:
       method: 0
       fxaaSettings:
-        preset: 3
+        preset: 0
       taaSettings:
-        jitterSpread: 0.75
-        sharpen: 0.3
-        stationaryBlending: 0.95
-        motionBlending: 0.85
+        jitterSpread: 1
+        sharpen: 3
+        stationaryBlending: 0.99
+        motionBlending: 0.421
   ambientOcclusion:
     m_Enabled: 1
     m_Settings:
       intensity: 1.05
       radius: 5.85
-      sampleCount: 10
-      downsampling: 1
+      sampleCount: 6
+      downsampling: 0
       forceForwardCompatibility: 0
       ambientOnly: 0
       highPrecision: 0
@@ -69,7 +69,7 @@ MonoBehaviour:
       screenEdgeMask:
         intensity: 0.03
   depthOfField:
-    m_Enabled: 1
+    m_Enabled: 0
     m_Settings:
       focusDistance: 12.56
       aperture: 13
@@ -112,20 +112,20 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       tonemapping:
-        tonemapper: 2
-        neutralBlackIn: 0.055
-        neutralWhiteIn: 14
-        neutralBlackOut: 0.001
+        tonemapper: 1
+        neutralBlackIn: 0.02
+        neutralWhiteIn: 10
+        neutralBlackOut: 0
         neutralWhiteOut: 10
-        neutralWhiteLevel: 3.2
+        neutralWhiteLevel: 5.3
         neutralWhiteClip: 10
       basic:
         postExposure: 0
-        temperature: 0
-        tint: 0
-        hueShift: 0
+        temperature: 4
+        tint: 6
+        hueShift: -8
         saturation: 1
-        contrast: 1.22
+        contrast: 1
       channelMixer:
         red: {x: 1, y: 0, z: 0}
         green: {x: 0, y: 1, z: 0}
@@ -293,7 +293,7 @@ MonoBehaviour:
       size: 1
       luminanceContribution: 0.8
   vignette:
-    m_Enabled: 1
+    m_Enabled: 0
     m_Settings:
       mode: 0
       color: {r: 0, g: 0, b: 0, a: 1}
