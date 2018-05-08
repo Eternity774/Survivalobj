@@ -18,7 +18,7 @@ public class Friendship : MonoBehaviour {
 	}
     public void answeryes()
     {
-        print(gameObject.GetComponent<PlayerMove>().Friend.name);
+        print(gameObject.GetComponent<Friendship>().Friend.name);
         if (Friend != null)
         {
             print("дружба принята");
@@ -34,6 +34,7 @@ public class Friendship : MonoBehaviour {
     }
     public void request(GameObject newfriend)//заявка на дружбу
     {
+        print("заявку прислал" + newfriend.name);
         FriendlyPanel.SetActive(true);
         Friend = newfriend;
         print(Friend.name);

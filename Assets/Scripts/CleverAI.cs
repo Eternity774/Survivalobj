@@ -401,7 +401,7 @@ public class CleverAI : MonoBehaviour {
 
     public void People(GameObject otherman)//втретились 2 человека
     {
-        int reaction = 0;//по умолчанию игнорируем
+        int reaction = 1;//по умолчанию убегаем
         bool friendly = false;//будем ли сотрудничать
         if(clan==null)//если аи не в клане
         {
@@ -423,12 +423,15 @@ public class CleverAI : MonoBehaviour {
                 }
                 else //мы и встречный в кланах
                 {
+                    print("оба ии в клане");
                     if (clan == otherman.GetComponent<CleverAI>().clan)//мы в одном клане
                     {
+                        print("ии в одном клане");
                         reaction = 0;//будем игнорировать
-                    }
+                    } 
                     else//мы в разных кланах
                     {
+                        print("ии в разных кланах");
                         if (Random.Range(0, 10) < sociability) reaction = 2;//убегаем
                         else reaction = 3;//атакуем
                     }
@@ -460,7 +463,7 @@ public class CleverAI : MonoBehaviour {
                 otherman.GetComponent<CleverAI>().request(gameObject);
             }
         }
-        else if(reaction==0)//не подружились и реакция не однозначна
+        else if(reaction==1)//не подружились и реакция не однозначна
         {
             GetEnemy(otherman, 6);
         }
@@ -481,7 +484,14 @@ public class CleverAI : MonoBehaviour {
     {
         if (Random.Range(0, 10) < sociability)//принимаем
         {
-            clan = friend.GetComponent<CleverAI>().clan;
+            if(friend.GetComponent<CleverAI>().clan==null)//приславший заявку не состоит в клане, но хочет создать свой
+            {
+                clan = new Clan(friend);//в этом случае создаем для него клан 
+                friend.GetComponent<CleverAI>().clan = clan;//записываем для него его же клан
+            }
+               
+            clan = friend.GetComponent<CleverAI>().clan;//и только теперь добавляемся в его клан
+            
             clan.AddToClan(gameObject);
             Creator.ChangeInClans();
             AddTask(new Task(Action.Friend, clan.Leader, 6));

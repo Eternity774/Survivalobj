@@ -17,8 +17,8 @@ public class arrowway : MonoBehaviour {
         Debug.Log("найдено " + othermans.Length);
         foreach (GameObject man in othermans)
         {
-            Debug.Log("в цикле " + man.GetComponent<Behavior>().clan);
-            if (man.GetComponent<Behavior>().clan != player.GetComponent<PlayerMove>().ClanOfPlayer)
+            Debug.Log("в цикле " + man.GetComponent<CleverAI>().clan);
+            if (man.GetComponent<CleverAI>().clan != player.GetComponent<PlayerMove>().ClanOfPlayer)
             {
                 Debug.Log("условие выполнилось " + othermans.Length);
                 otherman = man;

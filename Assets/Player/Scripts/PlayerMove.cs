@@ -56,7 +56,7 @@ public class PlayerMove : MonoBehaviour {
     }
     public void Update()
     {
-        print(gameObject.GetComponent<PlayerMove>().Friend.name);
+       // print(gameObject.GetComponent<PlayerMove>().Friend.name);
         if (live)
         {
 
