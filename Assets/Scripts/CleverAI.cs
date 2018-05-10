@@ -180,8 +180,8 @@ public class CleverAI : MonoBehaviour {
                             anim.SetBool("Run", true);
                             nav.speed = 8;
                         }
-
-                        if (distance < 8 && distance >= 2)  //когда дистанция сократилась
+                         
+                        if (distance < 8 && distance >= 2 && !anim.GetCurrentAnimatorStateInfo(0).IsName("Walk"))  //когда дистанция сократилась
                         {
                             anim.SetBool("Run", false);
                             anim.SetBool("Walk", true);                            
@@ -248,7 +248,7 @@ public class CleverAI : MonoBehaviour {
         {
             Task temptask = Tasks.Pop();
 
-            if (temptask.action == Action.Default)//если дефолтное состояние, то оно всегда актуально
+            if (temptask.action == Action.Default || temptask.action == Action.Friend)//если состояние дефолтное или состоит в клане, то оно всегда актуально
             {
                 currenttask = temptask;
                 currenttask.target = gameObject;
