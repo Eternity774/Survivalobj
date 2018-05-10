@@ -41,7 +41,7 @@ public class CleverAI : MonoBehaviour {
         RunFrom,        
         Dead
     }
-    Stack<Task> Tasks = new Stack<Task>();//очередь для выполнения
+    public Stack<Task> Tasks = new Stack<Task>();//очередь для выполнения
    
     void Start () {
         CreatorRef = GameObject.Find("MainController").GetComponent<Creator>();//находим контроллер на сцене
@@ -462,6 +462,7 @@ public class CleverAI : MonoBehaviour {
             {
                 otherman.GetComponent<CleverAI>().request(gameObject);
             }
+
         }
         else if(reaction==1)//не подружились и реакция не однозначна
         {
@@ -489,9 +490,9 @@ public class CleverAI : MonoBehaviour {
                 clan = new Clan(friend);//в этом случае создаем для него клан 
                 friend.GetComponent<CleverAI>().clan = clan;//записываем для него его же клан
             }
-               
             clan = friend.GetComponent<CleverAI>().clan;//и только теперь добавляемся в его клан
-            
+            CompleteTask();
+            Tasks.Clear();            
             clan.AddToClan(gameObject);
             Creator.ChangeInClans();
             AddTask(new Task(Action.Friend, clan.Leader, 6));

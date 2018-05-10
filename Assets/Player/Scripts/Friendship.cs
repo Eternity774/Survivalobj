@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Friendship : MonoBehaviour {
     public GameObject FriendlyPanel;
-    
+    public Text FriendlyText;
     // Use this for initialization
     public GameObject Friend;
     void Start () {
@@ -35,6 +36,7 @@ public class Friendship : MonoBehaviour {
     public void request(GameObject newfriend)//заявка на дружбу
     {
         print("заявку прислал" + newfriend.name);
+        FriendlyText.text = "Frienship with " + newfriend.name + "?";
         FriendlyPanel.SetActive(true);
         Friend = newfriend;
         print(Friend.name);

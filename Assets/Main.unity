@@ -4977,6 +4977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FriendlyPanel: {fileID: 1416162704}
+  FriendlyText: {fileID: 1317154974}
   Friend: {fileID: 0}
 --- !u!114 &2119219620
 MonoBehaviour:
