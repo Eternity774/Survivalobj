@@ -55,27 +55,27 @@ MonoBehaviour:
       reflection:
         blendType: 0
         reflectionQuality: 0
-        maxDistance: 162
+        maxDistance: 300
         iterationCount: 256
         stepSize: 4
-        widthModifier: 0.5
+        widthModifier: 1.2
         reflectionBlur: 1
         reflectBackfaces: 0
       intensity:
-        reflectionMultiplier: 1
-        fadeDistance: 100
+        reflectionMultiplier: 0.47
+        fadeDistance: 1000
         fresnelFade: 1
         fresnelFadePower: 1
       screenEdgeMask:
         intensity: 0.03
   depthOfField:
-    m_Enabled: 0
+    m_Enabled: 1
     m_Settings:
-      focusDistance: 12.56
-      aperture: 13
-      focalLength: 44
+      focusDistance: 1.94
+      aperture: 7
+      focalLength: 41
       useCameraFov: 0
-      kernelSize: 1
+      kernelSize: 3
   motionBlur:
     m_Enabled: 0
     m_Settings:
@@ -91,7 +91,7 @@ MonoBehaviour:
       maxLuminance: 1
       keyValue: 0.25
       dynamicKeyValue: 1
-      adaptationType: 0
+      adaptationType: 1
       speedUp: 2
       speedDown: 1
       logMin: -8
@@ -100,10 +100,10 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       bloom:
-        intensity: 0.4
+        intensity: 1.4
         threshold: 1.07
-        softKnee: 0.104
-        radius: 1.16
+        softKnee: 0.67
+        radius: 1.7
         antiFlicker: 1
       lensDirt:
         texture: {fileID: 0}
@@ -122,8 +122,8 @@ MonoBehaviour:
       basic:
         postExposure: 0
         temperature: 4
-        tint: 6
-        hueShift: -8
+        tint: 0
+        hueShift: -6
         saturation: 1
         contrast: 1
       channelMixer:
@@ -138,9 +138,9 @@ MonoBehaviour:
           power: {r: 1, g: 1, b: 1, a: 0}
           offset: {r: 1, g: 1, b: 1, a: 0}
         linear:
-          lift: {r: 0, g: 0, b: 0, a: 0}
-          gamma: {r: 0, g: 0, b: 0, a: 0}
-          gain: {r: 0, g: 0, b: 0, a: 0}
+          lift: {r: 1, g: 1, b: 1, a: 0}
+          gamma: {r: 1, g: 1, b: 1, a: 0}
+          gain: {r: 1, g: 1, b: 1, a: 0}
       curves:
         master:
           curve:
@@ -284,7 +284,7 @@ MonoBehaviour:
     m_Enabled: 0
     m_Settings:
       spectralTexture: {fileID: 0}
-      intensity: 0.1
+      intensity: 0
   grain:
     m_Enabled: 0
     m_Settings:
