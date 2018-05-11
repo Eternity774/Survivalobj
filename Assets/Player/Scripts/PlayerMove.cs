@@ -17,7 +17,7 @@ public class PlayerMove : MonoBehaviour {
 
 	private bool e_inv_Open;
     EquipmentManager equipment;
-   public GameObject way;
+    public GameObject way;
 
 	bool isRunning = true;
 	private float powerRegenTimer;
@@ -33,6 +33,9 @@ public class PlayerMove : MonoBehaviour {
     public float hspeed; //для хранения скорости мышки (для инвентаря)
     [HideInInspector]
     public float vspeed;
+    private Camera _cam;
+    private float maxFov = 75f;
+    private float minFov = 60f;
 
     // Use this for initialization
     void Start() {
@@ -50,8 +53,8 @@ public class PlayerMove : MonoBehaviour {
         vspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic>().verticalAimingSpeed;
         playerHealth = GetComponent<PlayerHealth>();
         ClanOfPlayer = new Clan(gameObject);//сразу создаем клан игрока
-
-       
+        _cam = m_Cam.GetComponent<Camera>();
+              
         
     }
     private void Update()
@@ -103,7 +106,6 @@ public class PlayerMove : MonoBehaviour {
     void FixedUpdate() {
         if (live)
         {
-
 
             float h = Input.GetAxis("Horizontal");//перемещение курсора по горизонтали
             float v = Input.GetAxis("Vertical");//перемещение курсора по вертикали
@@ -158,13 +160,14 @@ public class PlayerMove : MonoBehaviour {
                     speedx = 3;
                     speedz = 20f;
                     animator.SetBool("Run", true);
+                _cam.fieldOfView = Mathf.Lerp(_cam.fieldOfView, maxFov, 0.1f);
             }
              else 
             {
                 speedx = 4;
                 speedz = 5f;
                 animator.SetBool("Run", false);
-
+                _cam.fieldOfView = Mathf.Lerp(_cam.fieldOfView, minFov, 0.1f);
             }
             if (playerHealth.currentPower < 1 && isRunning) StartCoroutine(NoRun());
 
@@ -175,7 +178,7 @@ public class PlayerMove : MonoBehaviour {
                 speedx = 4;
                 speedz = 5f;
                 animator.SetBool("Run", false);
-
+                _cam.fieldOfView = Mathf.Lerp(_cam.fieldOfView, minFov, 0.1f);
             }
             
            
