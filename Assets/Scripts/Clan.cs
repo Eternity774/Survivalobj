@@ -53,12 +53,11 @@ public class Clan{
             bool destinyofthisclan = false;
             foreach(GameObject a in members)
             {
-                if (a.GetComponent<Behavior>().clan==this && a!=Leader)
+                if (a.GetComponent<CleverAI>().clan==this && a!=Leader)
                 {
                     Leader = a;
                     destinyofthisclan = true;
-                    Debug.Log("в клане " + name + "новый лидер: " + oldmember.name);
-                    Leader.GetComponent<Behavior>().state = Behavior.State.wait;
+                    Debug.Log("в клане " + name + "новый лидер: " + oldmember.name);                   
                     break;
                 }
             }

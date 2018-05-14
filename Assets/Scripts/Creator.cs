@@ -44,12 +44,13 @@ public class Creator : MonoBehaviour {
                                            { 8, 8, 10, 7, 5, 5, 3 },
                                            { 9, 9, 10, 8, 5, 5, 5} };
         */
+        for (int i = 0; i < 20; i++) { CreateSomebody(manpref); }
         for (int i = 0; i < 15; i++) { CreateSomebody(rabbitpref); }
         for (int i = 0; i < 12; i++) { CreateSomebody(stagpref); }
         for (int i = 0; i < 9; i++) { CreateSomebody(boarpref); }
         for (int i = 0; i < 6; i++) { CreateSomebody(wolfpref); }
         for (int i = 0; i < 3; i++) { CreateSomebody(bearpref); }
-        for (int i = 0; i < 20; i++) { CreateSomebody(manpref); }
+        
         
         ChangeInClans();
         //print("разбор матрицы:"+ResponceMatrix[1,5,0]);
@@ -121,7 +122,7 @@ public class Creator : MonoBehaviour {
             case "Wolf": CreateSomebody(wolfpref); break;
             case "Bear": CreateSomebody(bearpref); break;
             //case "AIMAn": CreateSomebody(manpref); break;
-            case "AIMAn": ChangeInClans(); break;
+            case "AIMan": ChangeInClans(); break;
                         
 
         }
@@ -129,7 +130,10 @@ public class Creator : MonoBehaviour {
     }
     void CreateSomebody(GameObject prefub)
     {
-        GameObject a = Instantiate(prefub, FindPoint(), Quaternion.identity); a.name += id; id++;
+        GameObject a = Instantiate(prefub, FindPoint(), Quaternion.identity);
+        if (prefub.tag == "AIMan") a.name = "ai" + id;
+        else a.name += id;
+        id++;
         a.GetComponent<NavMeshAgent>().avoidancePriority = Random.Range(0, 100);
     }
     public int Response(int who, int whom)
@@ -137,9 +141,10 @@ public class Creator : MonoBehaviour {
         //Debug.Log("Поступил запрос" + who + whom);
         //if (ResponceMatrix[who - 1, whom - 1] > Random.Range(0, 11)) return true;
         //  else return false;
-        
+       
         if (who > 3) who--;
         if (whom > 3) whom--;
+        print("Responce" + who + whom);
         int ignore = ResponceMatrix[who - 1, whom - 1, 0];
         int random4ik = Random.Range(1, 11);
         if (random4ik <= ignore) return 0;

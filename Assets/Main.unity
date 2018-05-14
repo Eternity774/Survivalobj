@@ -1478,7 +1478,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 87.1, y: -102.25}
+  m_AnchoredPosition: {x: 81.1, y: -198.99998}
   m_SizeDelta: {x: 166.2, y: 52.499}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &559379690
@@ -1945,7 +1945,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -99, y: -102.25}
+  m_AnchoredPosition: {x: -105, y: -199}
   m_SizeDelta: {x: 158.2, y: 52.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &856664171
@@ -3600,8 +3600,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.699997, y: 10.7}
-  m_SizeDelta: {x: 319.2, y: 120.1}
+  m_AnchoredPosition: {x: 5.0200005, y: 16.978962}
+  m_SizeDelta: {x: 388.7, y: 87.674}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1317154974
 MonoBehaviour:
@@ -3625,7 +3625,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: daa812a66fd1bb94bb86bb3914f342f1, type: 3}
-    m_FontSize: 111
+    m_FontSize: 58
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 0
@@ -3635,8 +3635,8 @@ MonoBehaviour:
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
-    m_LineSpacing: 1
-  m_Text: Frienship with AI40
+    m_LineSpacing: 0.82
+  m_Text: ai43 is friend?
 --- !u!222 &1317154975
 CanvasRenderer:
   m_ObjectHideFlags: 0

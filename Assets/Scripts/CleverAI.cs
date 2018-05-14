@@ -9,7 +9,7 @@ public class CleverAI : MonoBehaviour {
     Animator anim;//аниматор, для переключения анимаций
     Creator CreatorRef;//ссылка на создателя    
     
-    Task currenttask;
+    public Task currenttask;
     public Clan clan;
     int sociability;
     public int priority;//приоритет для разрешения столкновения нескольких объектов
@@ -170,13 +170,19 @@ public class CleverAI : MonoBehaviour {
                 }
             case Action.Friend:
                 {
-                    if (clan != null)
+                    if (clan != null || gameObject == clan.Leader)
                     {
-                        float distance = Vector3.Distance(transform.position, clan.Leader.transform.position);//мереем дистанцию
-                        if (distance >= 2 && Vector3.Distance(nav.destination, gameObject.transform.position) < 2) nav.SetDestination(clan.Leader.transform.position);//направляем агента за лидером   
-
-                        if (distance > 20)
+                        float distance = Vector3.Distance(transform.position, clan.Leader.transform.position);//мереем дистанцию до лидера
+                        if (distance >= 2 && Vector3.Distance(nav.destination, gameObject.transform.position) < 2)
                         {
+                            nav.speed = 1;
+                            anim.SetBool("Walk", true);
+                            nav.SetDestination(clan.Leader.transform.position);//направляем агента за лидером                              
+                        }
+
+                        if (distance > 20 && !anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
+                        {
+                            anim.SetBool("Walk", false);
                             anim.SetBool("Run", true);
                             nav.speed = 8;
                         }
@@ -499,7 +505,8 @@ public class CleverAI : MonoBehaviour {
         }
     }
     public void GetEnemy(GameObject newenemy, int newenemypriority)//рядом враг
-    {      
+    {
+        print("Responce" + priority + newenemypriority);
         int reaction = CreatorRef.Response(priority, newenemypriority);
         
         if(reaction==1)//т.е. нужно убегать
