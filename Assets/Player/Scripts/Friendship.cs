@@ -22,7 +22,7 @@ public class Friendship : MonoBehaviour {
         print(gameObject.GetComponent<Friendship>().Friend.name);
         if (Friend != null)
         {
-            print("дружба принята");
+            //print("дружба принята");
             Friend.GetComponent<CleverAI>().clan = gameObject.GetComponent<PlayerMove>().ClanOfPlayer;
             gameObject.GetComponent<PlayerMove>().ClanOfPlayer.AddToClan(Friend);
             Friend.GetComponent<CleverAI>().AddTask(new CleverAI.Task(CleverAI.Action.Friend, gameObject, 6));
