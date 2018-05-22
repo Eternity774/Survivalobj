@@ -19,6 +19,7 @@ public class CleverAI : MonoBehaviour {
 
     public struct Task
     {
+        
         public Action action;
         public GameObject target;
         public int targetpriority;
@@ -41,6 +42,8 @@ public class CleverAI : MonoBehaviour {
         RunFrom,        
         Dead
     }
+
+    
     public Stack<Task> Tasks = new Stack<Task>();//очередь для выполнения
    
     void Start () {
@@ -78,7 +81,7 @@ public class CleverAI : MonoBehaviour {
                         //Debug.Log("таргет не пустой");
                         if (Vector3.Distance(gameObject.transform.position, currenttask.target.transform.position) > 40)
                         {
-                            Debug.Log("враг далеко, завершаю"+gameObject);
+                            //Debug.Log("враг далеко, завершаю"+gameObject);
                             CompleteTask();
                         }
                         else if (Vector3.Distance(nav.destination, gameObject.transform.position) < 2)//продолжаем убегать
@@ -138,8 +141,18 @@ public class CleverAI : MonoBehaviour {
                             }
                             if (enemyiskilled)
                             {
-                                CompleteTask();
-                                if (priority > 3) AddTask(new Task(Action.Eat, currenttask.target, currenttask.targetpriority));
+
+                                if (priority > 3)
+                                {
+                                    currenttask = new Task(Action.Eat, currenttask.target, currenttask.targetpriority);
+                                    runuptask();
+                                }
+                                else
+                                {
+                                    print(gameObject.name + " ЗАВЕРШАЕТ АТАКУ");
+                                    print("ЗАПИСЕЙ В ЕГО СТЭКЕ "+Tasks.Count);
+                                    CompleteTask();
+                                }
                             }
                         }
                         
@@ -156,7 +169,7 @@ public class CleverAI : MonoBehaviour {
                         //Debug.Log("таргет не пустой");
                         if (Vector3.Distance(currenttask.target.transform.position, gameObject.transform.position) < 5 && !anim.GetBool("Eat"))//должны подойти к туше
                         {
-                            print(gameObject + "буду хавать");
+                            //print(gameObject + "буду хавать");
                             anim.SetBool("Run", false);
                             anim.SetBool("Eat", true);
                             nav.ResetPath();
@@ -253,11 +266,11 @@ public class CleverAI : MonoBehaviour {
     }
     void CompleteTask()
     {
-       if(priority==6) print("завершаем задание " + currenttask.action + gameObject);
+       //if(priority==6) print(gameObject + " завершает задание " + currenttask.action);
         while(Tasks.Count>0)
         {
             Task temptask = Tasks.Pop();
-
+            if (currenttask.action == Action.Attack) print("новое задаение" + temptask.action);
             if (temptask.action == Action.Default || temptask.action == Action.Friend)//если состояние дефолтное или состоит в клане, то оно всегда актуально
             {
                 currenttask = temptask;
@@ -266,17 +279,18 @@ public class CleverAI : MonoBehaviour {
             }
             else if (temptask.target != null)//след. в стэке состояние не дефолтное
             {
-               // print("цель не ноль");
+                // print("цель не ноль");
                 if (Vector3.Distance(gameObject.transform.position, temptask.target.transform.position) < 40)
                 {
-                   // print("цель еще актуальна");
+                    // print("цель еще актуальна");
                     currenttask = temptask;
                     break;
                 }
-                else print("цель уже не актуальна");
+                //else print("цель уже не актуальна");
             }
             
         }
+        
         runuptask();
     }
 
@@ -303,7 +317,11 @@ public class CleverAI : MonoBehaviour {
         anim.SetBool("RunAttack", false);
         anim.SetBool("Action", false);
 
-        if(priority == 6) print("новое задание у " + gameObject+currenttask.action);
+        //if (priority == 6)
+        //{
+        //    print("новое задание у " + gameObject + currenttask.action);
+        //    if (currenttask.target != null) print(" с " + currenttask.target.name);
+        //}
         switch (currenttask.action)
         {
             case Action.Default:
@@ -437,15 +455,15 @@ public class CleverAI : MonoBehaviour {
                 }
                 else //мы и встречный в кланах
                 {
-                    print("оба ии в клане");
+                    //print("оба ии в клане");
                     if (clan == otherman.GetComponent<CleverAI>().clan)//мы в одном клане
                     {
-                        print("ии в одном клане");
+                       // print("ии в одном клане");
                         reaction = 0;//будем игнорировать
                     } 
                     else//мы в разных кланах
                     {
-                        print("ии в разных кланах");
+                        //print("ии в разных кланах");
                         if (Random.Range(0, 10) < sociability) reaction = 2;//убегаем
                         else reaction = 3;//атакуем
                     }
@@ -509,24 +527,19 @@ public class CleverAI : MonoBehaviour {
                     friend.GetComponent<CleverAI>().clan = clan;//записываем для него его же клан
                 }
                 clan = friend.GetComponent<CleverAI>().clan;//и только теперь добавляемся в его клан
-                CompleteTask();
-                currenttask = new Task(Action.Default, gameObject, priority);
-                Tasks.Clear();
+                ResetAllTasks(gameObject);
                 clan.AddToClan(gameObject);
                 Creator.ChangeInClans();
-                AddTask(new Task(Action.Friend, clan.Leader, 6));
+                
             }
             else//мы уже в клане и пришла заявка от игрока без клана
             {
                 print(gameObject + "добавляем в свой клан"+friend.name+"и обнуляет");
                 CleverAI cleverfriend = GetComponent<CleverAI>();
                 cleverfriend.clan = clan;//и только теперь добавляем его в наш клан
-                cleverfriend.CompleteTask();
-                cleverfriend.currenttask = new Task(Action.Default, gameObject, priority);
-                cleverfriend.Tasks.Clear();
+                ResetAllTasks(friend);
                 clan.AddToClan(friend);
                 Creator.ChangeInClans();
-                cleverfriend.AddTask(new Task(Action.Friend, clan.Leader, 6));
             }
         }
     }
@@ -543,11 +556,12 @@ public class CleverAI : MonoBehaviour {
         {
             AddTask(new Task(Action.RunFor, newenemy, newenemypriority));
         }
-       if(priority==6) print(gameObject+"работает с " + newenemy + " ответ " + reaction);
+      // if(priority==6) print(gameObject+"работает с " + newenemy + " ответ " + reaction);
         
     }
     public void TakeDamage(GameObject killer, int enemydamage)
     {
+        
         if (currenttask.action != Action.Dead)//если не мертвый       
         {
             if (priority != 1 && currenttask.action != Action.Attack)//не заяц
@@ -591,6 +605,14 @@ public class CleverAI : MonoBehaviour {
                 
             }            
         }
+    }
+    public void ResetAllTasks(GameObject newlifer)
+    {
+        CleverAI mind = newlifer.GetComponent<CleverAI>();
+        mind.CompleteTask();
+        mind.currenttask = new Task(Action.Default, gameObject, priority);
+        mind.Tasks.Clear();
+        mind.AddTask(new Task(Action.Friend, clan.Leader, 6));
     }
 }
 

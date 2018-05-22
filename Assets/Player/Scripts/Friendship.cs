@@ -19,13 +19,13 @@ public class Friendship : MonoBehaviour {
 	}
     public void answeryes()
     {
-        print(gameObject.GetComponent<Friendship>().Friend.name);
+        //print(gameObject.GetComponent<Friendship>().Friend.name);
         if (Friend != null)
         {
             //print("дружба принята");
             Friend.GetComponent<CleverAI>().clan = gameObject.GetComponent<PlayerMove>().ClanOfPlayer;
             gameObject.GetComponent<PlayerMove>().ClanOfPlayer.AddToClan(Friend);
-            Friend.GetComponent<CleverAI>().AddTask(new CleverAI.Task(CleverAI.Action.Friend, gameObject, 6));
+            Friend.GetComponent<CleverAI>().ResetAllTasks(Friend);
             Creator.ChangeInClans();
         }
 
