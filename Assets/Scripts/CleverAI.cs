@@ -149,8 +149,8 @@ public class CleverAI : MonoBehaviour {
                                 }
                                 else
                                 {
-                                    print(gameObject.name + " ЗАВЕРШАЕТ АТАКУ");
-                                    print("ЗАПИСЕЙ В ЕГО СТЭКЕ "+Tasks.Count);
+                                  //  print(gameObject.name + " ЗАВЕРШАЕТ АТАКУ");
+                                  //  print("ЗАПИСЕЙ В ЕГО СТЭКЕ "+Tasks.Count);
                                     CompleteTask();
                                 }
                             }
@@ -270,7 +270,7 @@ public class CleverAI : MonoBehaviour {
         while(Tasks.Count>0)
         {
             Task temptask = Tasks.Pop();
-            if (currenttask.action == Action.Attack) print("новое задаение" + temptask.action);
+           
             if (temptask.action == Action.Default || temptask.action == Action.Friend)//если состояние дефолтное или состоит в клане, то оно всегда актуально
             {
                 currenttask = temptask;
@@ -282,6 +282,11 @@ public class CleverAI : MonoBehaviour {
                 // print("цель не ноль");
                 if (Vector3.Distance(gameObject.transform.position, temptask.target.transform.position) < 40)
                 {
+                    if (priority == 2 && temptask.target.GetComponent<CleverAI>().priority == 3)
+                    {
+                        print("ловушка сработала");
+                        continue;
+                    }
                     // print("цель еще актуальна");
                     currenttask = temptask;
                     break;
