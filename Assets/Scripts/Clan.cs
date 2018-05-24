@@ -11,8 +11,8 @@ public class Clan{
    
     public void AddToClan(GameObject newmember)
     {
-       // bool addnewmember = true;
-        /*foreach(GameObject a in members)
+        bool addnewmember = true;
+        foreach(GameObject a in members)
         {
             if(a.name == newmember.name)
             {
@@ -23,13 +23,13 @@ public class Clan{
         
         if (addnewmember)
         {
-        */
+        
             members.Add(newmember);       
 
             Debug.Log("В клан " + name + "добавилcя " + newmember.name);            
             
             Creator.ChangeInClans();
-        //}
+        }
     }
    public Clan(GameObject newleader)
     {

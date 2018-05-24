@@ -9,9 +9,11 @@ public class CleverAI : MonoBehaviour {
     Animator anim;//аниматор, для переключения анимаций
     Creator CreatorRef;//ссылка на создателя    
     
+
     public Task currenttask;
     public Clan clan;
     int sociability;
+    int reactiononplayer=5;
     public int priority;//приоритет для разрешения столкновения нескольких объектов
     public int hp;//здоровье
     public int damage;//наносимый урон
@@ -116,7 +118,7 @@ public class CleverAI : MonoBehaviour {
                     break;
                 }
             case Action.Attack:
-                {
+               {
                     if (currenttask.target != null)
                     {
 
@@ -137,7 +139,7 @@ public class CleverAI : MonoBehaviour {
                             else
                             {
                                 currenttask.target.GetComponent<CleverAI>().TakeDamage(gameObject, damage);//наносим урон
-                                if (currenttask.target.GetComponent<CleverAI>().priority == 3) enemyiskilled = true;//если враг стал мертвым
+                                 if (currenttask.target.GetComponent<CleverAI>().priority == 3) enemyiskilled = true;//если враг стал мертвым
                             }
                             if (enemyiskilled)
                             {
@@ -284,7 +286,7 @@ public class CleverAI : MonoBehaviour {
                 {
                     if (priority == 2 && temptask.target.GetComponent<CleverAI>().priority == 3)
                     {
-                        print("ловушка сработала");
+                        //print("ловушка сработала");
                         continue;
                     }
                     // print("цель еще актуальна");
@@ -438,17 +440,25 @@ public class CleverAI : MonoBehaviour {
 
     public void People(GameObject otherman)//втретились 2 человека
     {
-        int reaction = 1;//по умолчанию убегаем
+        print(gameObject + "встретил" + otherman.name);
+        int reaction = 5;//по умолчанию реакция, которой нет 1-убежать, 2-атака, 0- ничего не делать 
         bool friendly = false;//будем ли сотрудничать
         if(clan==null)//если аи не в клане
         {
-            //print("AI не в клани и ");
-            if (Random.Range(0, 10) < sociability)
+            if (otherman.tag == "Player" && reactiononplayer != 5)
             {
-                friendly = true;//предлагаем дружбу  
-                //print("предлагает дружбу");
+                reaction = reactiononplayer;
+                print("реакция из памяти");
             }
-            
+            else
+            {
+                //print("AI не в клани и ");
+                if (Random.Range(0, 10) < sociability)
+                {
+                    friendly = true;//предлагаем дружбу  
+                                    //print("предлагает дружбу");
+                }
+            }
         }
         else//мы в клане
         {
@@ -468,7 +478,7 @@ public class CleverAI : MonoBehaviour {
                     } 
                     else//мы в разных кланах
                     {
-                        //print("ии в разных кланах");
+                        print("ии в разных кланах");
                         if (Random.Range(0, 10) < sociability) reaction = 2;//убегаем
                         else reaction = 3;//атакуем
                     }
@@ -489,19 +499,23 @@ public class CleverAI : MonoBehaviour {
               
             
         }
-        if(friendly)//в процессе решили дружить
+        if(friendly||reactiononplayer==4)//в процессе решили дружить
         {
             if(otherman.tag=="Player")
             {
-                otherman.GetComponent<Friendship>().request(gameObject);
+                if (clan == null)
+                {
+                    reactiononplayer = 4;
+                    otherman.GetComponent<Friendship>().request(gameObject);
+                }
             }
-            else
+            else if (friendly)
             {
                 otherman.GetComponent<CleverAI>().request(gameObject);
             }
 
         }
-        else if(reaction==1)//не подружились и реакция не однозначна
+        else if(reaction==5)//не подружились и реакция не однозначна
         {
             GetEnemy(otherman, 6);
         }
@@ -515,6 +529,7 @@ public class CleverAI : MonoBehaviour {
             {
                 AddTask(new Task(Action.RunFor, otherman, 6));
             }
+            
         }      
 
     }
@@ -550,8 +565,15 @@ public class CleverAI : MonoBehaviour {
     }
     public void GetEnemy(GameObject newenemy, int newenemypriority)//рядом враг
     {
-        //print("Responce" + priority + newenemypriority);
         int reaction = CreatorRef.Response(priority, newenemypriority);
+        //print("Responce" + priority + newenemypriority);
+        if (priority==6&&clan == null && newenemy.tag == "Player"&&reactiononplayer!=5)
+        {
+            print("реакция из памяти");
+            reaction = reactiononplayer;
+            
+        }
+             
         
         if(reaction==1)//т.е. нужно убегать
         {
@@ -561,8 +583,13 @@ public class CleverAI : MonoBehaviour {
         {
             AddTask(new Task(Action.RunFor, newenemy, newenemypriority));
         }
-      // if(priority==6) print(gameObject+"работает с " + newenemy + " ответ " + reaction);
-        
+
+        if (priority == 6&&clan == null && newenemy.tag == "Player" && reactiononplayer == 5)
+        {
+            reactiononplayer = reaction;
+        }
+        // if(priority==6) print(gameObject+"работает с " + newenemy + " ответ " + reaction);
+
     }
     public void TakeDamage(GameObject killer, int enemydamage)
     {
@@ -576,6 +603,7 @@ public class CleverAI : MonoBehaviour {
                 {
                     currenttask = new Task(Action.Attack, killer, killer.GetComponent<PlayerMove>().priority);
                     runuptask();
+                    reactiononplayer = 2;
                 }
                 else
                 {

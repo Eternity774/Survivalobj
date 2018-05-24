@@ -44,7 +44,7 @@ public class Creator : MonoBehaviour {
                                            { 8, 8, 10, 7, 5, 5, 3 },
                                            { 9, 9, 10, 8, 5, 5, 5} };
         */
-        for (int i = 0; i < 20; i++) { CreateSomebody(manpref); }
+        for (int i = 0; i < 15; i++) { CreateSomebody(manpref); }
         for (int i = 0; i < 10; i++) { CreateSomebody(rabbitpref); }
         for (int i = 0; i < 10; i++) { CreateSomebody(stagpref); }
         for (int i = 0; i < 8; i++) { CreateSomebody(boarpref); }
