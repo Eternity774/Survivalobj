@@ -34,7 +34,7 @@ public class EquipmentManager : MonoBehaviour {
 		currentMeshes = new MeshRenderer[numSlots];
 		e_slots = equipParent.GetComponentsInChildren<CharacterSlot> ();
 		for (int i = 0; i < e_slots.Length; i++) {
-			print (e_slots [i].name);
+			//print (e_slots [i].name);
 		}
 	}
 

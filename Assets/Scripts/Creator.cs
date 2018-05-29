@@ -19,29 +19,42 @@ public class Creator : MonoBehaviour {
     public static List<Clan> ListofClans = new List<Clan>();
     public int countai = 20;
 
-    int[,] ResponceMatrix;
+    int[,,] ResponceMatrix;
     int id = 0;
 
-    void Start () {
+    void Start()
+    {
         countofclans = GameObject.Find("Clans").GetComponent<Text>();
         withoutclans = GameObject.Find("Free").GetComponent<Text>();
 
+        //кто-строка, на кого-столбец (в ячейках вероятности)
+        //{игнора, убегания, нападения}
+        ResponceMatrix = new int[6, 6, 3] { { {10,0,0}, {10,0,0}, {5,5,0}, {0,10,0}, {0,10,0}, {0,10,0} },
+                                         { {10,0,0}, {4,2,4}, {5,3,2}, {0,0,10}, {0,8,2}, {0,10,0} },
+                                         { {7,0,3}, {8,1,1},{5,2,3}, {0,9,1}, {1,6,3}, {0,10,0}},
+                                         { {1,0,9}, {2,0,8}, {3,1,6}, {4,3,3},{0,3,7}, {0,9,1} },
+                                         { {1,0,9}, {2,0,8}, {3,2,5}, {0,7,3}, {6,2,2}, {0,9,1} },
+                                         { {5,0,5}, {5,0,5}, {5,0,5}, {4,2,4}, {0,3,7}, {4,3,3}} };
 
-        ResponceMatrix = new int[6, 7] { { 0, 0, 0, 0, 0, 0, 0 },//кто-строка, на кого-столбец
-                                         { 0, 5, 0, 1, 0, 2, 0 },
-                                         { 3, 2, 5, 4, 0, 3, 0 },
-                                         { 9, 8, 10, 7, 5, 6, 1 },
-                                         { 8, 8, 10, 7, 5, 5, 3 },
-                                         { 9, 9, 10, 8, 5, 5, 5} };
-        
-        for (int i = 0; i < 15; i++) { CreateSomebody(rabbitpref); }
-        for (int i = 0; i < 12; i++) { CreateSomebody(stagpref); }
-        for (int i = 0; i < 9; i++) { CreateSomebody(boarpref); }
+        /*  
+          ResponceMatrix = new int[6, 7] { { 0, 0, 0, -5, -10, -10, -10 },//кто-строка, на кого-столбец
+                                           { 0, 5, 0, 1, 0, 2, 0 },
+                                           { 3, 2, 5, 4, 0, 3, 0 },
+                                           { 9, 8, 10, 7, 5, 6, 1 },
+                                           { 8, 8, 10, 7, 5, 5, 3 },
+                                           { 9, 9, 10, 8, 5, 5, 5} };
+        */
+        for (int i = 0; i < 15; i++) { CreateSomebody(manpref); }
+        for (int i = 0; i < 10; i++) { CreateSomebody(rabbitpref); }
+        for (int i = 0; i < 10; i++) { CreateSomebody(stagpref); }
+        for (int i = 0; i < 8; i++) { CreateSomebody(boarpref); }
         for (int i = 0; i < 6; i++) { CreateSomebody(wolfpref); }
         for (int i = 0; i < 3; i++) { CreateSomebody(bearpref); }
-        for (int i = 0; i < 20; i++) { CreateSomebody(manpref); }
+        
+        
         ChangeInClans();
-
+        //print("разбор матрицы:"+ResponceMatrix[1,5,0]);
+      
     }
 
     public int[] StartInformation(GameObject ai)
@@ -109,7 +122,7 @@ public class Creator : MonoBehaviour {
             case "Wolf": CreateSomebody(wolfpref); break;
             case "Bear": CreateSomebody(bearpref); break;
             //case "AIMAn": CreateSomebody(manpref); break;
-            case "AIMAn": ChangeInClans(); break;
+            case "AIMan": ChangeInClans(); break;
                         
 
         }
@@ -117,15 +130,27 @@ public class Creator : MonoBehaviour {
     }
     void CreateSomebody(GameObject prefub)
     {
-        GameObject a = Instantiate(prefub, FindPoint(), Quaternion.identity); a.name += id; id++;
+        GameObject a = Instantiate(prefub, FindPoint(), Quaternion.identity);
+        if (prefub.tag == "AIMan") a.name = "ai" + id;
+        else a.name += id;
+        id++;
         a.GetComponent<NavMeshAgent>().avoidancePriority = Random.Range(0, 100);
     }
-    public bool Response(int who, int whom)
+    public int Response(int who, int whom)
     {
-        if (who > 3) who--;           
-        if (ResponceMatrix[who - 1, whom - 1] > Random.Range(0, 11)) return true;
-        else return false;
-        
+        //Debug.Log("Поступил запрос" + who + whom);
+        //if (ResponceMatrix[who - 1, whom - 1] > Random.Range(0, 11)) return true;
+        //  else return false;
+       
+        if (who > 3) who--;
+        if (whom > 3) whom--;
+        //print("Responce" + who + whom);
+        int ignore = ResponceMatrix[who - 1, whom - 1, 0];
+        int random4ik = Random.Range(1, 11);
+        if (random4ik <= ignore) return 0;
+        int runfrom = ResponceMatrix[who - 1, whom - 1, 1];
+        if (random4ik <= runfrom+ignore) return 1;
+        else return 2;
     }
     public Vector3 FindPoint()//поиск точки на меше, куда возможно дойти
     {
@@ -133,8 +158,9 @@ public class Creator : MonoBehaviour {
        
         while(true)
         {
-           
+
             Vector3 startpoint = new Vector3(Random.Range(-250, 750), 0, Random.Range(-250, 750));
+           // Vector3 startpoint = new Vector3(Random.Range(500, 600), 0, Random.Range(-150, 0));
             Vector3 pointwithR = startpoint + Random.insideUnitSphere * radius;
             NavMeshHit hit;
             for (int i = 0; i < 50; i++)
@@ -153,21 +179,21 @@ public class Creator : MonoBehaviour {
     {
         if (countofclans != null)//текст уже загрузился
         {
-            Debug.Log("Действующих кланов: " + ListofClans.Count);
+            //Debug.Log("Действующих кланов: " + ListofClans.Count);
             countofclans.text = "Clans:" + ListofClans.Count;
             GameObject[] temparray = GameObject.FindGameObjectsWithTag("AIMan");
-            Debug.Log("АИ игроков: " + temparray.Length);
+            //Debug.Log("АИ игроков: " + temparray.Length);
             int countwithoutclan = 0;
             foreach (GameObject i in temparray)
             {
-                if (i.GetComponent<Behavior>().clan == null&&i.GetComponent<Behavior>().state!=Behavior.State.dead) countwithoutclan++;
+                if (i.GetComponent<CleverAI>().clan == null&&i.GetComponent<CleverAI>().priority!=3) countwithoutclan++;
                 
             }
-            Debug.Log("АИ игроков без клана: " + countwithoutclan);
+            //Debug.Log("АИ игроков без клана: " + countwithoutclan);
             withoutclans.text = "Free:" + countwithoutclan;
             if (countwithoutclan == 0 && ListofClans.Count == 1)
             {
-                Debug.Log("You win");
+               // Debug.Log("You win");
                 countofclans.text = "YOU";
                 withoutclans.text = "WIN!";
             }

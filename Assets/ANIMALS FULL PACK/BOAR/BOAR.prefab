@@ -279,8 +279,8 @@ GameObject:
   - component: {fileID: 195305481367047050}
   - component: {fileID: 135265185911998072}
   - component: {fileID: 65606961659094826}
-  - component: {fileID: 114561215862166564}
   - component: {fileID: 54307432873300182}
+  - component: {fileID: 114916672961950936}
   m_Layer: 0
   m_Name: BOAR
   m_TagString: Boar
@@ -953,7 +953,7 @@ Animator:
   m_GameObject: {fileID: 1553254077299886}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 3d04b3ce40b5d9a468a7e1174adfb590, type: 3}
-  m_Controller: {fileID: 9100000, guid: adb2e20fda1c8a04abc1304d26f0b93a, type: 2}
+  m_Controller: {fileID: 9100000, guid: aa64408e6bc12384a963a94026c13768, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -961,7 +961,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114561215862166564
+--- !u!114 &114916672961950936
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -969,16 +969,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1553254077299886}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62b186b16db4b0d4c9b6981671a8b550, type: 3}
+  m_Script: {fileID: 11500000, guid: eab8eed37e1a2da41b5161254f987394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
-  enemyinmemory: {fileID: 0}
-  friend: {fileID: 0}
-  priority: 4
-  hp: 500
-  damage: 40
-  state: 0
+  priority: 0
+  hp: 0
+  damage: 0
 --- !u!135 &135265185911998072
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -987,7 +983,7 @@ SphereCollider:
   m_GameObject: {fileID: 1553254077299886}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}

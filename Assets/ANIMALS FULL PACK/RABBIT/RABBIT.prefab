@@ -38,8 +38,8 @@ GameObject:
   - component: {fileID: 195402127228617042}
   - component: {fileID: 135898813837055914}
   - component: {fileID: 65315889170184746}
-  - component: {fileID: 114054886318490782}
   - component: {fileID: 54704585156606128}
+  - component: {fileID: 114706331740524168}
   m_Layer: 0
   m_Name: RABBIT
   m_TagString: Rabbit
@@ -444,7 +444,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1090895711516698}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -144.90904, y: 0.0000009536743, z: 39.87085}
+  m_LocalPosition: {x: 535.39075, y: 8.62735, z: -127.3357}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4955227862126984}
@@ -836,7 +836,7 @@ Animator:
   m_GameObject: {fileID: 1090895711516698}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 807496c96dd155f4f9cfdf14e022a354, type: 3}
-  m_Controller: {fileID: 9100000, guid: 713919ff82e4c9e43b93caf8e4beaea9, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3f434caa9b7f6ad4ba0cbaebeafc454f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -844,7 +844,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114054886318490782
+--- !u!114 &114706331740524168
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -852,17 +852,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1090895711516698}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62b186b16db4b0d4c9b6981671a8b550, type: 3}
+  m_Script: {fileID: 11500000, guid: eab8eed37e1a2da41b5161254f987394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
-  enemyinmemory: {fileID: 0}
-  friend: {fileID: 0}
-  leader: {fileID: 0}
-  priority: 1
-  hp: 100
+  priority: 0
+  hp: 0
   damage: 0
-  state: 0
 --- !u!135 &135898813837055914
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -871,7 +866,7 @@ SphereCollider:
   m_GameObject: {fileID: 1090895711516698}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}

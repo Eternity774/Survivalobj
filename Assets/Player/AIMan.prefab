@@ -156,11 +156,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4497705055404688}
   - component: {fileID: 95965302688424840}
-  - component: {fileID: 114158253133150256}
   - component: {fileID: 195610563895407200}
   - component: {fileID: 65676108772085244}
   - component: {fileID: 135902289177285018}
   - component: {fileID: 54155778436394634}
+  - component: {fileID: 114283607806273030}
   m_Layer: 0
   m_Name: AIMan
   m_TagString: AIMan
@@ -2362,7 +2362,7 @@ Animator:
   m_GameObject: {fileID: 1100972972865694}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: fe55e5a0c1bcd72488aa4508bea6f93b, type: 3}
-  m_Controller: {fileID: 9100000, guid: 5acbbdd02405257428b314080fc85927, type: 2}
+  m_Controller: {fileID: 9100000, guid: 1846b3d5ac050324b93d42b12988bd0f, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2370,7 +2370,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114158253133150256
+--- !u!114 &114283607806273030
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -2378,16 +2378,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1100972972865694}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62b186b16db4b0d4c9b6981671a8b550, type: 3}
+  m_Script: {fileID: 11500000, guid: eab8eed37e1a2da41b5161254f987394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
-  enemyinmemory: {fileID: 0}
-  friend: {fileID: 0}
-  priority: 6
-  hp: 700
-  damage: 90
-  state: 0
+  priority: 0
+  hp: 0
+  damage: 0
 --- !u!135 &135902289177285018
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -2396,7 +2392,7 @@ SphereCollider:
   m_GameObject: {fileID: 1100972972865694}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}

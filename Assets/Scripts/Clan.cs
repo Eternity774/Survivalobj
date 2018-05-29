@@ -20,10 +20,14 @@ public class Clan{
                 break;
             }
         }
+        
         if (addnewmember)
         {
-            members.Add(newmember);
-            Debug.Log("В клан " + name + "добавилcя " + newmember.name);
+        
+            members.Add(newmember);       
+
+            Debug.Log("В клан " + name + "добавилcя " + newmember.name);            
+            
             Creator.ChangeInClans();
         }
     }
@@ -49,11 +53,11 @@ public class Clan{
             bool destinyofthisclan = false;
             foreach(GameObject a in members)
             {
-                if (a.GetComponent<Behavior>().clan==this && a!=Leader)
+                if (a.GetComponent<CleverAI>().clan==this && a!=Leader)
                 {
                     Leader = a;
                     destinyofthisclan = true;
-                    Debug.Log("в клане " + name + "новый лидер: " + oldmember.name);
+                    Debug.Log("в клане " + name + "новый лидер: " + oldmember.name);                   
                     break;
                 }
             }
