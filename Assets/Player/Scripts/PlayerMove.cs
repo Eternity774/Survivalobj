@@ -68,7 +68,7 @@ public class PlayerMove : MonoBehaviour {
     public void Update()
     {
        // print(gameObject.GetComponent<PlayerMove>().Friend.name);
-        if (live)
+        if (live && GamePauseManager.Instance.IsPause == false)
         {
 
             //Open inventory
