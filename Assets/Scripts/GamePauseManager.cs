@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GamePauseManager : MonoBehaviour {
 
@@ -12,6 +14,9 @@ public class GamePauseManager : MonoBehaviour {
     
     [SerializeField] GameObject pauseScreen;
     [SerializeField] List<GameObject> panels = new List<GameObject>();
+    [SerializeField] GameObject LoadingScreen;
+    Slider slider;
+    Text loadText;
 
     List<GameObject> enabledPanels = new List<GameObject>();
     bool hasCursorVisible;
@@ -49,6 +54,11 @@ public class GamePauseManager : MonoBehaviour {
         }
     }
 
+    private void Start()
+    {
+        slider = LoadingScreen.GetComponentInChildren<Slider>();
+        loadText = LoadingScreen.GetComponentInChildren<Text>();
+    }
 
     void Update () {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -92,6 +102,24 @@ public class GamePauseManager : MonoBehaviour {
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
+    public void ExitingGame()
+    {
+        StartCoroutine(AsyncLoad());
+    }
+
+    IEnumerator AsyncLoad()
+    {
+        AsyncOperation op = SceneManager.LoadSceneAsync("Menu");
+        LoadingScreen.SetActive(true);
+        while (!op.isDone)
+        {
+            float progress = Mathf.Clamp01(op.progress / .9f);
+            slider.value = progress;
+            loadText.text = (int)(progress * 100) + "%";
+            yield return null;
         }
     }
 }

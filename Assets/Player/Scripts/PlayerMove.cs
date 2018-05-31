@@ -255,7 +255,7 @@ public class PlayerMove : MonoBehaviour {
         associated = null;
         live = false;
         yield return new WaitForSeconds(5f);
-        Application.Quit();
+        GamePauseManager.Instance.ExitingGame();
     }
 
     public IEnumerator NoRun()
