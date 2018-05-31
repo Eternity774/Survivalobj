@@ -1342,6 +1342,16 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 114889630211780864, guid: 5ba58e0da19a932488864ddacd52f653,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1128097121}
+    - target: {fileID: 114889630211780864, guid: 5ba58e0da19a932488864ddacd52f653,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Where
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5ba58e0da19a932488864ddacd52f653, type: 2}
   m_IsPrefabParent: 0
@@ -1375,6 +1385,11 @@ GameObject:
 --- !u!1 &1735698467 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1098506217495658, guid: 5ba58e0da19a932488864ddacd52f653,
+    type: 2}
+  m_PrefabInternal: {fileID: 1202086998}
+--- !u!1 &1837744131 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1490121508232284, guid: 5ba58e0da19a932488864ddacd52f653,
     type: 2}
   m_PrefabInternal: {fileID: 1202086998}
 --- !u!1001 &1881499202
@@ -1666,7 +1681,7 @@ Prefab:
         type: 2}
       propertyPath: way
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1837744131}
     m_RemovedComponents:
     - {fileID: 114897783325102250, guid: 9591c918af6780d4bb169965a5e7dfa2, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 9591c918af6780d4bb169965a5e7dfa2, type: 2}
