@@ -1924,6 +1924,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 687f978e1ff97894f908b2e657b8f7e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  steak: {fileID: 1628290208963666, guid: 056aea6e1e072a04985e67b36639e641, type: 2}
+  Creatorscript: {fileID: 0}
 --- !u!135 &135256753734712764
 SphereCollider:
   m_ObjectHideFlags: 1

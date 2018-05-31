@@ -21,9 +21,8 @@ GameObject:
   - component: {fileID: 4062391344449496}
   - component: {fileID: 135623395406347522}
   - component: {fileID: 114420336369998370}
-  - component: {fileID: 135253021958163226}
   m_Layer: 0
-  m_Name: meat
+  m_Name: steak
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +68,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1628290208963666}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 570.2302, y: 6.5966396, z: -123.81316}
+  m_LocalPosition: {x: 566.1334, y: 6.870542, z: -123.6465}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4134786370868886}
@@ -117,7 +116,7 @@ MeshRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 74f56cf69b97eec4f85fb0e4c5bfc5e7, type: 2}
+  - {fileID: 2100000, guid: a4264e00edbca70418ec7f5eed0ef24d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -172,19 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 775abf86be425c14ea6243b0bffdc899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 6d1ed14794004d146b4f7c83dd1345f0, type: 2}
---- !u!135 &135253021958163226
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1628290208963666}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.26260376
-  m_Center: {x: -0.015533447, y: 0.39385366, z: -0.0012893677}
+  item: {fileID: 11400000, guid: 994b139f4f80f2643ad078807b7aea81, type: 2}
 --- !u!135 &135623395406347522
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -195,5 +182,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.44105172
-  m_Center: {x: 0, y: 0.39018035, z: 0}
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}

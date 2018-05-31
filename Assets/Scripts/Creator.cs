@@ -13,6 +13,11 @@ public class Creator : MonoBehaviour {
     public GameObject bearpref;
     public GameObject manpref;
 
+    public GameObject rock;
+    public GameObject wood;
+
+        
+
     public static Text countofclans;
     public static Text withoutclans;
     
@@ -50,8 +55,10 @@ public class Creator : MonoBehaviour {
         for (int i = 0; i < 8; i++) { CreateSomebody(boarpref); }
         for (int i = 0; i < 6; i++) { CreateSomebody(wolfpref); }
         for (int i = 0; i < 3; i++) { CreateSomebody(bearpref); }
-        
-        
+
+        for (int i = 0; i < 50; i++) { Instantiate(rock, FindPoint(), Quaternion.identity); }
+        for (int i = 0; i < 50; i++) { Instantiate(wood, FindPoint(), Quaternion.identity); }
+
         ChangeInClans();
         //print("разбор матрицы:"+ResponceMatrix[1,5,0]);
       

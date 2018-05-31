@@ -13,6 +13,7 @@ public class PlayerMove : MonoBehaviour {
     Animator animator;//анимаотор
     CharacterController controller; //контроллер для ходьбы
     public Clan ClanOfPlayer;
+    public bool underfire = false;//рядом ли мы с огнем
     private bool inv_Open;
 
 	private bool e_inv_Open;
@@ -25,7 +26,7 @@ public class PlayerMove : MonoBehaviour {
 	private float powerRegenTimer;
 
     private GameObject inv_Main;
-	private GameObject equipInventory;
+	//private GameObject equipInventory;
 	private GameObject m_Cam;
     
     public float pbarSlider;
@@ -46,11 +47,11 @@ public class PlayerMove : MonoBehaviour {
         animator = GetComponentInChildren<Animator>();
         controller = GetComponent<CharacterController>();
         inv_Main = GameObject.FindGameObjectWithTag("inv_main");
-		equipInventory = GameObject.FindGameObjectWithTag ("equipinventory");
+		//equipInventory = GameObject.FindGameObjectWithTag ("equipinventory");
         inv_Open = false;
 		e_inv_Open = false;
         inv_Main.SetActive(false);
-		equipInventory.SetActive (false);
+		//equipInventory.SetActive (false);
         
         m_Cam = GameObject.FindGameObjectWithTag("MainCamera");
         hspeed = m_Cam.GetComponent<ThirdPersonOrbitCamBasic>().horizontalAimingSpeed;
@@ -76,7 +77,7 @@ public class PlayerMove : MonoBehaviour {
             {
                 if (inv_Open == false)
                 {
-					equipInventory.SetActive(true);
+					//equipInventory.SetActive(true);
 					inv_Main.SetActive(true);
 					inv_Open = true;
                     e_inv_Open = true;
@@ -84,7 +85,7 @@ public class PlayerMove : MonoBehaviour {
                 }
                 else if (inv_Open == true)
                 {
-					equipInventory.SetActive(false);
+					//equipInventory.SetActive(false);
 					inv_Main.SetActive(false);
 					inv_Open = false;
 					e_inv_Open = false;

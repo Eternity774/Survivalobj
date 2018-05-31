@@ -5,8 +5,8 @@ using UnityEngine;
 public class ItemPickup : MonoBehaviour {
 
 	public Item item;
-
-	public void OnTriggerEnter(Collider col){
+  
+    public void OnTriggerEnter(Collider col){
 		if (col.tag == "Player") {
 			
 			bool wasPickedUp=Inventory.instance.Add(item);

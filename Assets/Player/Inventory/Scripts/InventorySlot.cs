@@ -1,17 +1,26 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class InventorySlot : MonoBehaviour {
 
 	public Image icon;
 	public Button removeButton;
+    public GameObject player;
+    public GameObject foodpanel;
+    public GameObject steak;
 
 	Item item;
-
+    void Start()
+    {
+        foodpanel.SetActive(false);
+    }
 	public void AddItem(Item newItem){
 		item = newItem;
 		icon.sprite = item.icon;
-		icon.enabled = true;
+        //prefub = newItem.prefub;
+        //print(prefub);
+        icon.enabled = true;
 		removeButton.interactable = true;
 	}
 	public void ClearSlot(){
@@ -21,12 +30,39 @@ public class InventorySlot : MonoBehaviour {
 		removeButton.interactable = false;
 	}
 	public void OnRemoveButton(){
-		Inventory.instance.Remove (item);
+        // print(item.prefub);
+        if (item.name == "Meat" && player.GetComponent<PlayerMove>().underfire)
+        {
+            print("условие прошло");
+            Instantiate(steak, player.transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+        }
+        else
+        {
+            print("условие не прошло");
+            print("имя :" + item.name);
+            print("условие: " + player.GetComponent<PlayerMove>().underfire);
+            Instantiate(item.prefub, player.transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+        }
+        Inventory.instance.Remove (item);
 	}
 	public void UseItem(){
 		if (item != null) {
-			item.UseItem ();
+            if (item.name == "Meat" && player.GetComponent<PlayerHealth>().currentHealth > 0)
+            {
+                foodpanel.SetActive(true);
+                StartCoroutine(timeoftext());
+            }
+            else
+            {
+                item.UseItem();
+            }
 		}
 	}
+    IEnumerator timeoftext()
+    {
+        yield return new WaitForSeconds(3f);
+        foodpanel.SetActive(false);
+      
+    }
 
 }

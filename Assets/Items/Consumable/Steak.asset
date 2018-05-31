@@ -9,12 +9,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6848e43438f4897439827aa8b8885040, type: 3}
-  m_Name: Meat
+  m_Name: Steak
   m_EditorClassIdentifier: 
-  name: Meat
-  icon: {fileID: 21300000, guid: be15f4b7d2651f541b447ca6e71c79dc, type: 3}
+  name: Steak
+  icon: {fileID: 21300000, guid: ae79f991913dfc046b379a0b6a08e1d3, type: 3}
   isDefaultItem: 0
-  prefub: {fileID: 1628290208963666, guid: 56e06874ee6c3154a92a5e26f10a03fe, type: 2}
-  healthRestoring: 300
-  foodRestoring: 50
+  prefub: {fileID: 1628290208963666, guid: 056aea6e1e072a04985e67b36639e641, type: 2}
+  healthRestoring: 700
+  foodRestoring: 100
   powerRestoring: 100

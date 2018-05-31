@@ -14,4 +14,5 @@ MonoBehaviour:
   name: Wood
   icon: {fileID: 21300000, guid: a9703156f3ef4a845a36426f54d5415e, type: 3}
   isDefaultItem: 0
+  prefub: {fileID: 1027321410936448, guid: 25f79855b6364b342b065b976cbc9c29, type: 2}
   mesh: {fileID: 0}
