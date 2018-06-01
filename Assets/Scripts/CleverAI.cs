@@ -284,14 +284,23 @@ public class CleverAI : MonoBehaviour {
                 // print("цель не ноль");
                 if (Vector3.Distance(gameObject.transform.position, temptask.target.transform.position) < 40)
                 {
-                    if (priority == 2 && temptask.target.GetComponent<CleverAI>().priority == 3)
+
+                    if (priority == 2)
                     {
-                        //print("ловушка сработала");
-                        continue;
+                        if (temptask.target.tag != "PLayer")
+                        {
+                            if (temptask.target.GetComponent<CleverAI>().priority == 3)                           //print("ловушка сработала");
+
+                                continue;
+                        }
+                        else if (!temptask.target.GetComponent<PlayerMove>().live)
+                        {
+                            continue;
+                        }
+                        // print("цель еще актуальна");
+                        currenttask = temptask;
+                        break;
                     }
-                    // print("цель еще актуальна");
-                    currenttask = temptask;
-                    break;
                 }
                 //else print("цель уже не актуальна");
             }
