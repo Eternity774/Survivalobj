@@ -33,14 +33,14 @@ public class InventorySlot : MonoBehaviour {
         // print(item.prefub);
         if (item.name == "Meat" && player.GetComponent<PlayerMove>().underfire)
         {
-            print("условие прошло");
-            Instantiate(steak, player.transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+            //print("условие прошло");
+            Instantiate(steak, player.transform.TransformPoint(Vector3.forward * 2 + Vector3.up*0.5f), Quaternion.identity);
         }
         else
         {
-            print("условие не прошло");
-            print("имя :" + item.name);
-            print("условие: " + player.GetComponent<PlayerMove>().underfire);
+           // print("условие не прошло");
+            //print("имя :" + item.name);
+            //print("условие: " + player.GetComponent<PlayerMove>().underfire);
             Instantiate(item.prefub, player.transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
         }
         Inventory.instance.Remove (item);

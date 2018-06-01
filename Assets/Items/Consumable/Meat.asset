@@ -16,5 +16,5 @@ MonoBehaviour:
   isDefaultItem: 0
   prefub: {fileID: 1628290208963666, guid: 56e06874ee6c3154a92a5e26f10a03fe, type: 2}
   healthRestoring: 300
-  foodRestoring: 50
+  foodRestoring: 10
   powerRestoring: 100

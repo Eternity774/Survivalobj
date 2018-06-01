@@ -16,6 +16,9 @@ public class PlayerMove : MonoBehaviour {
     public bool underfire = false;//рядом ли мы с огнем
     private bool inv_Open;
 
+    public GameObject meat;
+    public GameObject skin;
+
 	private bool e_inv_Open;
     EquipmentManager equipment;
     public GameObject way;
@@ -198,8 +201,40 @@ public class PlayerMove : MonoBehaviour {
             {
                 if (associated.GetComponent<CleverAI>().priority == 3)
                 {
-                    playerHealth.TakeFood(20);
+                    //playerHealth.TakeFood(20);
                     //hp += 100;///когда кого-то съел
+                    if(associated.tag=="Rabbit")
+                    {
+                        Instantiate(meat, transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+
+                    }
+                    else if (associated.tag == "Stag"|| associated.tag == "Wolf")
+                    {
+                       Instantiate(meat, transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+                        Instantiate(meat, transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+                        Instantiate(skin, transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+
+                    }
+                    else if(associated.tag == "Boar")
+                    {
+                        Instantiate(meat, transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+                        Instantiate(meat, transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+                        Instantiate(meat, transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+                        Instantiate(skin, transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+                    }
+                    else if (associated.tag == "Bear")
+                    {
+                        Instantiate(meat, transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+                        Instantiate(meat, transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+                        Instantiate(meat, transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+                        Instantiate(skin, transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+                        Instantiate(skin, transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+
+                    }
+                    else if(playerHealth.currentHealth<0)
+                    {
+                        Instantiate(meat, transform.TransformPoint(Vector3.forward * 2 + Vector3.up), Quaternion.identity);
+                    }
                     Destroy(associated);
                     associated = null;
                 }

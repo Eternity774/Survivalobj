@@ -56,13 +56,26 @@ public class CraftButton : MonoBehaviour {
         {
             tIngr[i].text = "";
         }
-
+      
         for (int i=0; i < ingr1.Length; i++)
         {
+            print("проверяем " + i + "ингредиент");
             tIngr[i].text = ingr1[i].name;
-            for (int j=0; j < inventory.items.Count; j++)
+            bool nextstep = false;
+            for (int j=0;j < inventory.items.Count; j++)
             {
+                print("проверяем " + j + "ячейку");
                 if (ingr1[i].name == inventory.items[j].name) {
+                    if(i>0)
+                    {
+                        print("зашли в исключение c i"+i);
+                        if (ingr1[i - 1].name == inventory.items[j].name && !nextstep)
+                        {
+                            nextstep = true;
+                            continue;
+                        }
+                    }
+                    print("покрасили");
                     isChecked[i] = true;
                     tIngr[i].text = ingr1[i].name;                    
                     tIngr[i].color = Color.green;
@@ -70,6 +83,7 @@ public class CraftButton : MonoBehaviour {
                 }
                 else
                 {
+                    print("не подходит");
                     isChecked[i] = false;
                     tIngr[i].text = ingr1[i].name;
                     tIngr[i].color = Color.red;

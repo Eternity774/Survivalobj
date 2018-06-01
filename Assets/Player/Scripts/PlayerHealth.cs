@@ -32,7 +32,7 @@ public class PlayerHealth : MonoBehaviour {
 		currentPower = startPower;
 		powerbar.value = startPower;
 		StartCoroutine (FoodBar ());
-        StartCoroutine(HealthBar());
+        
 	}
     
 
@@ -83,14 +83,7 @@ public class PlayerHealth : MonoBehaviour {
 			yield return new WaitForSeconds (5f);
 		}
 	}
-    public IEnumerator HealthBar()
-    {
-        while (true)
-        {
-            if (currentFood > 50) Healing(10);            
-            yield return new WaitForSeconds(3f);
-        }
-    }
+   
 
 
 }

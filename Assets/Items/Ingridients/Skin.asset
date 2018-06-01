@@ -9,9 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c685d16b4cf60564f8f1f7e3fff4530a, type: 3}
-  m_Name: Lego
+  m_Name: Skin
   m_EditorClassIdentifier: 
-  name: Lego
-  icon: {fileID: 21300000, guid: b4a921bcab1370a498b98ced66be217d, type: 3}
+  name: Skin
+  icon: {fileID: 21300000, guid: 6fc0205bb5436704fa6809fd9bbf0ae5, type: 3}
   isDefaultItem: 0
+  prefub: {fileID: 1500818672893458, guid: b00b5cb775dcf2c4ebfe25792b1dc98f, type: 2}
   mesh: {fileID: 23524823507302960, guid: 057b887e0e082a34cbc1c79c8c918b63, type: 2}

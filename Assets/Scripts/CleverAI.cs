@@ -499,7 +499,7 @@ public class CleverAI : MonoBehaviour {
               
             
         }
-        if(friendly||reactiononplayer==4)//в процессе решили дружить
+        if(friendly||(reactiononplayer==4&&otherman.tag=="Player"))//в процессе решили дружить
         {
             if(otherman.tag=="Player")
             {
