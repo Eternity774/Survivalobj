@@ -26,7 +26,7 @@ public class CampfireController : MonoBehaviour {
            
 			if (ph.currentHealth<ph.startHealth){
 				if (powerRegenTimer >= 1.0f) {
-					ph.Healing (50);
+					ph.Healing (5);
 					powerRegenTimer = 0f;
 				} else {
 					powerRegenTimer += Time.deltaTime;

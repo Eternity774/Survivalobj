@@ -15,6 +15,6 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: ae79f991913dfc046b379a0b6a08e1d3, type: 3}
   isDefaultItem: 0
   prefub: {fileID: 1628290208963666, guid: 056aea6e1e072a04985e67b36639e641, type: 2}
-  healthRestoring: 700
+  healthRestoring: 20
   foodRestoring: 20
   powerRestoring: 100

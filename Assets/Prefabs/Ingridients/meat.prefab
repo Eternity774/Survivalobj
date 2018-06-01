@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4062391344449496}
   - component: {fileID: 135623395406347522}
   - component: {fileID: 114420336369998370}
-  - component: {fileID: 135253021958163226}
   m_Layer: 0
   m_Name: meat
   m_TagString: Untagged
@@ -173,18 +172,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 6d1ed14794004d146b4f7c83dd1345f0, type: 2}
---- !u!135 &135253021958163226
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1628290208963666}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.26260376
-  m_Center: {x: -0.015533447, y: 0.39385366, z: -0.0012893677}
 --- !u!135 &135623395406347522
 SphereCollider:
   m_ObjectHideFlags: 1
