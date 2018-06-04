@@ -35,9 +35,9 @@ public class CleverAI : MonoBehaviour {
         }
     }
 
-    public enum Action//перечисление возможных задач
+    public enum Action
     {
-        Default,//патрулирование   
+        Default,
         Friend,
         RunFor,
         Eat,
