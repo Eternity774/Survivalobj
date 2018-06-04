@@ -276,14 +276,38 @@ public class PlayerMove : MonoBehaviour {
             associated = hit.gameObject;
            // hit.gameObject.GetComponent<CleverAI>().GetEnemy(gameObject);
         }
+        /*
         else if (hit.gameObject.tag == "hut")
         {
             playerHealth.Healing(100);
             playerHealth.currentPower = 100;
             playerHealth.powerbar.value = playerHealth.currentPower;
-        }
+        }*/
     }
+    public void OnTriggerStay(Collider col)
+    {
+        if (col.tag == "hut")
+        {
 
+            //ph.TakePower (2);
+
+            if (playerHealth.currentHealth < playerHealth.startHealth)
+            {
+                if (powerRegenTimer >= 1.0f)
+                {
+                    playerHealth.Healing(10);
+                    powerRegenTimer = 0f;
+                }
+                else
+                {
+                    powerRegenTimer += Time.deltaTime;
+                }
+            }
+
+            //print ("Player in campfire zone");
+        }
+
+    }
     public IEnumerator Dead()
     {
         Debug.Log("start death");

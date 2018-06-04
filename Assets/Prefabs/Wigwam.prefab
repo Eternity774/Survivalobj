@@ -899,7 +899,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4922398672633014}
-  - component: {fileID: 65232460273743836}
+  - component: {fileID: 135689509244113788}
   m_Layer: 0
   m_Name: Wigwam
   m_TagString: hut
@@ -1013,7 +1013,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1037920776081692}
-  m_LocalRotation: {x: -0.47664517, y: -0.52182597, z: 0.5247549, w: 0.47448844}
+  m_LocalRotation: {x: -0.4766452, y: -0.521826, z: 0.52475494, w: 0.47448847}
   m_LocalPosition: {x: 0.030707033, y: -0.2894492, z: 0.06245371}
   m_LocalScale: {x: 1, y: 0.4015411, z: 1.0000002}
   m_Children: []
@@ -1773,7 +1773,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1828059050813908}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 557.5351, y: 11.67, z: -124.11263}
+  m_LocalPosition: {x: 569.8505, y: 7.05, z: -116.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4285800261443272}
@@ -4105,15 +4105,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1348284965230872}
   m_Mesh: {fileID: 4300048, guid: 166485d352b376b4aac7b2ad8bf99260, type: 3}
---- !u!65 &65232460273743836
-BoxCollider:
+--- !u!135 &135689509244113788
+SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1828059050813908}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.95, y: 4.82, z: 4.65}
-  m_Center: {x: 0, y: 1.89, z: 0}
+  m_Radius: 6.46
+  m_Center: {x: 0, y: 0, z: 0}

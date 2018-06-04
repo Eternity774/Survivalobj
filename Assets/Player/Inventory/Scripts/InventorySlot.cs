@@ -47,7 +47,7 @@ public class InventorySlot : MonoBehaviour {
 	}
 	public void UseItem(){
 		if (item != null) {
-            if (item.name == "Meat" && player.GetComponent<PlayerHealth>().currentHealth > 0)
+            if (item.name == "Meat" && player.GetComponent<PlayerHealth>().currentFood > 0)
             {
                 foodpanel.SetActive(true);
                 StartCoroutine(timeoftext());

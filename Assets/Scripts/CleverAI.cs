@@ -610,13 +610,13 @@ public class CleverAI : MonoBehaviour {
                 Tasks.Push(currenttask);
                 if (killer.tag == "Player")
                 {
-                    currenttask = new Task(Action.Attack, killer, killer.GetComponent<PlayerMove>().priority);
+                    currenttask = new Task(Action.RunFor, killer, killer.GetComponent<PlayerMove>().priority);
                     runuptask();
                     reactiononplayer = 2;
                 }
                 else
                 {
-                    currenttask = new Task(Action.Attack, killer, killer.GetComponent<CleverAI>().priority);
+                    currenttask = new Task(Action.RunFor, killer, killer.GetComponent<CleverAI>().priority);
                     runuptask();
                 }
             

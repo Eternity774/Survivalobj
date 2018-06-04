@@ -57,6 +57,7 @@ public class CampfireController : MonoBehaviour {
     {
         yield return new WaitForSeconds(30f);
         Destroy(gameObject);
+        player.gameObject.GetComponent<PlayerMove>().underfire = false;
         Instantiate(Creatorscript.wood, Creatorscript.FindPoint(), Quaternion.identity);
         Instantiate(Creatorscript.rock, Creatorscript.FindPoint(), Quaternion.identity);
     }
