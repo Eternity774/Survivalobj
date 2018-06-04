@@ -8,7 +8,8 @@ public class CleverAI : MonoBehaviour {
     NavMeshAgent nav;//агент, который перемещает ai в указанную точку
     Animator anim;//аниматор, для переключения анимаций
     Creator CreatorRef;//ссылка на создателя    
-    
+
+    public GameObject player;
 
     public Task currenttask;
     public Clan clan;
@@ -49,6 +50,7 @@ public class CleverAI : MonoBehaviour {
     public Stack<Task> Tasks = new Stack<Task>();//очередь для выполнения
    
     void Start () {
+        player = GameObject.FindGameObjectWithTag("Player");
         CreatorRef = GameObject.Find("MainController").GetComponent<Creator>();//находим контроллер на сцене
         nav = GetComponent<NavMeshAgent>();//берем компоненты с того же объекта где и скрипт (навмеш)
         anim = GetComponent<Animator>();//берем компонент аниматора
@@ -60,7 +62,7 @@ public class CleverAI : MonoBehaviour {
         currenttask = new Task(Action.Default, gameObject, 0);         
         runuptask();
         GetComponent<SphereCollider>().enabled = true;
-
+       
     }
 	
 	
@@ -344,8 +346,14 @@ public class CleverAI : MonoBehaviour {
                 {                    
                     nav.speed = 0;
                     nav.SetDestination(CreatorRef.FindPoint());//задаем новую точку для движения в пределах плоскости
-                    if(Random.Range(0, 2) ==1) anim.SetBool("Action", true);                     
+                    if (Random.Range(0, 2) == 1)
+                    {
+                        anim.SetBool("Action", true);
+                        if (priority == 5&&Vector3.Distance(gameObject.transform.position,player.transform.position)<500) AudioManager.instance.Play("WolfIdle");
+                    }                   
                     StartCoroutine(Wait());
+                    if(priority==4 && Vector3.Distance(gameObject.transform.position, player.transform.position) < 50) AudioManager.instance.Play("BoarIdle");
+                    if(priority==7 && Vector3.Distance(gameObject.transform.position, player.transform.position) < 50) AudioManager.instance.Play("BearIdle");
                     break;
                 }
             case Action.Friend:
@@ -372,6 +380,9 @@ public class CleverAI : MonoBehaviour {
                     nav.speed = Random.Range(5, 8);
                     if (priority > 5) anim.SetBool("Run", true);
                     else anim.SetBool("RunAttack", true);
+                    if (priority == 4 && Vector3.Distance(gameObject.transform.position, player.transform.position) < 50) AudioManager.instance.Play("BoarAttack");
+                    if (priority == 5 && Vector3.Distance(gameObject.transform.position, player.transform.position) < 50) AudioManager.instance.Play("WolfAttack");
+                    if (priority == 7 && Vector3.Distance(gameObject.transform.position, player.transform.position) < 50) AudioManager.instance.Play("BearAttack");
                     break;
                 } 
             case Action.Attack:
@@ -380,6 +391,9 @@ public class CleverAI : MonoBehaviour {
                     nav.SetDestination(currenttask.target.transform.TransformPoint(Vector3.forward * 2));
                     transform.LookAt(currenttask.target.transform.position);
                     anim.SetBool("Attack", true);
+                    if (priority == 4 && Vector3.Distance(gameObject.transform.position, player.transform.position) < 50) AudioManager.instance.Play("BoarAttack");
+                    if (priority == 5 && Vector3.Distance(gameObject.transform.position, player.transform.position) < 50) AudioManager.instance.Play("WolfAttack");
+                    if (priority == 7 && Vector3.Distance(gameObject.transform.position, player.transform.position) < 50) AudioManager.instance.Play("BearAttack");
                     break;
                 }
             case Action.Eat:
@@ -397,6 +411,9 @@ public class CleverAI : MonoBehaviour {
                 {
                     //Debug.Log("умираем");
                     anim.SetTrigger("Death");
+                    if (priority == 4 && Vector3.Distance(gameObject.transform.position, player.transform.position) < 50) AudioManager.instance.Stop("BoarAttack");
+                    if (priority == 5 && Vector3.Distance(gameObject.transform.position, player.transform.position) < 50) AudioManager.instance.Stop("WolfAttack");
+                    if (priority == 7 && Vector3.Distance(gameObject.transform.position, player.transform.position) < 50) AudioManager.instance.Stop("BearAttack");
                     Tasks.Clear();
                     break;
                 }

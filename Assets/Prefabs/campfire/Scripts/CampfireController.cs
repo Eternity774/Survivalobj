@@ -15,7 +15,7 @@ public class CampfireController : MonoBehaviour {
 		ph=player.GetComponent<PlayerHealth>();
         StartCoroutine(timeofcamp());
         Creatorscript = GameObject.Find("MainController").GetComponent<Creator>();
-        
+        AudioManager.instance.Play("Campfire");
 
     }
 

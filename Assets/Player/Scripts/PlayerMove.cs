@@ -146,6 +146,7 @@ public class PlayerMove : MonoBehaviour {
 
             if (v != 0) //если нажата клавиша ходьбы
             {
+               // AudioManager.instance.Play("Steps");
                 Vector3 dir;
                 dir = transform.TransformDirection(new Vector3(0f, -3f, v * speedz / 100));
 
@@ -153,6 +154,7 @@ public class PlayerMove : MonoBehaviour {
                 {
                     speedz = 5f;
                     animator.SetBool("Walk", true);//включаем анимацию ходьбы
+                    
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
@@ -165,6 +167,7 @@ public class PlayerMove : MonoBehaviour {
             }
             else//если не нажата клавиша ходьбы
             {
+                //AudioManager.instance.Stop("Steps");
                 animator.SetBool("Walk", false);//выключаем ходьбу
                 animator.SetBool("WalkBack", false);//выключаем ходьбу
             }
