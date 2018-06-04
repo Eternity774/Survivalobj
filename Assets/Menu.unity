@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44346425, g: 0.49275416, b: 0.5723646, a: 1}
+  m_IndirectSpecularColor: {r: 0.4434642, g: 0.49275386, b: 0.5723642, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -669,6 +669,29 @@ Prefab:
         type: 2}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716241941433538, guid: da8876cbe3257f84aa471d47dfb3f65b, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250456499549026, guid: da8876cbe3257f84aa471d47dfb3f65b, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224559217066238210, guid: da8876cbe3257f84aa471d47dfb3f65b,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 224260490804183250, guid: da8876cbe3257f84aa471d47dfb3f65b,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -129
+      objectReference: {fileID: 0}
+    - target: {fileID: 224392803128939092, guid: da8876cbe3257f84aa471d47dfb3f65b,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -220
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: da8876cbe3257f84aa471d47dfb3f65b, type: 2}
