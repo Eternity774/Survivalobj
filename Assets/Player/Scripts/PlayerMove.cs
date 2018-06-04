@@ -107,7 +107,8 @@ public class PlayerMove : MonoBehaviour {
                     animator.SetTrigger("sAttack");
                 }
                 else if (!(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))&& !equipment.currentEquipment[3]) { 
-                animator.SetTrigger("Attack");
+                    animator.SetTrigger("Attack");
+                    AudioManager.instance.Play("KnifeAttack");
                 }
                 if (associated != null)
                 {
