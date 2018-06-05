@@ -217,7 +217,7 @@ public class Creator : MonoBehaviour {
 
         GameObject[] othermans = GameObject.FindGameObjectsWithTag("AIMan");
         //Debug.Log("найдено " + othermans.Length);
-        countofclans.text = othermans.Length.ToString();
+        //countofclans.text = othermans.Length.ToString();
         foreach (GameObject man in othermans)
         {
             //Debug.Log("в цикле " + man.GetComponent<CleverAI>().clan);
