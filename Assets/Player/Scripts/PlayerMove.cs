@@ -44,6 +44,10 @@ public class PlayerMove : MonoBehaviour {
     private float maxFov = 75f;
     private float minFov = 60f;
 
+
+    public GameObject arrowway;
+
+
     // Use this for initialization
     void Start() {
         equipment = EquipmentManager.instance;
@@ -93,7 +97,8 @@ public class PlayerMove : MonoBehaviour {
 					inv_Open = false;
 					e_inv_Open = false;
                     inventory_open(e_inv_Open);
-                }                
+                }
+                //arrowway.GetComponent<arrowway>().Where();                
             }
 
 

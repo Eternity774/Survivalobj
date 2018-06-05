@@ -6545,7 +6545,6 @@ GameObject:
   - component: {fileID: 1128097118}
   - component: {fileID: 1128097119}
   - component: {fileID: 1128097120}
-  - component: {fileID: 1128097121}
   - component: {fileID: 1128097122}
   m_Layer: 0
   m_Name: MainController
@@ -6586,6 +6585,9 @@ MonoBehaviour:
   manpref: {fileID: 1100972972865694, guid: 9d4626b1a54851641b805312e7145b68, type: 2}
   rock: {fileID: 100000, guid: ed611a3ded592db4082a86450ac3e55f, type: 2}
   wood: {fileID: 1027321410936448, guid: 25f79855b6364b342b065b976cbc9c29, type: 2}
+  player: {fileID: 2119219618}
+  arrow: {fileID: 0}
+  way: {fileID: 1648427455198420, guid: 755759f2ec6ac68468c75de4b8df5f05, type: 2}
   countai: 5
 --- !u!114 &1128097120
 MonoBehaviour:
@@ -6608,20 +6610,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
---- !u!114 &1128097121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1128097117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14a70473a7245da438b5a9a9cebbffdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  way: {fileID: 1648427455198420, guid: 755759f2ec6ac68468c75de4b8df5f05, type: 2}
-  arrow: {fileID: 0}
-  player: {fileID: 2119219618}
 --- !u!114 &1128097122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9231,8 +9219,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1128097121}
-        m_MethodName: Where
+      - m_Target: {fileID: 1128097119}
+        m_MethodName: WhereAI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11473,6 +11461,20 @@ GameObject:
   m_PrefabParentObject: {fileID: 1608956156268676, guid: 9591c918af6780d4bb169965a5e7dfa2,
     type: 2}
   m_PrefabInternal: {fileID: 2146938753}
+--- !u!114 &2119219619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2119219618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14a70473a7245da438b5a9a9cebbffdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  way: {fileID: 1648427455198420, guid: 755759f2ec6ac68468c75de4b8df5f05, type: 2}
+  arrow: {fileID: 0}
+  player: {fileID: 2119219618}
 --- !u!114 &2119219624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11563,6 +11565,11 @@ Prefab:
       value: 
       objectReference: {fileID: 1500818672893458, guid: b00b5cb775dcf2c4ebfe25792b1dc98f,
         type: 2}
+    - target: {fileID: 114442050504279440, guid: 9591c918af6780d4bb169965a5e7dfa2,
+        type: 2}
+      propertyPath: arrowway
+      value: 
+      objectReference: {fileID: 2119219618}
     m_RemovedComponents:
     - {fileID: 114897783325102250, guid: 9591c918af6780d4bb169965a5e7dfa2, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 9591c918af6780d4bb169965a5e7dfa2, type: 2}

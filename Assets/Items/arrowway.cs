@@ -7,6 +7,7 @@ public class arrowway : MonoBehaviour {
     public GameObject arrow;
     public GameObject player;
 
+    
     public void Where()
     {
         Creator.ChangeInClans();
@@ -14,7 +15,7 @@ public class arrowway : MonoBehaviour {
         GameObject otherman = null;
 
         GameObject[] othermans = GameObject.FindGameObjectsWithTag("AIMan");
-        //Debug.Log("найдено " + othermans.Length);
+        Debug.Log("найдено " + othermans.Length);
         foreach (GameObject man in othermans)
         {
             //Debug.Log("в цикле " + man.GetComponent<CleverAI>().clan);
