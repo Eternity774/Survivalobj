@@ -36,17 +36,12 @@ public class arrowway : MonoBehaviour {
             //Debug.Log("создан" + arrow.name);
             arrow.transform.LookAt(otherman.transform.position);
             //arrow.AddComponent<Rigidbody>();
-            StartCoroutine(fordelete());
+            
             //arrow.SetActive(true);
 
         }
     }
-        public IEnumerator fordelete()
-        {
-            yield return new WaitForSeconds(2f);
-            Destroy(arrow);
-
-        }
+        
     }
 
 

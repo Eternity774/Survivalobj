@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 4320588201151022}
   - component: {fileID: 54089298267850996}
   - component: {fileID: 65718248494178010}
+  - component: {fileID: 114542918851589994}
   m_Layer: 0
   m_Name: Arrowrotator
   m_TagString: Untagged
@@ -140,3 +141,14 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.17971706, z: 1}
   m_Center: {x: 0, y: -0.00000047683716, z: 0}
+--- !u!114 &114542918851589994
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1648427455198420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e0badb7e392ff4fa5ce40b02291151, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
