@@ -1,9 +1,7 @@
 fileFormatVersion: 2
 guid: 1315bcd7509173f44bc6655b2673dd4d
-timeCreated: 1458233176
-licenseType: Store
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: B_Head
     100002: B_L_Calf
@@ -121,6 +119,7 @@ ModelImporter:
     7400000: Unarmed-Attack-L3
     9500000: //RootNode
     13700000: RPG-Character-Mesh
+    2186277476908879412: ImportLogs
   externalObjects: {}
   materials:
     importMaterials: 0
@@ -146,6 +145,7 @@ ModelImporter:
       orientation error 0.6 deg at time 0:18 (75.0%) Frame 18\n"
     animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -315,6 +315,8 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 2
